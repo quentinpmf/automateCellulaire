@@ -1,33 +1,13 @@
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 
-	/**The number of rows for the cells array*/
-	public static final int CELL_ROWS = 80;
-	
-	/**The number of cols for the cells array*/
-	public static final int CELL_COLS = 80;
-	
 	private GridBagLayout gbTrace = new GridBagLayout();
 	private GridBagConstraints gbConstraints  = new GridBagConstraints();
 	
@@ -42,16 +22,27 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	 * Constructor
 	 */
 	public MainGUI() {
+
+		JPanel dialogBox = new JPanel();
+		int rows = Integer.parseInt(JOptionPane.showInputDialog(dialogBox,"Number of rows ?"));
+
 		setTitle("Cellular Automaton");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setLayout(gbTrace);
 		initSpeedControl();
-		initCells();
+		initCells(rows);
 		initMenu();
-		pack();
-		this.grid = new Grid(cells);
+		pack(); //sizes the frame so that all its contents are at or above their preferred sizes
+
+
+		new Rule(Color.black,"-",2,Color.white);
+		new Rule(Color.black,"+",3,Color.white);
+		new Rule(Color.white,"=",3,Color.black);
+
+
+		this.grid = new Grid(cells, rows);
 		grid.setSpeed(50);
 		slider.setValue(50);
 		setVisible(true);
@@ -63,9 +54,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	 * Builds the slider bar
 	 */
 	private void initSpeedControl() {
-		JPanel pan = new JPanel();
-		pan.setLayout(new BoxLayout(pan, BoxLayout.X_AXIS));
-		
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		slider = new JSlider();
 		slider.setMaximum(500);
 		slider.setMinimum(1);
@@ -75,12 +65,10 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		slider.setValue(50);
 		
 		lblSpeed = new JLabel("Animation speed (ms) : " + slider.getValue());
-		
-		pan.add(lblSpeed);
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(slider);
-		
-		addComponent(getContentPane(), pan, gbTrace, gbConstraints, 1, 0, GridBagConstraints.HORIZONTAL, 5, 5, 5, 5);
+		panel.add(lblSpeed);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(slider);
+		addComponent(getContentPane(), panel, gbTrace, gbConstraints, 1, 0, GridBagConstraints.HORIZONTAL, 5, 5, 5, 5);
 	}
 
 	/**
@@ -94,7 +82,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		pan.add(lblLoad);
 		pan.add(Box.createHorizontalStrut(5));
 
-		String[] strPattern = new String[]{"Small exploder","Gosper glider gun", "Gourmet", "Glider", "Ten Cell Row"};
+		String[] strPattern = new String[]{"Small exploder","spaceShip","Ten Cell Row","Gosper glider gun", "Glider"};
 		cbLoad = new JComboBox(strPattern);
 		cbLoad.addActionListener(this);
 		pan.add(cbLoad);
@@ -151,12 +139,12 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	/**
 	 * Builds the cells display
 	 */
-	private void initCells() {
+	private void initCells(int cell_rows) {
 		JPanel panGrid = new JPanel();
-		panGrid.setLayout(new GridLayout(CELL_ROWS,CELL_ROWS));
-		cells = new Cell[CELL_ROWS][CELL_ROWS];
-		for (int i = 0; i < CELL_ROWS; i++) {
-			for (int j = 0; j < CELL_ROWS; j++) {
+		panGrid.setLayout(new GridLayout(cell_rows,cell_rows));
+		cells = new Cell[cell_rows][cell_rows];
+		for (int i = 0; i < cell_rows; i++) {
+			for (int j = 0; j < cell_rows; j++) {
 				Cell c = new Cell();
 				cells[i][j] = c;
 				panGrid.add(c);
@@ -166,15 +154,6 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	}
 
 	public static void main(String[] args) {
-		System.setProperty( "com.apple.eawt.CocoaComponent.CompatibilityMode", "false" );
-		try {
-			// OS-based look and feel
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			System.err.println("Unable to set lookAndFeel");
-			System.exit(-1);
-		}
-		
 		// putting the GUI in the Event dispatch thread
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -187,8 +166,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	 * Change state of every cells to dead
 	 */
 	private void killAll() {
-		for (int i = 0; i < CELL_ROWS; i++) {
-			for (int j = 0; j < CELL_ROWS; j++) {
+		for (int i = 0; i < Grid.rows; i++) {
+			for (int j = 0; j < Grid.rows; j++) {
 				cells[i][j].die();
 				cells[i][j].display();
 			}

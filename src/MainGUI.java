@@ -31,9 +31,29 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setLayout(gbTrace);
-		initSpeedControl();
-		initCells(rows);
-		initMenu();
+
+		JPanel panel_speedcontrol = initSpeedControl();
+		JPanel panel_openmodel = initOpenModel();
+		JPanel panel_cells = initCells(rows);
+		JPanel panel_boutons = initButtons();
+
+		setLayout(new BorderLayout());
+		//création du panel gauche
+		JPanel panel_gauche = new JPanel();
+		panel_gauche.setLayout(new BorderLayout());
+		panel_gauche.add(panel_speedcontrol,BorderLayout.NORTH);
+		panel_gauche.add(panel_cells,BorderLayout.SOUTH);
+
+		//création du panel droite
+		JPanel panel_droite = new JPanel();
+		panel_droite.setLayout(new BorderLayout());
+		panel_droite.add(panel_openmodel,BorderLayout.NORTH);
+		panel_droite.add(panel_boutons,BorderLayout.SOUTH);
+
+		//ajout des deux panel gauche et droite dans le jframe
+		add(panel_gauche,BorderLayout.WEST);
+		add(panel_droite,BorderLayout.EAST);
+
 		pack(); //sizes the frame so that all its contents are at or above their preferred sizes
 
 
@@ -53,9 +73,11 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	/**
 	 * Builds the slider bar
 	 */
-	private void initSpeedControl() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+	private JPanel initSpeedControl() {
+		JPanel pan = new JPanel();
+		pan.setBorder(BorderFactory.createTitledBorder("Vitesse d'animation"));
+		pan.setLayout(new BoxLayout(pan, BoxLayout.X_AXIS));
+		
 		slider = new JSlider();
 		slider.setMaximum(500);
 		slider.setMinimum(1);
@@ -64,29 +86,39 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		slider.addChangeListener(this);
 		slider.setValue(50);
 		
-		lblSpeed = new JLabel("Animation speed (ms) : " + slider.getValue());
-		panel.add(lblSpeed);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(slider);
-		addComponent(getContentPane(), panel, gbTrace, gbConstraints, 1, 0, GridBagConstraints.HORIZONTAL, 5, 5, 5, 5);
+		lblSpeed = new JLabel(slider.getValue() + "ms");
+
+		pan.add(lblSpeed);
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(slider);
+		return pan;
 	}
 
 	/**
 	 * Builds the bottom menu bar
 	 */
-	private void initMenu(){
+	private JPanel initOpenModel(){
 		JPanel pan = new JPanel();
+		pan.setBorder(BorderFactory.createTitledBorder("Ouvrir modèle"));
 		pan.setLayout(new BoxLayout(pan, BoxLayout.X_AXIS));
-		
-		JLabel lblLoad = new JLabel("Ouvrir modèle : ");
-		pan.add(lblLoad);
+
 		pan.add(Box.createHorizontalStrut(5));
 
 		String[] strPattern = new String[]{"Small exploder","spaceShip","Ten Cell Row","Gosper glider gun", "Glider"};
 		cbLoad = new JComboBox(strPattern);
 		cbLoad.addActionListener(this);
 		pan.add(cbLoad);
-		
+		return pan;
+	}
+
+	/**
+	 * Builds the bottom menu bar
+	 */
+	private JPanel initButtons(){
+		JPanel pan = new JPanel();
+		pan.setBorder(BorderFactory.createTitledBorder("Actions"));
+		pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
+
 		btnStart = new JButton("Start");
 		btnStart.addActionListener(this);
 		btnReset = new JButton("Reset");
@@ -95,62 +127,31 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		btnQuit.addActionListener(this);
 
 		pan.add(Box.createHorizontalGlue());
-		pan.add(btnReset);
-		pan.add(Box.createHorizontalStrut(5));
 		pan.add(btnStart);
 		pan.add(Box.createHorizontalStrut(5));
+		pan.add(btnReset);
+		pan.add(Box.createHorizontalStrut(5));
 		pan.add(btnQuit);
-		addComponent(getContentPane(), pan, gbTrace, gbConstraints, 1, 0, GridBagConstraints.HORIZONTAL, 5,5, 5,5);
-	}
 
-	/**
-	 * This method allow to add component in a GridBagLayout-container
-	 * @param container le conteneur
-	 * @param component le composant � ajouter
-	 * @param gbTrace le GridBagLayout
-	 * @param gbConstraints les contraintes du layout
-	 * @param weightx le poids horizontal
-	 * @param weighty le poids vertical
-	 * @param fill le comportement en cas de redimensionnement de la fen�tre
-	 * @param insetsTop la marge en haut
-	 * @param insetsRight la marge � droite
-	 * @param insetsBottom la marge en bas
-	 * @param insetsLeft la marge � gauche
-	 */
-	public void addComponent( Container container, Component
-			component,
-			GridBagLayout gbTrace, GridBagConstraints gbConstraints,
-			int weightx, int weighty, int fill,
-			int insetsTop, int insetsRight, int insetsBottom, int
-			insetsLeft) {
-		gbConstraints.weightx = weightx;
-		gbConstraints.weighty = weighty;
-		gbConstraints.fill = fill;
-		gbConstraints.gridx = 0;
-		gbConstraints.gridy = GridBagConstraints.RELATIVE;
-		gbConstraints.gridwidth = 1;
-		gbConstraints.gridheight = 1;
-		gbConstraints.insets = new Insets(insetsTop, insetsRight,
-				insetsBottom, insetsLeft);
-		gbTrace.setConstraints( component, gbConstraints );
-		container.add( component );
+		return pan;
 	}
 
 	/**
 	 * Builds the cells display
 	 */
-	private void initCells(int cell_rows) {
-		JPanel panGrid = new JPanel();
-		panGrid.setLayout(new GridLayout(cell_rows,cell_rows));
+	private JPanel initCells(int cell_rows) {
+		JPanel pan = new JPanel();
+		pan.setBorder(BorderFactory.createTitledBorder("Grille"));
+		pan.setLayout(new GridLayout(cell_rows,cell_rows));
 		cells = new Cell[cell_rows][cell_rows];
 		for (int i = 0; i < cell_rows; i++) {
 			for (int j = 0; j < cell_rows; j++) {
 				Cell c = new Cell();
 				cells[i][j] = c;
-				panGrid.add(c);
+				pan.add(c);
 			}
 		}
-		addComponent(getContentPane(), panGrid, gbTrace, gbConstraints, 0, 0, GridBagConstraints.NONE, 0, 5, 0, 5);
+		return pan;
 	}
 
 	public static void main(String[] args) {
@@ -200,7 +201,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	@Override
 	public void stateChanged(ChangeEvent ce) {
 		grid.setSpeed(slider.getValue());
-		lblSpeed.setText("Animation speed (ms) : " + slider.getValue());
+		lblSpeed.setText(slider.getValue()+ "ms");
 	}
 
 }

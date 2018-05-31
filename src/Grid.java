@@ -1,12 +1,14 @@
 public class Grid implements Runnable{
 
 	private Cell[][] cells;
+	public static int rows;
 	private boolean running;
 	private int time;
 
-	public Grid(Cell[][] cells) {
+	public Grid(Cell[][] cells, int rows) {
 		this.cells = cells;
-		initNeighboors();
+		this.rows = rows;
+		initNeighbors(rows);
 	}
 	
 	public void setSpeed(int time) {
@@ -22,12 +24,12 @@ public class Grid implements Runnable{
 	///////////////////////////
 
 
-	private void initNeighboors() {
-		for (int i = 0; i < MainGUI.CELL_ROWS; i++) {
-			for (int j = 0; j < MainGUI.CELL_COLS; j++) {
+	private void initNeighbors(int rows) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < rows; j++) {
 				Cell c = cells[i][j];
-				for (int k = i-1; k < i+2 && k < MainGUI.CELL_ROWS && k > 0; k++) {
-					for (int l = j-1; l < j+2 && l > 0 && l < MainGUI.CELL_COLS; l++) {
+				for (int k = i-1; k < i+2 && k < rows && k > 0; k++) {
+					for (int l = j-1; l < j+2 && l > 0 && l < rows; l++) {
 						if ((k != i || l != j) ) {
 							c.addNeighboor(cells[k][l]);
 						}
@@ -55,20 +57,18 @@ public class Grid implements Runnable{
 			}
 			
 			if (running) {
-				
-				for (int i = 0; i < MainGUI.CELL_ROWS; i++) {
-					for (int j = 0; j < MainGUI.CELL_COLS; j++) {
+				for (int i = 0; i < this.rows; i++) {
+					for (int j = 0; j < this.rows; j++) {
 						cells[i][j].nextState();
 					}
 				}
-				
-				for (int i = 0; i < MainGUI.CELL_ROWS; i++) {
-					for (int j = 0; j < MainGUI.CELL_COLS; j++) {
+				for (int i = 0; i < this.rows; i++) {
+					for (int j = 0; j < this.rows; j++) {
 						cells[i][j].display();
 					}
 				}
 
-				
+
 			}
 		}
 	}

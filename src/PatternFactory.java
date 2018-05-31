@@ -8,10 +8,19 @@ public class PatternFactory {
 
     /** SmallExploder pattern */
     private final String[] smallExploder = new String[]{
-            ".O.",
-            "OOO",
-            "O.O",
-            ".O."
+            "..................O.................",
+            ".................OOO................",
+            ".................O.O................",
+            "..................O................."
+    };
+
+    /** SpaceShip pattern */
+    private final String[] spaceShip = new String[]{
+            "....................................",
+            ".................OOOO...............",
+            "................O...O...............",
+            "....................O...............",
+            "................O..O................",
     };
 
     /** TenCellRow pattern */
@@ -39,31 +48,8 @@ public class PatternFactory {
             "................OOO................."
     };
 
-    /** Gourmet pattern */
-    private final String[] gourmet = new String[]{"..........OO........",
-            "..........O.........",
-            "....OO.OO.O....OO...",
-            "..O..O.O.O.....O....",
-            "..OO....O........O..",
-            "................OO..",
-            "....................",
-            "................OO..",
-            "O.........OOO..O.O..",
-            "OOO.......O.O...O...",
-            "...O......O.O....OOO",
-            "..O.O..............O",
-            "..OO................",
-            "....................",
-            "..OO................",
-            "..O........O....OO..",
-            "....O.....O.O.O..O..",
-            "...OO....O.OO.OO....",
-            ".........O..........",
-            "........OO.........."
-    };
-
     /** All the patterns */
-    public final String[][] patterns = new String[][]{smallExploder, tenCellRow, gosperGliderGun, gourmet, glider};
+    public final String[][] patterns = new String[][]{smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider};
 
     /**
      * Generates a cell-matrix from a pattern

@@ -84,7 +84,13 @@ public class Cell extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
+		//si cellule déja cliquée alors on la déclique
+		if (isAlive()) {
+				die();
+		}
+		else {
 			live();
+		}
 		display();
 	}
 
@@ -92,7 +98,13 @@ public class Cell extends JPanel implements MouseListener{
 	public void mouseEntered(MouseEvent e) {
 		if ( SwingUtilities.isLeftMouseButton (e) ){
 
+			//si cellule déja cliquée alors on la déclique
+			if (isAlive()) {
+				die();
+			}
+			else {
 				live();
+			}
 
 			display();
 		}

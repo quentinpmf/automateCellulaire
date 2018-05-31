@@ -9,10 +9,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class Cell extends JPanel implements MouseListener{
-	
-	private ArrayList<Cell> neighboors = new ArrayList<Cell>();
+	private ArrayList<Cell> neighbors = new ArrayList<Cell>();
 	private boolean alive;
 	private boolean nextAlive;
+	private Color currentColor;
 
 	public Cell() {
 		setBorder(BorderFactory.createLineBorder(Color.lightGray));
@@ -25,12 +25,12 @@ public class Cell extends JPanel implements MouseListener{
 	///////////////////////////
 	
 	public void addNeighboor(Cell c) {
-		neighboors.add(c);
+		neighbors.add(c);
 	}
 
 	public int aliveNeighborsCount() {
 		int count = 0;
-		for (Cell c : neighboors) {
+		for (Cell c : neighbors) {
 			if (c.isAlive())
 				count++;
 		}
@@ -39,6 +39,7 @@ public class Cell extends JPanel implements MouseListener{
 	
 	public void nextState() {
 		int aliveNeighbors = aliveNeighborsCount();
+
 
 		if (isAlive()) {
 			if (aliveNeighbors < 2 || aliveNeighbors > 3)
@@ -70,21 +71,27 @@ public class Cell extends JPanel implements MouseListener{
 	public void display() {
 		alive = nextAlive;
 		if (nextAlive) {
-			setBackground(Color.GREEN);
+			setBackground(Color.black);
 		} else {
-			setBackground(Color.WHITE);
+			setBackground(Color.white);
 		}
 	}
 	
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(7,7);
+		return new Dimension(10,10);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
+		//si cellule déja cliquée alors on la déclique
+		if (isAlive()) {
+				die();
+		}
+		else {
 			live();
+		}
 		display();
 	}
 
@@ -92,8 +99,7 @@ public class Cell extends JPanel implements MouseListener{
 	public void mouseEntered(MouseEvent e) {
 		if ( SwingUtilities.isLeftMouseButton (e) ){
 
-				live();
-
+			live();
 			display();
 		}
 	}

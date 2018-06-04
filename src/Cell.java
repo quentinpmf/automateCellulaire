@@ -40,25 +40,14 @@ public class Cell extends JPanel implements MouseListener{
 			if (item.initialState) {
                 switch (item.operator) {
                     case "<":
-                        if (aliveNeighbors < item.aliveNeighbors)
-                            changeState(item.nextCellState);
+                        if (aliveNeighbors < item.aliveNeighbors) nextAlive = item.nextCellState;
                         break;
                     case ">":
-                        setBackground(Color.white);
+                        if (aliveNeighbors > item.aliveNeighbors) nextAlive = item.nextCellState;
                         break;
                     case "=":
-                        setBackground(Color.white);
-                        break;
-                    case "droite":
-                        setBackground(Color.white);
-                        break;
-                    case "gauche":
-                        setBackground(Color.white);
-                        break;
+                        if (aliveNeighbors == item.aliveNeighbors) nextAlive = item.nextCellState;
                 }
-				if (aliveNeighbors < 2 || aliveNeighbors > 3)
-					die();
-
 			}
         }
 
@@ -75,16 +64,8 @@ public class Cell extends JPanel implements MouseListener{
 		*/
 	}
 
-	public void die() {
-		nextAlive = 0;
-	}
-
-	public void live() {
-		nextAlive = 1;
-	}
-
 	public boolean isAlive() {
-		return alive;
+	    return alive;
 	}
 
     /**
@@ -123,9 +104,9 @@ public class Cell extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (isAlive()) {
-		    die();
+            nextAlive = 0;
 		} else {
-			live();
+            nextAlive = 1;
 		}
 		display();
 	}
@@ -133,7 +114,7 @@ public class Cell extends JPanel implements MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if ( SwingUtilities.isLeftMouseButton (e) ){
-			live();
+            nextAlive = 1;
 			display();
 		}
 	}

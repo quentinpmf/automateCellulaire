@@ -10,14 +10,14 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 
 	private GridBagLayout gbTrace = new GridBagLayout();
 	private GridBagConstraints gbConstraints  = new GridBagConstraints();
-	
+	private JTextField nbIterationsMax = new JTextField();
+	private static JLabel nbIterationsFaites = new JLabel(""+Grid.nbIterations);
 	private Cell[][] cells;
 	private Grid grid;
 	private JComboBox cbLoad;
-	private JButton btnReset, btnStart, btnQuit;
+	private static JButton btnReset, btnStart, btnQuit;
 	private JSlider slider;
 	private JLabel lblSpeed;
-
 	/**
 	 * Constructor
 	 */
@@ -35,20 +35,22 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		JPanel panel_speedcontrol = initSpeedControl();
 		JPanel panel_openmodel = initOpenModel();
 		JPanel panel_cells = initCells(rows);
+		JPanel panel_labels = initLabels();
 		JPanel panel_boutons = initButtons();
 
 		setLayout(new BorderLayout());
-		//création du panel gauche
+		//création du panel droite
 		JPanel panel_gauche = new JPanel();
 		panel_gauche.setLayout(new BorderLayout());
-		panel_gauche.add(panel_speedcontrol,BorderLayout.NORTH);
-		panel_gauche.add(panel_cells,BorderLayout.SOUTH);
+		panel_gauche.add(panel_openmodel,BorderLayout.NORTH);
+		panel_gauche.add(panel_labels,BorderLayout.CENTER);
+		panel_gauche.add(panel_boutons,BorderLayout.SOUTH);
 
-		//création du panel droite
+		//création du panel gauche
 		JPanel panel_droite = new JPanel();
 		panel_droite.setLayout(new BorderLayout());
-		panel_droite.add(panel_openmodel,BorderLayout.NORTH);
-		panel_droite.add(panel_boutons,BorderLayout.SOUTH);
+		panel_droite.add(panel_speedcontrol,BorderLayout.NORTH);
+		panel_droite.add(panel_cells,BorderLayout.SOUTH);
 
 		//ajout des deux panel gauche et droite dans le jframe
 		add(panel_gauche,BorderLayout.WEST);
@@ -137,6 +139,23 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	}
 
 	/**
+	 * Builds the bottom menu bar
+	 */
+	private JPanel initLabels() {
+		JPanel pan = new JPanel();
+		pan.setBorder(BorderFactory.createTitledBorder("Configuration"));
+		pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
+
+
+		nbIterationsFaites.setText("Nombre d'itérations : 0");
+		pan.add(nbIterationsFaites);
+		nbIterationsMax.setText("20");
+		pan.add(nbIterationsMax);
+
+		return pan;
+	}
+
+	/**
 	 * Builds the cells display
 	 */
 	private JPanel initCells(int cell_rows) {
@@ -173,6 +192,12 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 				cells[i][j].display();
 			}
 		}
+		//reset nbIterations + nbMaxIterations
+		nbIterationsFaites.setText("Nombre d'itérations : 0");
+		nbIterationsMax.setText("0");
+		Grid.nbIterations = 0;
+		Grid.nbIterationsMax = 0;
+		Grid.IterationMaxAtteint = 0;
 	}
 
 	@Override
@@ -181,7 +206,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		if (obj == btnStart) {
 			if (btnStart.getText().equals("Start")) {
 				btnStart.setText("Stop");
-				grid.resume();
+				grid.resume(nbIterationsMax.getText());
 			} else {
 				btnStart.setText("Start");
 				grid.pause();
@@ -202,6 +227,24 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	public void stateChanged(ChangeEvent ce) {
 		grid.setSpeed(slider.getValue());
 		lblSpeed.setText(slider.getValue()+ "ms");
+	}
+
+	public static void setBtnStart(String text)
+	{
+		switch (text) {
+			case "Start":
+				btnStart.setText("Start");
+				break;
+			case "Stop":
+				btnStart.setText("Stop");
+			default:
+				btnStart.setText("Start");
+		}
+	}
+
+	public static void showIterationsInLabel(String text)
+	{
+		nbIterationsFaites.setText("Nombre d'itérations : "+text);
 	}
 
 }

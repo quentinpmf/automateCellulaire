@@ -8,6 +8,7 @@ public class PatternFactory {
 
     /** SmallExploder pattern */
     private final String[] smallExploder = new String[]{
+            "....................................",
             "..................O.................",
             ".................OOO................",
             ".................O.O................",

@@ -5,16 +5,26 @@ import java.awt.*;
  */
 public class Rule {
 
-    private Color initialCellState;
+    private int initialCellState;
+    private int nextCellState;
     private int aliveNeighbors;
     private String operator;
-    private Color nextCellState;
 
-    public Color getInitialCellState() {
+    public Rule(int initialCellState, int nextCellState, int aliveNeighbors, String operator) {
+        this.initialCellState = initialCellState;
+        this.nextCellState = nextCellState;
+        this.aliveNeighbors = aliveNeighbors;
+        this.operator = operator;
+    }
+
+
+
+
+    public int getInitialCellState() {
         return initialCellState;
     }
 
-    public void setInitialCellState(Color initialCellState) {
+    public void setInitialCellState(int initialCellState) {
         this.initialCellState = initialCellState;
     }
 
@@ -34,18 +44,11 @@ public class Rule {
         this.operator = operator;
     }
 
-    public Color getNextCellState() {
+    public int getNextCellState() {
         return nextCellState;
     }
 
-    public void setNextCellState(Color nextCellState) {
-        this.nextCellState = nextCellState;
-    }
-
-    public Rule(Color initialCellState, String sign, int aliveNeighbors, Color nextCellState){
-        this.initialCellState = initialCellState;
-        this.operator = sign;
-        this.aliveNeighbors = aliveNeighbors;
+    public void setNextCellState(int nextCellState) {
         this.nextCellState = nextCellState;
     }
 }

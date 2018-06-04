@@ -10,19 +10,15 @@ import javax.swing.SwingUtilities;
 
 public class Cell extends JPanel implements MouseListener{
 	private ArrayList<Cell> neighbors = new ArrayList<Cell>();
-	private boolean alive;
-	private boolean nextAlive;
-	private Color currentColor;
+	private int alive;
+	private int nextAlive;
+	private int currentColor;
 
 	public Cell() {
 		setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		setBackground(Color.WHITE);
 		addMouseListener(this);
 	}
-	
-	///////////////////////////
-	//Début Méthodes à coder //
-	///////////////////////////
 	
 	public void addNeighboor(Cell c) {
 		neighbors.add(c);
@@ -40,7 +36,33 @@ public class Cell extends JPanel implements MouseListener{
 	public void nextState() {
 		int aliveNeighbors = aliveNeighborsCount();
 
+        for (Rule item: MainGUI.rules) {
+			if (item.initialState) {
+                switch (item.operator) {
+                    case "<":
+                        if (aliveNeighbors < item.aliveNeighbors)
+                            changeState(item.nextCellState);
+                        break;
+                    case ">":
+                        setBackground(Color.white);
+                        break;
+                    case "=":
+                        setBackground(Color.white);
+                        break;
+                    case "droite":
+                        setBackground(Color.white);
+                        break;
+                    case "gauche":
+                        setBackground(Color.white);
+                        break;
+                }
+				if (aliveNeighbors < 2 || aliveNeighbors > 3)
+					die();
 
+			}
+        }
+
+		/*
 		if (isAlive()) {
 			if (aliveNeighbors < 2 || aliveNeighbors > 3)
 				die();
@@ -50,31 +72,47 @@ public class Cell extends JPanel implements MouseListener{
 				live();
 			}
 		}
+		*/
 	}
 
 	public void die() {
-		nextAlive = false;
+		nextAlive = 0;
 	}
 
 	public void live() {
-		nextAlive = true;
+		nextAlive = 1;
 	}
 
 	public boolean isAlive() {
 		return alive;
 	}
-	
-	/////////////////////////
-	//FIN Méthodes à coder //
-	/////////////////////////
 
+    /**
+     * Display next state of cell
+     */
 	public void display() {
-		alive = nextAlive;
-		if (nextAlive) {
-			setBackground(Color.black);
-		} else {
-			setBackground(Color.white);
+		if(nextAlive >= 1){
+			alive = true;
 		}
+		switch (nextAlive) {
+            case 0:
+                setBackground(Color.white);
+                break;
+            case 1:
+                setBackground(Color.black);
+                break;
+            case 2:
+                setBackground(Color.red);
+                break;
+            case 3:
+                setBackground(Color.green);
+                break;
+            case 4:
+                setBackground(Color.grey);
+                break;
+            default:
+                break;
+        }
 	}
 	
 	@Override
@@ -84,12 +122,9 @@ public class Cell extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
-		//si cellule déja cliquée alors on la déclique
 		if (isAlive()) {
-				die();
-		}
-		else {
+		    die();
+		} else {
 			live();
 		}
 		display();
@@ -98,7 +133,6 @@ public class Cell extends JPanel implements MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if ( SwingUtilities.isLeftMouseButton (e) ){
-
 			live();
 			display();
 		}

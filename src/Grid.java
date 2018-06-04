@@ -18,12 +18,11 @@ public class Grid implements Runnable{
 	public void setRunning(boolean running) {
 		this.running = running;
 	}
-	
-	///////////////////////////
-	//Début Méthode à coder  //
-	///////////////////////////
 
-
+	/**
+	 * Intialize neighbors of a cell in the grid
+	 * @param rows
+	 */
 	private void initNeighbors(int rows) {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < rows; j++) {
@@ -39,10 +38,6 @@ public class Grid implements Runnable{
 			}
 		}
 	}
-	
-	///////////////////////////
-	//Fin Méthode à coder    //
-	///////////////////////////
 
 	@Override
 	public void run() {

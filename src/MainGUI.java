@@ -12,6 +12,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	private GridBagConstraints gbConstraints  = new GridBagConstraints();
 	
 	private Cell[][] cells;
+    private static ArrayList<Rule> rules = new ArrayList<Rule>();
 	private Grid grid;
 	private JComboBox cbLoad;
 	private JButton btnReset, btnStart, btnQuit;
@@ -54,12 +55,14 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		add(panel_gauche,BorderLayout.WEST);
 		add(panel_droite,BorderLayout.EAST);
 
-		pack(); //sizes the frame so that all its contents are at or above their preferred sizes
+        //sizes the frame so that all its contents are at or above their preferred sizes
+		pack();
 
+        //GameOfLife rules
+		rules.add(new Rule(1,0,"-",2));
+        rules.add(new Rule(1,0,"+",3));
+        rules.add(new Rule(0,1,"=",3));
 
-		new Rule(Color.black,"-",2,Color.white);
-		new Rule(Color.black,"+",3,Color.white);
-		new Rule(Color.white,"=",3,Color.black);
 
 
 		this.grid = new Grid(cells, rows);

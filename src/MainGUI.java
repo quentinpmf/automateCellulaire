@@ -24,52 +24,52 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	public MainGUI() {
 
 		JPanel dialogBox = new JPanel();
-		int rows = Integer.parseInt(JOptionPane.showInputDialog(dialogBox,"Number of rows ?"));
+		int rows = Integer.parseInt(JOptionPane.showInputDialog(dialogBox,"Nombre de lignes ? [minimum 50]"));
+		if(rows >= 50){
+			setTitle("Cellular Automaton");
+			setDefaultCloseOperation(EXIT_ON_CLOSE);
+			setLocationRelativeTo(null);
+			setResizable(false);
+			setLayout(gbTrace);
 
-		setTitle("Cellular Automaton");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		setResizable(false);
-		setLayout(gbTrace);
+			JPanel panel_speedcontrol = initSpeedControl();
+			JPanel panel_openmodel = initOpenModel();
+			JPanel panel_cells = initCells(rows);
+			JPanel panel_labels = initLabels();
+			JPanel panel_boutons = initButtons();
 
-		JPanel panel_speedcontrol = initSpeedControl();
-		JPanel panel_openmodel = initOpenModel();
-		JPanel panel_cells = initCells(rows);
-		JPanel panel_labels = initLabels();
-		JPanel panel_boutons = initButtons();
+			setLayout(new BorderLayout());
+			//création du panel droite
+			JPanel panel_gauche = new JPanel();
+			panel_gauche.setLayout(new BorderLayout());
+			panel_gauche.add(panel_openmodel,BorderLayout.NORTH);
+			panel_gauche.add(panel_labels,BorderLayout.CENTER);
+			panel_gauche.add(panel_boutons,BorderLayout.SOUTH);
 
-		setLayout(new BorderLayout());
-		//création du panel droite
-		JPanel panel_gauche = new JPanel();
-		panel_gauche.setLayout(new BorderLayout());
-		panel_gauche.add(panel_openmodel,BorderLayout.NORTH);
-		panel_gauche.add(panel_labels,BorderLayout.CENTER);
-		panel_gauche.add(panel_boutons,BorderLayout.SOUTH);
+			//création du panel gauche
+			JPanel panel_droite = new JPanel();
+			panel_droite.setLayout(new BorderLayout());
+			panel_droite.add(panel_speedcontrol,BorderLayout.NORTH);
+			panel_droite.add(panel_cells,BorderLayout.SOUTH);
 
-		//création du panel gauche
-		JPanel panel_droite = new JPanel();
-		panel_droite.setLayout(new BorderLayout());
-		panel_droite.add(panel_speedcontrol,BorderLayout.NORTH);
-		panel_droite.add(panel_cells,BorderLayout.SOUTH);
+			//ajout des deux panel gauche et droite dans le jframe
+			add(panel_gauche,BorderLayout.WEST);
+			add(panel_droite,BorderLayout.EAST);
 
-		//ajout des deux panel gauche et droite dans le jframe
-		add(panel_gauche,BorderLayout.WEST);
-		add(panel_droite,BorderLayout.EAST);
-
-		pack(); //sizes the frame so that all its contents are at or above their preferred sizes
-
-
-		new Rule(Color.black,"-",2,Color.white);
-		new Rule(Color.black,"+",3,Color.white);
-		new Rule(Color.white,"=",3,Color.black);
+			pack(); //sizes the frame so that all its contents are at or above their preferred sizes
 
 
-		this.grid = new Grid(cells, rows);
-		grid.setSpeed(50);
-		slider.setValue(50);
-		setVisible(true);
-		new Thread(grid).start();
+			new Rule(Color.black,"-",2,Color.white);
+			new Rule(Color.black,"+",3,Color.white);
+			new Rule(Color.white,"=",3,Color.black);
 
+
+			this.grid = new Grid(cells, rows);
+			grid.setSpeed(50);
+			slider.setValue(50);
+			setVisible(true);
+			new Thread(grid).start();
+		}
 	}
 	
 	/**

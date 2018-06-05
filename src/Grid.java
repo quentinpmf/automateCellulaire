@@ -1,7 +1,3 @@
-import sun.applet.Main;
-
-import javax.swing.*;
-
 public class Grid implements Runnable{
 
 	private Cell[][] cells;

@@ -14,8 +14,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	private static JLabel nbIterationsFaites = new JLabel(""+Grid.nbIterations);
 	private Cell[][] cells;
 	private Grid grid;
-	private JComboBox cbLoad;
-	private static JButton btnReset, btnStart, btnQuit;
+	private JComboBox cbLoad, cbRules;
+	private static JButton btnReset, btnStart, btnAppliquer, btnQuit;
 	private JSlider slider;
 	private JLabel lblSpeed;
 	/**
@@ -35,7 +35,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 			JPanel panel_speedcontrol = initSpeedControl();
 			JPanel panel_openmodel = initOpenModel();
 			JPanel panel_cells = initCells(rows);
-			JPanel panel_labels = initLabels();
+			JPanel panel_config = initConfigurationBlock();
 			JPanel panel_boutons = initButtons();
 
 			setLayout(new BorderLayout());
@@ -43,7 +43,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 			JPanel panel_gauche = new JPanel();
 			panel_gauche.setLayout(new BorderLayout());
 			panel_gauche.add(panel_openmodel,BorderLayout.NORTH);
-			panel_gauche.add(panel_labels,BorderLayout.CENTER);
+			panel_gauche.add(panel_config,BorderLayout.CENTER);
 			panel_gauche.add(panel_boutons,BorderLayout.SOUTH);
 
 			//création du panel gauche
@@ -141,16 +141,53 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	/**
 	 * Builds the bottom menu bar
 	 */
-	private JPanel initLabels() {
+	private JPanel initConfigurationBlock() {
 		JPanel pan = new JPanel();
 		pan.setBorder(BorderFactory.createTitledBorder("Configuration"));
 		pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
 
+		JPanel pan_iterations = new JPanel();
+		pan_iterations.setBorder(BorderFactory.createTitledBorder("Itérations"));
+		pan_iterations.setLayout(new BoxLayout(pan_iterations, BoxLayout.Y_AXIS));
 
 		nbIterationsFaites.setText("Nombre d'itérations : 0");
-		pan.add(nbIterationsFaites);
+		pan_iterations.add(nbIterationsFaites);
 		nbIterationsMax.setText("20");
-		pan.add(nbIterationsMax);
+		pan_iterations.add(nbIterationsMax);
+
+		JPanel pan_rules = new JPanel();
+		pan_rules.setBorder(BorderFactory.createTitledBorder("Règles"));
+		pan_rules.setLayout(new BoxLayout(pan_rules, BoxLayout.Y_AXIS));
+
+		btnStart = new JButton("Créer");
+		btnStart.addActionListener(this);
+		btnAppliquer = new JButton("Appliquer");
+		btnAppliquer.addActionListener(this);
+		//au clic sur le bouton créer : ouvrir une nouvelle popup de création de règles
+
+		String[] strPattern = new String[]{"-- Choisir --","Règle 1","Règle 2","Règle 3","Règle 4", "Règle 5"};
+		cbRules = new JComboBox(strPattern);
+		cbRules.addActionListener(this);
+
+		pan_rules.add(Box.createVerticalBox());
+		pan_rules.add(btnStart);
+
+		pan_rules.add(Box.createHorizontalStrut(5));
+
+		JPanel wrapper = new JPanel();
+		wrapper.add( cbRules );
+		pan_rules.add( wrapper );
+
+		pan_rules.add(Box.createHorizontalStrut(5));
+		pan_rules.add(btnAppliquer);
+
+		pan.add(pan_iterations);
+		pan.add(pan_rules);
+
+		setContentPane(pan_rules);
+		pack();
+		setLocationByPlatform(true);
+		setVisible(true);
 
 		return pan;
 	}

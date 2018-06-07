@@ -112,7 +112,7 @@ public class Grid implements Runnable{
 			setNbIterationsMax((IterationMaxAtteint*intNbIterationsMax)+intNbIterationsMax);
 		}
 		else {
-			setNbIterationsMax(999);
+			setNbIterationsMax(5000);
 		}
 		running = true;
 	}

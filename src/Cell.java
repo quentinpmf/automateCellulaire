@@ -12,11 +12,32 @@ public class Cell extends JPanel implements MouseListener {
     private ArrayList<Cell> neighbors = new ArrayList<Cell>();
     private int state;
     private int nextState = 0;
+    private int xavier;
 
-    public Cell() {
+    public int getXavier() {
+        return xavier;
+    }
+
+    public void setXavier(int xavier) {
+        this.xavier = xavier;
+    }
+
+    public int getYvan() {
+        return yvan;
+    }
+
+    public void setYvan(int yvan) {
+        this.yvan = yvan;
+    }
+
+    private int yvan;
+
+    public Cell(int x, int y) {
         setBorder(BorderFactory.createLineBorder(Color.lightGray));
         setBackground(Color.WHITE);
         addMouseListener(this);
+        setXavier(x);
+        setYvan(y);
     }
 
     public void addNeighbor(Cell c) {
@@ -30,9 +51,8 @@ public class Cell extends JPanel implements MouseListener {
     public int aliveNeighborsCount() {
         int count = 0;
         for (Cell c : getNeighbors()) {
-            if (c.isAlive()) {
-                count++;
-            }
+            System.out.println("I am cell ["+c.getXavier()+","+c.getYvan()+"] my state is "+c.getState());
+            if(c.getState() >= 1) count++;
         }
         return count;
     }
@@ -54,81 +74,79 @@ public class Cell extends JPanel implements MouseListener {
     }
 
     public void nextState() {
+        int aliveNbCount = aliveNeighborsCount();
+        System.out.println("Have ["+neighbors.size()+"] neighbors and ["+aliveNbCount+"] are alive");
         for (Rule item : MainGUI.rules) {
             if (item.getInitialCellState() == getState()) {
                 switch (item.getInitialCellState()) {
                     case 0:
                         System.out.println("Is dead");
-                        stateCondition(item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
+                        stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(),aliveNbCount);
                         break;
                     case 1:
                         System.out.println("Is alive");
-                        stateCondition(item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
+                        stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(),aliveNbCount);
                         break;
                 }
             }
         }
     }
 
-    public void stateCondition(String operator, int requiredNeighborsToChange, int nextCellState) {
+    public void stateCondition(String operator, int requiredNeighborsToChange, int nextCellState,int aliveNbCount) {
         if (operator == "=") {
             System.out.println("my sign is "+operator);
-            if (aliveNeighborsCount() == requiredNeighborsToChange) {
+            if (aliveNbCount == requiredNeighborsToChange) {
                 setNextState(nextCellState);
-                System.out.println("And has exactly "+aliveNeighborsCount()+" just like the rule wants "+requiredNeighborsToChange+" so its next state will be "+nextCellState);
+                System.out.println("And has exactly "+aliveNbCount+" just like the rule wants "+requiredNeighborsToChange+" so its next state will be "+nextCellState+":"+getNextState());
             }else{
-                System.out.println("Damn I have "+aliveNeighborsCount()+" I should have "+requiredNeighborsToChange+" so its shit");
+                System.out.println("Damn I have "+aliveNbCount+" I should have "+requiredNeighborsToChange+" so its shit");
             }
         } else if (operator == "<") {
             System.out.println("my sign is "+operator);
-            if (aliveNeighborsCount() < requiredNeighborsToChange) {
+            if (aliveNbCount < requiredNeighborsToChange) {
                 setNextState(nextCellState);
-                System.out.println("And has less than "+aliveNeighborsCount()+" just like the rule wants "+requiredNeighborsToChange+" so its next state will be "+nextCellState);
+                System.out.println("And has less than "+aliveNbCount+" just like the rule wants "+requiredNeighborsToChange+" so its next state will be "+nextCellState+":"+getNextState());
             }else{
-                System.out.println("Damn I have "+aliveNeighborsCount()+" I should have "+requiredNeighborsToChange+" so its shit");
+                System.out.println("Damn I have "+aliveNbCount+" I should have "+requiredNeighborsToChange+" so its shit");
             }
         } else if (operator == ">") {
             System.out.println("my sign is "+operator);
-            if (aliveNeighborsCount() > requiredNeighborsToChange) {
+            if (aliveNbCount > requiredNeighborsToChange) {
                 setNextState(nextCellState);
-                System.out.println("And has more than "+aliveNeighborsCount()+" just like the rule wants "+requiredNeighborsToChange+" so its next state will be "+nextCellState);
+                System.out.println("And has more than "+aliveNbCount+" just like the rule wants "+requiredNeighborsToChange+" so its next state will be "+nextCellState+":"+getNextState());
             }else{
-                System.out.println("Damn I have "+aliveNeighborsCount()+" I should have "+requiredNeighborsToChange+" so its shit");
+                System.out.println("Damn I have "+aliveNbCount+" I should have "+requiredNeighborsToChange+" so its shit");
             }
         }
     }
 
     public boolean isAlive() {
-        if (getState() != 0)
+        if (getState() > 0){
+            System.out.println("Currently alive");
             return true;
-        return false;
-    }
-
-    /**
-     * Display next state of cell
-     */
-    public void display() {
-        setState(getNextState());
-        display(getNextState());
+        }else {
+            System.out.println("Currently dead");
+            return false;
+        }
     }
 
     /**
      * Display next state of cell
      */
     public void display(int state) {
+        System.out.println("State in display is : "+state);
         switch (state) {
             case 0:
                 setBackground(Color.white);
-                setState(getNextState());
                 break;
             case 1:
                 setBackground(Color.black);
-                setState(getNextState());
                 break;
             default:
                 setBackground(Color.pink);
                 break;
         }
+        //setState(getNextState());
     }
 
     @Override
@@ -149,7 +167,8 @@ public class Cell extends JPanel implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
-            setState(1);
+            this.setState(1);
+            System.out.println("I am cell ["+getXavier()+","+getYvan()+"] my state is "+getState());
             display(getState());
         }
     }

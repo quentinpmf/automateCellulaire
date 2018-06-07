@@ -145,7 +145,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	}
 
 	/**
-	 * Builds the cells display
+	 * Construit les cellules
 	 */
 	private JPanel initCells(int cell_rows) {
 		JPanel pan = new JPanel();
@@ -154,7 +154,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		cells = new Cell[cell_rows][cell_rows];
 		for (int i = 0; i < cell_rows; i++) {
 			for (int j = 0; j < cell_rows; j++) {
-				Cell c = new Cell();
+				Cell c = new Cell(i,j);
 				cells[i][j] = c;
 				pan.add(c);
 			}
@@ -178,7 +178,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		for (int i = 0; i < Grid.rows; i++) {
 			for (int j = 0; j < Grid.rows; j++) {
 				cells[i][j].setState(0);
-				cells[i][j].display();
+				cells[i][j].display(cells[i][j].getState());
 			}
 		}
 	}

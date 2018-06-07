@@ -36,6 +36,7 @@ public class Grid implements Runnable{
                             continue;
                         }
                         if ((k != i || l != j) ) {
+                            System.out.println("Add neighbor ["+j+"]"+"["+l+"]"+" for cell ["+i+"]"+"["+j+"]");
                             c.addNeighbor(cells[k][l]);
                         }
                     }
@@ -59,17 +60,19 @@ public class Grid implements Runnable{
 			if (running) {
 				for (int i = 0; i < this.rows; i++) {
 					for (int j = 0; j < this.rows; j++) {
-                        System.out.println("Cell "+i+","+j+" : ");
+                        System.out.println("**************************");
+                        System.out.println("Cell ["+i+","+j+"] : ");
 						cells[i][j].nextState();
 					}
 				}
 				for (int i = 0; i < this.rows; i++) {
 					for (int j = 0; j < this.rows; j++) {
-						cells[i][j].display();
+						cells[i][j].display(cells[i][j].getNextState());
 					}
 				}
 
-
+                running = false;
+                System.out.println("--------------------------------------");
 			}
 		}
 	}

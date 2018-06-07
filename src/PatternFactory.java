@@ -70,7 +70,7 @@ public class PatternFactory {
                 }  else {
                     cells[i+offsetX][j+offsetY].setState(0);
                 }
-                cells[i+offsetX][j+offsetY].display();
+                cells[i+offsetX][j+offsetY].display(cells[i+offsetX][j+offsetY].getState());
             }
         }
         return cells;

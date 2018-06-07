@@ -9,15 +9,16 @@ import javax.swing.event.ChangeListener;
 public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 
 	private GridBagLayout gbTrace = new GridBagLayout();
-	private GridBagConstraints gbConstraints  = new GridBagConstraints();
 	private JTextField nbIterationsMax = new JTextField();
 	private static JLabel nbIterationsFaites = new JLabel(""+Grid.nbIterations);
+	private static JLabel labelNbIterationsMax = new JLabel();
 	private Cell[][] cells;
 	private Grid grid;
 	private JComboBox cbLoad, cbRules;
-	private static JButton btnReset, btnStart, btnAppliquer, btnQuit;
+	private static JButton btnReset, btnStart, btnAppliquer, btnQuit, btnCreate, btnPopupCreate;
 	private JSlider slider;
-	private JLabel lblSpeed;
+	private JLabel lblSpeed, lblRuleName;
+	private JTextField RuleName = new JTextField();
 	/**
 	 * Constructor
 	 */
@@ -106,7 +107,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 
 		pan.add(Box.createHorizontalStrut(5));
 
-		String[] strPattern = new String[]{"Small exploder","spaceShip","Ten Cell Row","Gosper glider gun", "Glider"};
+		String[] strPattern = new String[]{"-- Choisir --","Small exploder","spaceShip","Ten Cell Row","Gosper glider gun", "Glider","Test"};
 		cbLoad = new JComboBox(strPattern);
 		cbLoad.addActionListener(this);
 		pan.add(cbLoad);
@@ -146,48 +147,111 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		pan.setBorder(BorderFactory.createTitledBorder("Configuration"));
 		pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
 
-		JPanel pan_iterations = new JPanel();
+		JPanel pan_iterations = new JPanel(new BorderLayout());
+
 		pan_iterations.setBorder(BorderFactory.createTitledBorder("Itérations"));
 		pan_iterations.setLayout(new BoxLayout(pan_iterations, BoxLayout.Y_AXIS));
 
+		pan_iterations.add(Box.createHorizontalGlue());
 		nbIterationsFaites.setText("Nombre d'itérations : 0");
 		pan_iterations.add(nbIterationsFaites);
-		nbIterationsMax.setText("20");
-		pan_iterations.add(nbIterationsMax);
+		pan_iterations.add(Box.createHorizontalStrut(5));
 
-		JPanel pan_rules = new JPanel();
+		labelNbIterationsMax.setText("Nombre d'itérations max :");
+		pan_iterations.add(labelNbIterationsMax,BorderLayout.WEST);
+		pan_iterations.add(Box.createHorizontalStrut(5));
+
+		nbIterationsMax.setText("20");
+		nbIterationsMax.setPreferredSize(new Dimension(150,20));
+		nbIterationsMax.setMaximumSize(new Dimension(150,20));
+		pan_iterations.add(nbIterationsMax,BorderLayout.CENTER);
+		pan_iterations.add(Box.createHorizontalStrut(5));
+
+		JPanel pan_rules = new JPanel(new BorderLayout());
 		pan_rules.setBorder(BorderFactory.createTitledBorder("Règles"));
 		pan_rules.setLayout(new BoxLayout(pan_rules, BoxLayout.Y_AXIS));
+		pan_rules.setPreferredSize(new Dimension(150,20));
+		pan_rules.setMaximumSize(new Dimension(150,20));
 
-		btnStart = new JButton("Créer");
-		btnStart.addActionListener(this);
+		btnCreate = new JButton("Créer");
+		btnCreate.addActionListener(this);
+
+		JFrame fenetre_creation_regles = new JFrame();
+		//titre pour notre fenetre
+		fenetre_creation_regles.setTitle("Création d'une règle");
+		//taille : 400 pixels de large et 100 pixels de haut
+		fenetre_creation_regles.setSize(300,200);
+		//positionner au centre
+		fenetre_creation_regles.setLocationRelativeTo(null);
+
+		JPanel pan_fenetre_rules = new JPanel(new BorderLayout());
+		pan_fenetre_rules.setBorder(BorderFactory.createTitledBorder("Créer une règle"));
+		pan_fenetre_rules.setLayout(new BoxLayout(pan_fenetre_rules, BoxLayout.Y_AXIS));
+
+		lblRuleName = new JLabel("Nom de la règle");
+		pan_fenetre_rules.add(lblRuleName);
+		RuleName.setPreferredSize(new Dimension(250,20));
+		RuleName.setMaximumSize(new Dimension(250,20));
+		pan_fenetre_rules.add(RuleName);
+
+		btnPopupCreate = new JButton("Créer");
+		btnPopupCreate.addActionListener(this);
+		pan_fenetre_rules.add(btnPopupCreate);
+		fenetre_creation_regles.add(pan_fenetre_rules);
+
+		String[] strPattern = new String[]{"-- Choisir --"};
+		cbRules = new JComboBox(strPattern);
+		cbRules.addActionListener(this);
+
+		//on ouvre la popup au click sur Créer
+		btnCreate.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//rendre visible
+				fenetre_creation_regles.setVisible(true);
+			}
+		});
+
+		//on ferme la popup au click sur Créer et on ajoute la règle
+		btnPopupCreate.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//ajout de la nouvelle regle dans le ComboBox
+				cbRules.addItem(RuleName.getText());
+				//selection de la nouvelle regle dans le ComboBox
+				cbRules.setSelectedIndex(cbRules.getItemCount()-1);
+				//cacher la popup
+				fenetre_creation_regles.setVisible(false);
+				//réinitialisation des paramètres
+				RuleName.setText("");
+			}
+		});
+
 		btnAppliquer = new JButton("Appliquer");
 		btnAppliquer.addActionListener(this);
 		//au clic sur le bouton créer : ouvrir une nouvelle popup de création de règles
 
-		String[] strPattern = new String[]{"-- Choisir --","Règle 1","Règle 2","Règle 3","Règle 4", "Règle 5"};
-		cbRules = new JComboBox(strPattern);
-		cbRules.addActionListener(this);
+		pan_rules.add(Box.createHorizontalGlue());
+		pan_rules.add(Box.createHorizontalStrut(5));
+		JPanel wrapper1 = new JPanel();
+		wrapper1.add( btnCreate );
+		pan_rules.add( wrapper1 );
 
-		pan_rules.add(Box.createVerticalBox());
-		pan_rules.add(btnStart);
+		//select
+		pan_rules.add(Box.createHorizontalStrut(5));
+		JPanel wrapper2 = new JPanel();
+		wrapper2.add( cbRules );
+		pan_rules.add( wrapper2 );
 
 		pan_rules.add(Box.createHorizontalStrut(5));
+		JPanel wrapper3 = new JPanel();
+		wrapper3.add( btnAppliquer );
+		pan_rules.add( wrapper3 );
 
-		JPanel wrapper = new JPanel();
-		wrapper.add( cbRules );
-		pan_rules.add( wrapper );
-
-		pan_rules.add(Box.createHorizontalStrut(5));
-		pan_rules.add(btnAppliquer);
-
-		pan.add(pan_iterations);
-		pan.add(pan_rules);
-
-		setContentPane(pan_rules);
-		pack();
-		setLocationByPlatform(true);
-		setVisible(true);
+		setLayout(new BorderLayout());
+		pan.setLayout(new BorderLayout());
+		pan.add(pan_iterations,BorderLayout.NORTH);
+		pan.add(pan_rules,BorderLayout.CENTER);
 
 		return pan;
 	}

@@ -66,9 +66,9 @@ public class PatternFactory {
                     throw new IllegalArgumentException("Pattern can't be loaded, too big. Increase grid size !");
                 }
                 if (pattern[i].charAt(j) == 'O') {
-                    cells[i+offsetX][j+offsetY].live();
+                    cells[i+offsetX][j+offsetY].setState(1);
                 }  else {
-                    cells[i+offsetX][j+offsetY].die();
+                    cells[i+offsetX][j+offsetY].setState(0);
                 }
                 cells[i+offsetX][j+offsetY].display();
             }

@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -12,7 +13,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	private GridBagConstraints gbConstraints  = new GridBagConstraints();
 	
 	private Cell[][] cells;
-    private static ArrayList<Rule> rules = new ArrayList<Rule>();
+    public static ArrayList<Rule> rules = new ArrayList<Rule>();
 	private Grid grid;
 	private JComboBox cbLoad;
 	private JButton btnReset, btnStart, btnQuit;
@@ -59,9 +60,9 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		pack();
 
         //GameOfLife rules
-		rules.add(new Rule(1,0,"-",2));
-        rules.add(new Rule(1,0,"+",3));
-        rules.add(new Rule(0,1,"=",3));
+		rules.add(new Rule(0,1,"egal",3));
+		rules.add(new Rule(1,0,"<",2));
+        rules.add(new Rule(1,0,">",3));
 
 
 
@@ -172,7 +173,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	private void killAll() {
 		for (int i = 0; i < Grid.rows; i++) {
 			for (int j = 0; j < Grid.rows; j++) {
-				cells[i][j].die();
+				cells[i][j].setState(0);
 				cells[i][j].display();
 			}
 		}

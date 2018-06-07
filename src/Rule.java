@@ -10,7 +10,7 @@ public class Rule {
     private int aliveNeighbors;
     private String operator;
 
-    public Rule(int initialCellState, int nextCellState, int aliveNeighbors, String operator) {
+    public Rule(int initialCellState, int nextCellState, String operator, int aliveNeighbors) {
         this.initialCellState = initialCellState;
         this.nextCellState = nextCellState;
         this.aliveNeighbors = aliveNeighbors;

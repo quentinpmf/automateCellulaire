@@ -8,10 +8,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import static java.lang.System.exit;
-
 public class Cell extends JPanel implements MouseListener{
-    private ArrayList<Cell> neighboors = new ArrayList<Cell>();
+    private ArrayList<Cell> neighbors = new ArrayList<Cell>();
 	private int state;
 
     public Cell() {
@@ -19,23 +17,14 @@ public class Cell extends JPanel implements MouseListener{
 		setBackground(Color.WHITE);
 		addMouseListener(this);
 	}
-	
+
 	public void addNeighbor(Cell c) {
-        //System.out.println(c);
-		neighboors.add(c);
-        //System.out.println(neighboors);
+        this.neighbors.add(c);
 	}
 
 	public int aliveNeighborsCount() {
-        System.out.println(neighboors.size());
-        for(int i = 0; i < neighboors.size(); i++)
-        {
-            System.out.println("coucou");
-            System.out.println("donnée à l'indice " + i + " = " + neighboors.get(i));
-        }
         int count = 0;
-		for (Cell c : neighboors) {
-
+		for (Cell c : this.neighbors) {
 			if (c.isAlive()) {
                 count++;
             }
@@ -55,10 +44,8 @@ public class Cell extends JPanel implements MouseListener{
         int aliveNeighbors = aliveNeighborsCount();
         switch (operator) {
             case "egal":
-
-                System.out.println("IN "+itsNeighbors+" | AN "+aliveNeighbors);
                 if (aliveNeighbors == itsNeighbors) {
-
+                    System.out.println("IN "+itsNeighbors+" | AN "+aliveNeighbors);
                     System.out.println("Je passe par ici");
                     setState(nextCellState);
                 }

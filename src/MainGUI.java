@@ -60,11 +60,9 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		pack();
 
         //GameOfLife rules
-		rules.add(new Rule(0,1,"egal",3));
+		rules.add(new Rule(0,1,"=",3));
 		rules.add(new Rule(1,0,"<",2));
         rules.add(new Rule(1,0,">",3));
-
-
 
 		this.grid = new Grid(cells, rows);
 		grid.setSpeed(50);

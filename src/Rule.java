@@ -1,5 +1,3 @@
-import java.awt.*;
-
 /**
  * Manage rules
  */
@@ -7,6 +5,7 @@ public class Rule {
 
     private int initialCellState;
     private int nextCellState;
+    private int neighborsPositionsAndColors; // où 1er est en haut à gauche, 4eme en haut au milieu et 8eme en bas a droite
     private int aliveNeighbors;
     private String operator;
 
@@ -17,8 +16,13 @@ public class Rule {
         this.operator = operator;
     }
 
+    public int getNeighborsPositionsAndColors() {
+        return neighborsPositionsAndColors;
+    }
 
-
+    public void setNeighborsPositionsAndColors(int neighborsPositionsAndColors) {
+        this.neighborsPositionsAndColors = neighborsPositionsAndColors;
+    }
 
     public int getInitialCellState() {
         return initialCellState;

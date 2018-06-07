@@ -70,7 +70,6 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
         rules.add(new Rule(1,">",3,0));
         rules.add(new Rule(1,"<",2,0));
 
-
 		this.grid = new Grid(cells, rows);
 		grid.setSpeed(50);
 		slider.setValue(50);

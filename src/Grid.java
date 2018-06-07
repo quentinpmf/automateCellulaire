@@ -59,7 +59,7 @@ public class Grid implements Runnable{
 			if (running) {
 				for (int i = 0; i < this.rows; i++) {
 					for (int j = 0; j < this.rows; j++) {
-                        System.out.println("Cellule "+i+" : "+j);
+                        System.out.println("Cell "+i+","+j+" : ");
 						cells[i][j].nextState();
 					}
 				}

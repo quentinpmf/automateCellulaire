@@ -59,12 +59,17 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
         //sizes the frame so that all its contents are at or above their preferred sizes
 		pack();
 
-        //GameOfLife rules
-		rules.add(new Rule(0,0,"=",2));
-        rules.add(new Rule(1,1,"=",2));
-		rules.add(new Rule(1,0,"<",2));
-        rules.add(new Rule(1,0,">",3));
-        rules.add(new Rule(0,1,"=",3));
+        //JeuDeLaVie rules
+		//Si une cellule a exactement deux voisines vivantes, elle reste dans son état actuel à l’étape suivante.
+		rules.add(new Rule(0,"=",2,0));
+        rules.add(new Rule(1,"=",2,1));
+        //Si une cellule a exactement trois voisines vivantes, elle est vivante à l’étape suivante.
+        rules.add(new Rule(0,"=",3,1));
+        rules.add(new Rule(1,"=",3,1));
+        //Si une cellule a strictement moins de deux ou strictement plus de trois voisines vivantes, elle est morte à l’étape suivante.
+        rules.add(new Rule(1,">",3,0));
+        rules.add(new Rule(1,"<",2,0));
+
 
 		this.grid = new Grid(cells, rows);
 		grid.setSpeed(50);

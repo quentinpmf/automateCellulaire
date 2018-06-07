@@ -9,11 +9,11 @@ public class Rule {
     private int aliveNeighbors;
     private String operator;
 
-    public Rule(int initialCellState, int nextCellState, String operator, int aliveNeighbors) {
+    public Rule(int initialCellState, String operator, int aliveNeighbors, int nextCellState) {
         this.initialCellState = initialCellState;
         this.nextCellState = nextCellState;
-        this.aliveNeighbors = aliveNeighbors;
         this.operator = operator;
+        this.aliveNeighbors = aliveNeighbors;
     }
 
     public int getNeighborsPositionsAndColors() {

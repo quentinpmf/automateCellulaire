@@ -46,33 +46,6 @@ public class Cell extends JPanel implements MouseListener{
         this.state = etat;
     }
 
-	public void stateCondition(int aliveNeighbors, String operator, int itsNeighbors, int nextCellState){
-        if(nextCellState == -1)System.out.println("Whut?");
-        switch (operator) {
-            case "=":
-                if (aliveNeighbors == itsNeighbors) {
-                    setNextState(nextCellState);
-                    System.out.println("case = Requis "+itsNeighbors+" | AN "+aliveNeighbors +" "+getState()+" NextState->"+nextCellState);
-                }
-                break;
-            case "<":
-
-                if (aliveNeighbors < itsNeighbors) {
-                    setNextState(nextCellState);
-                    System.out.println("case <  Requis "+itsNeighbors+" | AN "+aliveNeighbors +" "+getState()+" NextState->"+nextCellState);
-                }
-                break;
-            case ">":
-
-                if (aliveNeighbors > itsNeighbors) {
-                    setNextState(nextCellState);
-                    System.out.println("case >  Requis "+itsNeighbors+" | AN "+aliveNeighbors+" "+getState()+" NextState->"+nextCellState);
-                }
-                break;
-            default :
-        }
-    }
-
     public int getNextState() {
         return nextState;
     }
@@ -81,18 +54,36 @@ public class Cell extends JPanel implements MouseListener{
         this.nextState = nextState;
     }
 
+	public void stateCondition(String operator, int requiredNeighborsToChange, int nextCellState){
+        switch (operator) {
+            case "=":
+                if (aliveNeighborsCount() == requiredNeighborsToChange) {
+                    setNextState(nextCellState);
+                }
+                break;
+            case "<":
+                if (aliveNeighborsCount() < requiredNeighborsToChange) {
+                    setNextState(nextCellState);
+                }
+                break;
+            case ">":
+                if (aliveNeighborsCount() > requiredNeighborsToChange) {
+                    setNextState(nextCellState);
+                }
+                break;
+        }
+    }
+
     public void nextState() {
-        int aliveNeighbors = aliveNeighborsCount();
         for (Rule item: MainGUI.rules) {
             if (item.getInitialCellState() == getState()) {
                 switch (item.getInitialCellState()) {
                     case 0:
-                        stateCondition(aliveNeighbors, item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
+                        stateCondition(item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
                         break;
                     case 1:
-                        stateCondition(aliveNeighbors, item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
+                        stateCondition(item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
                         break;
-
                 }
             }
         }
@@ -100,19 +91,16 @@ public class Cell extends JPanel implements MouseListener{
 	}
 
     public boolean isAlive() {
-		boolean alive;
-	    if(getState() != 0){
-			alive = true;
-		}else{
-			alive = false;
-		}
-		return alive;
+	    if(getState() != 0)
+		    return true;
+		return false;
 	}
 
     /**
      * Display next state of cell
      */
     public void display() {
+        setState(getNextState());
         display(getNextState());
     }
 
@@ -130,7 +118,6 @@ public class Cell extends JPanel implements MouseListener{
                 setState(getNextState());
                 break;
             default:
-                System.out.println("State > "+state);
                 setBackground(Color.pink);
                 break;
         }

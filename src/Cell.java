@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 public class Cell extends JPanel implements MouseListener{
     private ArrayList<Cell> neighbors = new ArrayList<Cell>();
 	private int state;
+	private int nextState = 0;
 
     public Cell() {
 		setBorder(BorderFactory.createLineBorder(Color.lightGray));
@@ -19,12 +20,17 @@ public class Cell extends JPanel implements MouseListener{
 	}
 
 	public void addNeighbor(Cell c) {
-        this.neighbors.add(c);
+        getNeighbors().add(c);
 	}
 
-	public int aliveNeighborsCount() {
+    public ArrayList<Cell> getNeighbors() {
+        return neighbors;
+    }
+
+    public int aliveNeighborsCount() {
+        System.out.println(getNeighbors());
         int count = 0;
-		for (Cell c : this.neighbors) {
+		for (Cell c : getNeighbors()) {
 			if (c.isAlive()) {
                 count++;
             }
@@ -40,55 +46,57 @@ public class Cell extends JPanel implements MouseListener{
         this.state = etat;
     }
 
-	public void stateCondition(String operator, int itsNeighbors, int nextCellState){
-        int aliveNeighbors = aliveNeighborsCount();
+	public void stateCondition(int aliveNeighbors, String operator, int itsNeighbors, int nextCellState){
+        if(nextCellState == -1)System.out.println("Whut?");
         switch (operator) {
-            case "egal":
+            case "=":
                 if (aliveNeighbors == itsNeighbors) {
-                    System.out.println("IN "+itsNeighbors+" | AN "+aliveNeighbors);
-                    System.out.println("Je passe par ici");
-                    setState(nextCellState);
+                    setNextState(nextCellState);
+                    System.out.println("case = Requis "+itsNeighbors+" | AN "+aliveNeighbors +" "+getState()+" NextState->"+nextCellState);
                 }
                 break;
             case "<":
+
                 if (aliveNeighbors < itsNeighbors) {
-                    setState(nextCellState);
+                    setNextState(nextCellState);
+                    System.out.println("case <  Requis "+itsNeighbors+" | AN "+aliveNeighbors +" "+getState()+" NextState->"+nextCellState);
                 }
                 break;
             case ">":
+
                 if (aliveNeighbors > itsNeighbors) {
-                    setState(nextCellState);
+                    setNextState(nextCellState);
+                    System.out.println("case >  Requis "+itsNeighbors+" | AN "+aliveNeighbors+" "+getState()+" NextState->"+nextCellState);
                 }
                 break;
             default :
-                System.out.println("I am "+operator);
         }
     }
-	
-	public void nextState() {
 
+    public int getNextState() {
+        return nextState;
+    }
+
+    public void setNextState(int nextState) {
+        this.nextState = nextState;
+    }
+
+    public void nextState() {
+        int aliveNeighbors = aliveNeighborsCount();
         for (Rule item: MainGUI.rules) {
-			switch (item.getInitialCellState()) {
-                case 0:
-                    stateCondition(item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
-                    //System.out.println("Init: "+item.getInitialCellState()+"/ OP: "+item.getOperator()+" / N: "+ item.getAliveNeighbors()+"/ Next: "+ item.getNextCellState()+"/ State: "+ getState());
-                    break;
-                case 1:
-                    stateCondition(item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
-                    //System.out.println("Init: "+item.getInitialCellState()+"/ OP: "+item.getOperator()+" / N: "+ item.getAliveNeighbors()+"/ Next: "+ item.getNextCellState()+"/ State: "+ getState());
-                    break;
-                case 2:
-                    stateCondition(item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
-                case 3:
-                    stateCondition(item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
-                    break;
-                case 4:
-                    stateCondition(item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
-                    break;
+            if (item.getInitialCellState() == getState()) {
+                switch (item.getInitialCellState()) {
+                    case 0:
+                        stateCondition(aliveNeighbors, item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
+                        break;
+                    case 1:
+                        stateCondition(aliveNeighbors, item.getOperator(), item.getAliveNeighbors(), item.getNextCellState());
+                        break;
 
-
-			}
+                }
+            }
         }
+
 	}
 
     public boolean isAlive() {
@@ -104,24 +112,26 @@ public class Cell extends JPanel implements MouseListener{
     /**
      * Display next state of cell
      */
-	public void display() {
+    public void display() {
+        display(getNextState());
+    }
+
+    /**
+     * Display next state of cell
+     */
+	public void display(int state) {
 		switch (state) {
             case 0:
                 setBackground(Color.white);
+                setState(getNextState());
                 break;
             case 1:
                 setBackground(Color.black);
-                break;
-            case 2:
-                setBackground(Color.red);
-                break;
-            case 3:
-                setBackground(Color.green);
-                break;
-            case 4:
-                setBackground(Color.gray);
+                setState(getNextState());
                 break;
             default:
+                System.out.println("State > "+state);
+                setBackground(Color.pink);
                 break;
         }
 	}
@@ -138,14 +148,14 @@ public class Cell extends JPanel implements MouseListener{
 		} else {
             setState(1);
 		}
-		display();
+		display(getState());
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if ( SwingUtilities.isLeftMouseButton (e) ){
             setState(1);
-			display();
+			display(getState());
 		}
 	}
 

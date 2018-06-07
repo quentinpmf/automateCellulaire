@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -11,10 +14,12 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	private GridBagLayout gbTrace = new GridBagLayout();
 	private JTextField nbIterationsMax = new JTextField();
 	private static JLabel nbIterationsFaites = new JLabel(""+Grid.nbIterations);
+	private static JLabel lblReglesChoisies = new JLabel("");
 	private static JLabel labelNbIterationsMax = new JLabel();
 	private Cell[][] cells;
+	private static ArrayList<String> reglesChoisies = new ArrayList<>();
 	private Grid grid;
-	private JComboBox cbLoad, cbRules;
+	private static JComboBox cbLoad, cbRules;
 	private static JButton btnReset, btnStart, btnAppliquer, btnQuit, btnCreate, btnPopupCreate;
 	private JSlider slider;
 	private JLabel lblSpeed, lblRuleName;
@@ -229,9 +234,50 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 
 		btnAppliquer = new JButton("Appliquer");
 		btnAppliquer.addActionListener(this);
+
+		//au clic sur appliquer, on ajoute la regle selectionner
+		btnAppliquer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//get selected item in combobox
+				Object ruleName = cbRules.getSelectedItem();
+				//if différent de la regle --Choisir--
+				if(ruleName != "-- Choisir --")
+				{
+					if(reglesChoisies.size() != 0)
+					{
+						boolean boolDejaPresent = false;
+						for(int i = 0; i < reglesChoisies.size() ; i++)
+						{
+							if(ruleName == reglesChoisies.get(i))
+							{
+								boolDejaPresent = true;
+								break;
+							}
+						}
+						if(!boolDejaPresent)
+						{
+							reglesChoisies.add(cbRules.getSelectedItem().toString());
+							setChosenRule(ruleName.toString());
+						}
+					}
+					else
+					{
+						reglesChoisies.add(cbRules.getSelectedItem().toString());
+						setChosenRule(ruleName.toString());
+					}
+				}
+
+			}
+		});
 		//au clic sur le bouton créer : ouvrir une nouvelle popup de création de règles
 
 		pan_rules.add(Box.createHorizontalGlue());
+
+		//regles choisies :
+		pan_rules.add(Box.createHorizontalStrut(5));
+		pan_rules.add(lblReglesChoisies);
+
 		pan_rules.add(Box.createHorizontalStrut(5));
 		JPanel wrapper1 = new JPanel();
 		wrapper1.add( btnCreate );
@@ -295,6 +341,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		}
 		//reset nbIterations + nbMaxIterations
 		nbIterationsFaites.setText("Nombre d'itérations : 0");
+        lblReglesChoisies.setText("");
+		reglesChoisies.clear();
 		nbIterationsMax.setText("0");
 		Grid.nbIterations = 0;
 		Grid.nbIterationsMax = 0;
@@ -343,9 +391,28 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		}
 	}
 
-	public static void showIterationsInLabel(String text)
-	{
-		nbIterationsFaites.setText("Nombre d'itérations : "+text);
-	}
+    public static void showIterationsInLabel(String text)
+    {
+        nbIterationsFaites.setText("Nombre d'itérations : "+text);
+    }
+
+    public static void setChosenRule(String text)
+    {
+    	String textBefore = lblReglesChoisies.getText();
+    	String intro = "Règle(s) choisie(s) :";
+
+    	//si contient 1 règle ou +
+    	if(textBefore.toLowerCase().contains(intro.toLowerCase()))
+		{
+			//on remplace le point par une virgule
+			textBefore = textBefore.replace('.',',');
+			lblReglesChoisies.setText(textBefore+" "+text+".");
+		}
+		else
+		{
+			//si contient aucune règle
+			lblReglesChoisies.setText(intro+" "+text+".");
+		}
+    }
 
 }

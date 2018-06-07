@@ -1,12 +1,9 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -25,9 +22,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	private JSlider slider;
 	private JLabel lblSpeed, lblRuleName;
 	private JTextField RuleName = new JTextField();
-	/**
-	 * Constructor
-	 */
+
+	//Constructeur
 	public MainGUI() {
 
 		JPanel dialogBox = new JPanel(new BorderLayout());
@@ -44,7 +40,6 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 			JPanel panel_haut = initPanelHaut();
 			JPanel panel_milieu = initPanelMilieu();
 			JPanel panel_bas = initPanelBas();
-			//JPanel panel_regles = initRulesPannel();
 
 			setLayout(new BorderLayout());
 			//création du panel gauche
@@ -82,9 +77,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		}
 	}
 
-	/**
-	 * Builds the slider bar
-	 */
+	//initialise la barre du controle de la vitesse d'animation
 	private JPanel initSpeedControl() {
 		JPanel pan = new JPanel(new BorderLayout());
 		pan.setBorder(BorderFactory.createTitledBorder("Vitesse d'animation"));
@@ -106,9 +99,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		return pan;
 	}
 
-	/**
-	 * Builds the cells display
-	 */
+	//initialise la grille avec toutes les cellules
 	private JPanel initCells(int cell_rows) {
 		JPanel pan = new JPanel(new BorderLayout());
 		pan.setBorder(BorderFactory.createTitledBorder("Grille"));
@@ -211,11 +202,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		panel_creer.setLayout(new BoxLayout(panel_creer, BoxLayout.Y_AXIS));
 
 		JFrame fenetre_creation_regles = new JFrame();
-		//titre pour notre fenetre
 		fenetre_creation_regles.setTitle("Création d'une règle");
-		//taille : 400 pixels de large et 100 pixels de haut
 		fenetre_creation_regles.setSize(300,200);
-		//positionner au centre
 		fenetre_creation_regles.setLocationRelativeTo(null);
 
 		JPanel panel_fenetre_rules = new JPanel(new BorderLayout());
@@ -354,9 +342,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		});
 	}
 
-	/**
-	 * Change state of every cells to dead
-	 */
+	//tue toutes les cellules
 	private void killAll() {
 		for (int i = 0; i < Grid.rows; i++) {
 			for (int j = 0; j < Grid.rows; j++) {
@@ -402,6 +388,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		lblSpeed.setText(slider.getValue()+ "ms");
 	}
 
+	//initialisation du Bouton Démarrer/Arrêter (Actions)
 	public static void setBtnStart(String text)
 	{
 		switch (text) {
@@ -414,11 +401,14 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 				btnStart.setText("Démarrer");
 		}
 	}
+
+    //initialisation des itérations dans un champ texte
     public static void showIterationsInLabel(String text)
     {
         nbIterationsFaites.setText(text);
     }
 
+    //initialisation des règles choisies avec libellés
     public static void setChosenRule(String text)
     {
     	String textBefore = lblReglesChoisies.getText();

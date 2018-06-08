@@ -9,180 +9,142 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class Cell extends JPanel implements MouseListener {
-    private ArrayList<Cell> neighbors = new ArrayList<Cell>();
-    private int state;
-    private int nextState = 0;
-    private int xavier;
+	private ArrayList<Cell> neighbors = new ArrayList<Cell>();
+	private int state;
+	private int nextState = 0;
 
-    public int getXavier() {
-        return xavier;
-    }
+	public Cell() {
+		setBorder(BorderFactory.createLineBorder(Color.lightGray));
+		setBackground(Color.WHITE);
+		addMouseListener(this);
+	}
 
-    public void setXavier(int xavier) {
-        this.xavier = xavier;
-    }
+	public void addNeighbor(Cell c) {
+		getNeighbors().add(c);
+	}
 
-    public int getYvan() {
-        return yvan;
-    }
+	public ArrayList<Cell> getNeighbors() {
+		return neighbors;
+	}
 
-    public void setYvan(int yvan) {
-        this.yvan = yvan;
-    }
+	public int aliveNeighborsCount() {
+		int count = 0;
+		for (Cell c : getNeighbors()) {
+			if(c.getState() >= 1) count++;
+		}
+		return count;
+	}
 
-    private int yvan;
+	public int getState() {
+		return state;
+	}
 
-    public Cell(int x, int y) {
-        setBorder(BorderFactory.createLineBorder(Color.lightGray));
-        setBackground(Color.WHITE);
-        addMouseListener(this);
-        setXavier(x);
-        setYvan(y);
-    }
+	public void setState(int etat) {
+		this.state = etat;
+	}
 
-    public void addNeighbor(Cell c) {
-        getNeighbors().add(c);
-    }
+	public int getNextState() {
+		return nextState;
+	}
 
-    public ArrayList<Cell> getNeighbors() {
-        return neighbors;
-    }
+	public void setNextState(int nextState) {
+		this.nextState = nextState;
+	}
 
-    public int aliveNeighborsCount() {
-        int count = 0;
-        for (Cell c : getNeighbors()) {
-            System.out.println("I am cell ["+c.getXavier()+","+c.getYvan()+"] my state is "+c.getState());
-            if(c.getState() >= 1) count++;
-        }
-        return count;
-    }
+	public void applyNextState(){
+		this.state = nextState;
+	}
 
-    public int getState() {
-        return state;
-    }
+	public void nextState() {
+		int aliveNbCount = aliveNeighborsCount();
+		for (Rule item : MainGUI.rules) {
+			if (item.getInitialCellState() == getState()) {
+				switch (item.getInitialCellState()) {
+					case 0:
+						stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(),aliveNbCount);
+						break;
+					case 1:
+						stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(),aliveNbCount);
+						break;
+				}
+			}
+		}
+	}
 
-    public void setState(int etat) {
-        this.state = etat;
-    }
+	public void stateCondition(String operator, int requiredNeighborsToChange, int nextCellState,int aliveNbCount) {
+		if (operator == "=") {
+			if (aliveNbCount == requiredNeighborsToChange) {
+				setNextState(nextCellState);
+			}
+		} else if (operator == "<") {
+			if (aliveNbCount < requiredNeighborsToChange) {
+				setNextState(nextCellState);
+			}
+		} else if (operator == ">") {
+			if (aliveNbCount > requiredNeighborsToChange) {
+				setNextState(nextCellState);
+			}
+		}
+	}
 
-    public int getNextState() {
-        return nextState;
-    }
+	public boolean isAlive() {
+		if (getState() > 0){
+			return true;
+		}else {
+			return false;
+		}
+	}
 
-    public void setNextState(int nextState) {
-        this.nextState = nextState;
-    }
+	/**
+	 * Display next state of cell
+	 */
+	public void display(int state) {
+		switch (state) {
+			case 0:
+				setBackground(Color.white);
+				break;
+			case 1:
+				setBackground(Color.black);
+				break;
+			default:
+				setBackground(Color.pink);
+				break;
+		}
+	}
 
-    public void nextState() {
-        int aliveNbCount = aliveNeighborsCount();
-        System.out.println("Have ["+neighbors.size()+"] neighbors and ["+aliveNbCount+"] are alive");
-        for (Rule item : MainGUI.rules) {
-            if (item.getInitialCellState() == getState()) {
-                switch (item.getInitialCellState()) {
-                    case 0:
-                        System.out.println("Is dead");
-                        stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(),aliveNbCount);
-                        break;
-                    case 1:
-                        System.out.println("Is alive");
-                        stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(),aliveNbCount);
-                        break;
-                }
-            }
-        }
-    }
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(10, 10);
+	}
 
-    public void stateCondition(String operator, int requiredNeighborsToChange, int nextCellState,int aliveNbCount) {
-        if (operator == "=") {
-            System.out.println("my sign is "+operator);
-            if (aliveNbCount == requiredNeighborsToChange) {
-                setNextState(nextCellState);
-                System.out.println("And has exactly "+aliveNbCount+" just like the rule wants "+requiredNeighborsToChange+" so its next state will be "+nextCellState+":"+getNextState());
-            }else{
-                System.out.println("Damn I have "+aliveNbCount+" I should have "+requiredNeighborsToChange+" so its shit");
-            }
-        } else if (operator == "<") {
-            System.out.println("my sign is "+operator);
-            if (aliveNbCount < requiredNeighborsToChange) {
-                setNextState(nextCellState);
-                System.out.println("And has less than "+aliveNbCount+" just like the rule wants "+requiredNeighborsToChange+" so its next state will be "+nextCellState+":"+getNextState());
-            }else{
-                System.out.println("Damn I have "+aliveNbCount+" I should have "+requiredNeighborsToChange+" so its shit");
-            }
-        } else if (operator == ">") {
-            System.out.println("my sign is "+operator);
-            if (aliveNbCount > requiredNeighborsToChange) {
-                setNextState(nextCellState);
-                System.out.println("And has more than "+aliveNbCount+" just like the rule wants "+requiredNeighborsToChange+" so its next state will be "+nextCellState+":"+getNextState());
-            }else{
-                System.out.println("Damn I have "+aliveNbCount+" I should have "+requiredNeighborsToChange+" so its shit");
-            }
-        }
-    }
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (isAlive()) {
+			setState(0);
+		} else {
+			setState(1);
+		}
+		display(getState());
+	}
 
-    public boolean isAlive() {
-        if (getState() > 0){
-            System.out.println("Currently alive");
-            return true;
-        }else {
-            System.out.println("Currently dead");
-            return false;
-        }
-    }
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			this.setState(1);
+			display(getState());
+		}
+	}
 
-    /**
-     * Display next state of cell
-     */
-    public void display(int state) {
-        System.out.println("State in display is : "+state);
-        switch (state) {
-            case 0:
-                setBackground(Color.white);
-                break;
-            case 1:
-                setBackground(Color.black);
-                break;
-            default:
-                setBackground(Color.pink);
-                break;
-        }
-        //setState(getNextState());
-    }
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
 
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(10, 10);
-    }
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (isAlive()) {
-            setState(0);
-        } else {
-            setState(1);
-        }
-        display(getState());
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e)) {
-            this.setState(1);
-            System.out.println("I am cell ["+getXavier()+","+getYvan()+"] my state is "+getState());
-            display(getState());
-        }
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
 
 }

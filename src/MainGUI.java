@@ -40,22 +40,22 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
             JPanel panel_speedcontrol = initSpeedControl();
             JPanel  panel_cells = initCells(rows);
             JPanel panel_haut = initPanelHaut();
-                JPanel panel_milieu = initPanelMilieu();
-                JPanel panel_bas = initPanelBas();
+            JPanel panel_milieu = initPanelMilieu();
+            JPanel panel_bas = initPanelBas();
 
             setLayout(new BorderLayout());
             //création du panel gauche
             JPanel panel_gauche = new JPanel(new BorderLayout());
             panel_gauche.setLayout(new BorderLayout());panel_gauche.setMaximumSize(new Dimension(300,800));
-                panel_gauche.setPreferredSize(new Dimension(300,800));
+            panel_gauche.setPreferredSize(new Dimension(300,800));
             panel_gauche.add(panel_haut,BorderLayout.NORTH);
             panel_gauche.add(panel_milieu,BorderLayout.CENTER);
-                panel_gauche.add(panel_bas,BorderLayout.SOUTH);
+            panel_gauche.add(panel_bas,BorderLayout.SOUTH);
 
             //création du panel droite
             JPanel panel_droite = new JPanel(new BorderLayout());
             panel_droite.setLayout(new BorderLayout());panel_droite.setMaximumSize(new Dimension(700,800));
-                panel_droite.setPreferredSize(new Dimension(700,800));
+            panel_droite.setPreferredSize(new Dimension(700,800));
             panel_droite.add(panel_speedcontrol,BorderLayout.NORTH);
             panel_droite.add(panel_cells,BorderLayout.CENTER);
 
@@ -241,22 +241,22 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 				//rendre visible
 				fenetre_creation_regles.setVisible(true);
 			}
-	});
+        });
 
-	//on ferme la popup au click sur Créer et on ajoute la règle
-		btnPopupCreate.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//ajout de la nouvelle regle dans le ComboBox
-				cbRules.addItem(RuleName.getText());
-				//selection de la nouvelle regle dans le ComboBox
-				cbRules.setSelectedIndex(cbRules.getItemCount()-1);
-				//cacher la popup
-				fenetre_creation_regles.setVisible(false);
-				//réinitialisation des paramètres
-				RuleName.setText("");
-			}
-		});
+        //on ferme la popup au click sur Créer et on ajoute la règle
+        btnPopupCreate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //ajout de la nouvelle regle dans le ComboBox
+                cbRules.addItem(RuleName.getText());
+                //selection de la nouvelle regle dans le ComboBox
+                cbRules.setSelectedIndex(cbRules.getItemCount()-1);
+                //cacher la popup
+                fenetre_creation_regles.setVisible(false);
+                //réinitialisation des paramètres
+                RuleName.setText("");
+            }
+        });
 
 		//au clic sur appliquer, on ajoute la regle selectionner
 		btnAppliquer.addActionListener(new ActionListener() {

@@ -109,10 +109,10 @@ public class Grid implements Runnable{
 	public void resume(String nbIterationsMax) {
 		int intNbIterationsMax = Integer.parseInt(nbIterationsMax);
 		if(intNbIterationsMax > 0) {
-			setNbIterationsMax((IterationMaxAtteint*intNbIterationsMax)+intNbIterationsMax);
+			setNbIterationsMax(getNbIterations()+intNbIterationsMax);
 		}
 		else {
-			setNbIterationsMax(999);
+			setNbIterationsMax(5000);
 		}
 		running = true;
 	}

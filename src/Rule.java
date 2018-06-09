@@ -1,29 +1,43 @@
-import java.awt.*;
-
 /**
  * Manage rules
  */
 public class Rule {
 
-    private Color initialCellState;
-    private int aliveNeighbors;
+    private int initialCellState;
+    private int nextCellState;
+    private int neighborsPositionsAndColors; // où 1er est en haut à gauche, 4eme en haut au milieu et 8eme en bas a droite
+    private int requiredAliveNeighbors;
     private String operator;
-    private Color nextCellState;
 
-    public Color getInitialCellState() {
+    public Rule(int initialCellState, String operator, int requiredAliveNeighbors, int nextCellState) {
+        this.initialCellState = initialCellState;
+        this.nextCellState = nextCellState;
+        this.operator = operator;
+        this.requiredAliveNeighbors = requiredAliveNeighbors;
+    }
+
+    public int getNeighborsPositionsAndColors() {
+        return neighborsPositionsAndColors;
+    }
+
+    public void setNeighborsPositionsAndColors(int neighborsPositionsAndColors) {
+        this.neighborsPositionsAndColors = neighborsPositionsAndColors;
+    }
+
+    public int getInitialCellState() {
         return initialCellState;
     }
 
-    public void setInitialCellState(Color initialCellState) {
+    public void setInitialCellState(int initialCellState) {
         this.initialCellState = initialCellState;
     }
 
-    public int getAliveNeighbors() {
-        return aliveNeighbors;
+    public int getRequiredAliveNeighbors() {
+        return requiredAliveNeighbors;
     }
 
-    public void setAliveNeighbors(int aliveNeighbors) {
-        this.aliveNeighbors = aliveNeighbors;
+    public void setRequiredAliveNeighbors(int requiredAliveNeighbors) {
+        this.requiredAliveNeighbors = requiredAliveNeighbors;
     }
 
     public String getOperator() {
@@ -34,18 +48,11 @@ public class Rule {
         this.operator = operator;
     }
 
-    public Color getNextCellState() {
+    public int getNextCellState() {
         return nextCellState;
     }
 
-    public void setNextCellState(Color nextCellState) {
-        this.nextCellState = nextCellState;
-    }
-
-    public Rule(Color initialCellState, String sign, int aliveNeighbors, Color nextCellState){
-        this.initialCellState = initialCellState;
-        this.operator = sign;
-        this.aliveNeighbors = aliveNeighbors;
+    public void setNextCellState(int nextCellState) {
         this.nextCellState = nextCellState;
     }
 }

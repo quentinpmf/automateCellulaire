@@ -20,8 +20,12 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 	private static JComboBox cbLoad, cbRules;
 	private static JButton btnReset, btnStart, btnAppliquer,btnQuit, btnCreate, btnPopupCreate;
 	private JSlider slider;
-	private JLabel lblSpeed, lblRuleName;
+	private JLabel lblSpeed;
 	private JTextField RuleName = new JTextField();
+	private JTextField regleEtatInitial = new JTextField();
+	private static JComboBox cbRegleOperateur;
+	private JTextField regleNbVoisins = new JTextField();
+	private JTextField regleEtatFinal = new JTextField();
 
 	//Constructeur
 	public MainGUI() {
@@ -135,7 +139,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		JPanel panel_modele = new JPanel(new BorderLayout());
 		panel_modele.setBorder(BorderFactory.createTitledBorder("Ouvrir modèle"));
 		panel_modele.setLayout(new BoxLayout(panel_modele, BoxLayout.X_AXIS));
-		panel_modele.add(Box.createHorizontalStrut(5));String[] strPattern = new String[]{"-- Choisir --","Small exploder","spaceShip","Ten Cell Row","Gosper glider gun", "Glider","Test"};
+		panel_modele.add(Box.createHorizontalStrut(5));
+		String[] strPattern = new String[]{"-- Choisir --","Small exploder","spaceShip","Ten Cell Row","Gosper glider gun", "Glider","Test"};
 		cbLoad = new JComboBox(strPattern);
 		cbLoad.addActionListener(this);
 		panel_modele.add(cbLoad);
@@ -209,25 +214,69 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 
 		JFrame fenetre_creation_regles = new JFrame();
 		fenetre_creation_regles.setTitle("Création d'une règle");
-		fenetre_creation_regles.setSize(300,200);
+		fenetre_creation_regles.setSize(350,350);
 		fenetre_creation_regles.setLocationRelativeTo(null);
 
 		JPanel panel_fenetre_rules = new JPanel(new BorderLayout());
 		panel_fenetre_rules.setLayout(new BoxLayout(panel_fenetre_rules, BoxLayout.Y_AXIS));
 
+		//nom de la règle
 		JPanel panel_fenetre_rules_name = new JPanel(new BorderLayout());
 		panel_fenetre_rules_name.setBorder(BorderFactory.createTitledBorder("Nom de la règle"));
 		panel_fenetre_rules_name.setLayout(new BoxLayout(panel_fenetre_rules_name, BoxLayout.Y_AXIS));
-
 		RuleName.setPreferredSize(new Dimension(300,20));
 		RuleName.setMaximumSize(new Dimension(300,20));
 		panel_fenetre_rules_name.add(RuleName);
 
+		//état initial
+		JPanel panel_fenetre_rules_state = new JPanel(new BorderLayout());
+		panel_fenetre_rules_state.setBorder(BorderFactory.createTitledBorder("Etat initial"));
+		panel_fenetre_rules_state.setLayout(new BoxLayout(panel_fenetre_rules_state, BoxLayout.Y_AXIS));
+		regleEtatInitial.setPreferredSize(new Dimension(300,20));
+		regleEtatInitial.setMaximumSize(new Dimension(300,20));
+		panel_fenetre_rules_state.add(regleEtatInitial);
+
+		//opérateurs
+		JPanel panel_fenetre_rules_operators = new JPanel(new BorderLayout());
+		panel_fenetre_rules_operators.setBorder(BorderFactory.createTitledBorder("Opérateur"));
+		panel_fenetre_rules_operators.setLayout(new BoxLayout(panel_fenetre_rules_operators, BoxLayout.Y_AXIS));
+		String[] strOperators = new String[]{"+","-","/"};
+		cbRegleOperateur = new JComboBox(strOperators);
+		cbRegleOperateur.setPreferredSize(new Dimension(300,20));
+		cbRegleOperateur.setMaximumSize(new Dimension(300,20));
+		cbRegleOperateur.addActionListener(this);
+		panel_fenetre_rules_operators.add(cbRegleOperateur);
+
+		//nombre de voisins
+		JPanel panel_fenetre_rules_nbvoisins = new JPanel(new BorderLayout());
+		panel_fenetre_rules_nbvoisins.setBorder(BorderFactory.createTitledBorder("Nombre de voisins"));
+		panel_fenetre_rules_nbvoisins.setLayout(new BoxLayout(panel_fenetre_rules_nbvoisins, BoxLayout.Y_AXIS));
+		regleNbVoisins.setPreferredSize(new Dimension(300,20));
+		regleNbVoisins.setMaximumSize(new Dimension(300,20));
+		panel_fenetre_rules_nbvoisins.add(regleNbVoisins);
+
+		//état final
+		JPanel panel_fenetre_rules_finalstate = new JPanel(new BorderLayout());
+		panel_fenetre_rules_finalstate.setBorder(BorderFactory.createTitledBorder("Etat initial"));
+		panel_fenetre_rules_finalstate.setLayout(new BoxLayout(panel_fenetre_rules_finalstate, BoxLayout.Y_AXIS));
+		regleEtatFinal.setPreferredSize(new Dimension(300,20));
+		regleEtatFinal.setMaximumSize(new Dimension(300,20));
+		panel_fenetre_rules_finalstate.add(regleEtatFinal);
+
+		//bouton créer
 		btnPopupCreate = new JButton("Créer");
 		btnPopupCreate.addActionListener(this);
 
-		panel_fenetre_rules.add(panel_fenetre_rules_name,BorderLayout.NORTH);
-		panel_fenetre_rules.add(btnPopupCreate,BorderLayout.SOUTH);
+		JPanel panel_fenetre_rules_btnCreer = new JPanel(new BorderLayout());
+		panel_fenetre_rules_btnCreer.setLayout(new BoxLayout(panel_fenetre_rules_btnCreer, BoxLayout.Y_AXIS));
+		panel_fenetre_rules_btnCreer.add(btnPopupCreate);
+
+		panel_fenetre_rules.add(panel_fenetre_rules_name);
+		panel_fenetre_rules.add(panel_fenetre_rules_state);
+		panel_fenetre_rules.add(panel_fenetre_rules_nbvoisins);
+		panel_fenetre_rules.add(panel_fenetre_rules_finalstate);
+		panel_fenetre_rules.add(panel_fenetre_rules_operators);
+		panel_fenetre_rules.add(panel_fenetre_rules_btnCreer);
 
 		fenetre_creation_regles.add(panel_fenetre_rules);
 

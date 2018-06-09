@@ -4,12 +4,29 @@ public class Grid implements Runnable{
 	public int rows;
 	private boolean running;
 	private int time;
+	public static int nbIterations = 0;
+	public static int nbIterationsMax = 0;
+	public static int IterationMaxAtteint = 0;
+
+	//pour la limite max d'itérations
+	public static boolean boolRun = true;
 
 	public Grid(Cell[][] cells, int rows) {
 		this.cells = cells;
 		this.rows = rows;
 		initNeighbors(rows);
 	}
+
+	public int getNbIterations() { return nbIterations; }
+
+	public void setNbIterations(int nb) {
+		nbIterations = nb;
+		MainGUI.showIterationsInLabel(String.valueOf(nb));
+	}
+
+	public int getNbIterationsMax() { return nbIterationsMax; }
+
+	public void setNbIterationsMax(int nb) { nbIterationsMax = nb; }
 
 	public void setSpeed(int time) {
 		this.time = time;
@@ -46,7 +63,7 @@ public class Grid implements Runnable{
 
 	@Override
 	public void run() {
-
+		
 		while (true) {
 			try {
 				Thread.sleep(time);
@@ -56,16 +73,31 @@ public class Grid implements Runnable{
 			}
 
 			if (running) {
-				for (int i = 0; i < this.rows; i++) {
-					for (int j = 0; j < this.rows; j++) {
-						cells[i][j].nextState();
-					}
+				if(nbIterations >= nbIterationsMax)
+				{
+					System.out.println("ici");
+					running = false;
+					IterationMaxAtteint = IterationMaxAtteint+1;
+					setNbIterationsMax(getNbIterationsMax()*2);
+					MainGUI.setBtnStart("Stop");
 				}
-				for (int i = 0; i < this.rows; i++) {
-					for (int j = 0; j < this.rows; j++) {
-						cells[i][j].display(cells[i][j].getNextState());
-						cells[i][j].applyNextState();
-					}
+				else
+				{
+                    for (int i = 0; i < this.rows; i++) {
+                        for (int j = 0; j < this.rows; j++) {
+                            cells[i][j].nextState();
+                        }
+                    }
+                    for (int i = 0; i < this.rows; i++) {
+                        for (int j = 0; j < this.rows; j++) {
+                            cells[i][j].display(cells[i][j].getNextState());
+                            cells[i][j].applyNextState();
+                        }
+                    }
+					setNbIterations(getNbIterations()+1);
+					System.out.println("nb d'iterations : "+getNbIterations());
+					System.out.println("nbIterationsMax : "+getNbIterationsMax());
+
 				}
 			}
 		}
@@ -75,7 +107,14 @@ public class Grid implements Runnable{
 		running = false;
 	}
 
-	public void resume() {
+	public void resume(String nbIterationsMax) {
+		int intNbIterationsMax = Integer.parseInt(nbIterationsMax);
+		if(intNbIterationsMax > 0) {
+			setNbIterationsMax(getNbIterations()+intNbIterationsMax);
+		}
+		else {
+			setNbIterationsMax(5000);
+		}
 		running = true;
 	}
 

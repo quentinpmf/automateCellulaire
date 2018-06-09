@@ -10,15 +10,15 @@ import javax.swing.event.ChangeListener;
 public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 
 	private GridBagLayout gbTrace = new GridBagLayout();
-	private JTextField nbIterationsMax = new JTextField();
+	private JTextField nbIterationsMax  = new JTextField();
 	private static JLabel nbIterationsFaites = new JLabel(""+Grid.nbIterations);
 	private static JLabel lblReglesChoisies = new JLabel("∅");
 	private static JLabel labelEmpty = new JLabel();
-	private Cell[][] cells;
-	private static ArrayList<String> reglesChoisies = new ArrayList<>();
+	private Cell[][] cells;private static ArrayList<String> reglesChoisies = new ArrayList<>();
+	public static ArrayList<Rule> rules = new ArrayList<Rule>();
 	private Grid grid;
 	private static JComboBox cbLoad, cbRules;
-	private static JButton btnReset, btnStart, btnAppliquer, btnQuit, btnCreate, btnPopupCreate;
+	private static JButton btnReset, btnStart, btnAppliquer,btnQuit, btnCreate, btnPopupCreate;
 	private JSlider slider;
 	private JLabel lblSpeed, lblRuleName;
 	private JTextField RuleName = new JTextField();
@@ -28,53 +28,59 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 
 		JPanel dialogBox = new JPanel(new BorderLayout());
 		int rows = Integer.parseInt(JOptionPane.showInputDialog(dialogBox,"Nombre de lignes ? [minimum 50]","50"));
-		if(rows >= 50){
-			setTitle("Automate Cellulaire [Boudinot Delcourt Martinelli]");
-			setDefaultCloseOperation(EXIT_ON_CLOSE);
-			setResizable(false);
-			setLayout(gbTrace);
+if(rows >= 50){
+		setTitle("Automate Cellulaire [Boudinot Delcourt Martinelli]");
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-			JPanel panel_speedcontrol = initSpeedControl();
-			JPanel panel_cells = initCells(rows);
+		setResizable(false);
+		setLayout(gbTrace);
 
-			JPanel panel_haut = initPanelHaut();
+		JPanel panel_speedcontrol = initSpeedControl();
+		JPanel  panel_cells = initCells(rows);
+		JPanel panel_haut = initPanelHaut();
 			JPanel panel_milieu = initPanelMilieu();
 			JPanel panel_bas = initPanelBas();
 
-			setLayout(new BorderLayout());
-			//création du panel gauche
-			JPanel panel_gauche = new JPanel(new BorderLayout());
-			panel_gauche.setLayout(new BorderLayout());
-			panel_gauche.setMaximumSize(new Dimension(300,800));
+		setLayout(new BorderLayout());
+		//création du panel gauche
+		JPanel panel_gauche = new JPanel(new BorderLayout());
+		panel_gauche.setLayout(new BorderLayout());panel_gauche.setMaximumSize(new Dimension(300,800));
 			panel_gauche.setPreferredSize(new Dimension(300,800));
-			panel_gauche.add(panel_haut,BorderLayout.NORTH);
-			panel_gauche.add(panel_milieu,BorderLayout.CENTER);
+		panel_gauche.add(panel_haut,BorderLayout.NORTH);
+		panel_gauche.add(panel_milieu,BorderLayout.CENTER);
 			panel_gauche.add(panel_bas,BorderLayout.SOUTH);
 
-			//création du panel droite
-			JPanel panel_droite = new JPanel(new BorderLayout());
-			panel_droite.setLayout(new BorderLayout());
-			panel_droite.setMaximumSize(new Dimension(700,800));
+		//création du panel droite
+		JPanel panel_droite = new JPanel(new BorderLayout());
+		panel_droite.setLayout(new BorderLayout());panel_droite.setMaximumSize(new Dimension(700,800));
 			panel_droite.setPreferredSize(new Dimension(700,800));
-			panel_droite.add(panel_speedcontrol,BorderLayout.NORTH);
-			panel_droite.add(panel_cells,BorderLayout.CENTER);
+		panel_droite.add(panel_speedcontrol,BorderLayout.NORTH);
+		panel_droite.add(panel_cells,BorderLayout.CENTER);
 
-			//ajout des deux panel gauche et droite dans le jframe
-			add(panel_gauche,BorderLayout.WEST);
-			add(panel_droite,BorderLayout.EAST);
+		//ajout des deux panel gauche et droite dans le jframe
+		add(panel_gauche,BorderLayout.WEST);
+		add(panel_droite,BorderLayout.EAST);
 
-			pack(); //sizes the frame so that all its contents are at or above their preferred sizes
+		 //sizes the frame so that all its contents are at or above their preferred sizes
+pack();
 
-			new Rule(Color.black,"-",2,Color.white);
-			new Rule(Color.black,"+",3,Color.white);
-			new Rule(Color.white,"=",3,Color.black);
+		//JeuDeLaVie rules
+        //Si une cellule a exactement deux voisines vivantes, elle reste dans son état actuel à l’étape suivante.
+        rules.add(new Rule(0,"=",2,0));
+		rules.add(new Rule(1,"=",2,1));
+        //Si une cellule a exactement trois voisines vivantes, elle est vivante à l’étape suivante.
+        rules.add(new Rule(0,"=",3,1));
+		rules.add(new Rule(1,"=",3,1));
+//Si une cellule a strictement moins de deux ou strictement plus de trois voisines vivantes, elle est morte à l’étape suivante.
+        rules.add(new Rule(1,">",3,0));
+        rules.add(new Rule(1,"<",2,0));
 
-			this.grid = new Grid(cells, rows);
-			grid.setSpeed(50);
-			slider.setValue(50);
-			setVisible(true);
-			new Thread(grid).start();
-		}
+		this.grid = new Grid(cells, rows);
+		grid.setSpeed(50);
+		slider.setValue(50);
+		setVisible(true);
+		new Thread(grid).start();
+}
 	}
 
 	//initialise la barre du controle de la vitesse d'animation
@@ -82,7 +88,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		JPanel pan = new JPanel(new BorderLayout());
 		pan.setBorder(BorderFactory.createTitledBorder("Vitesse d'animation"));
 		pan.setLayout(new BoxLayout(pan, BoxLayout.X_AXIS));
-
+		
 		slider = new JSlider();
 		slider.setMaximum(500);
 		slider.setMinimum(1);
@@ -90,29 +96,29 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		slider.setPaintLabels(true);
 		slider.addChangeListener(this);
 		slider.setValue(50);
-
+		
 		lblSpeed = new JLabel(slider.getValue() + "ms");
 
-		pan.add(lblSpeed);
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(slider);
-		return pan;
-	}
+        pan.add(lblSpeed);
+        pan.add(Box.createHorizontalStrut(5));
+        pan.add(slider);
+        return pan;
+    }
 
 	//initialise la grille avec toutes les cellules
-	private JPanel initCells(int cell_rows) {
-		JPanel pan = new JPanel(new BorderLayout());
-		pan.setBorder(BorderFactory.createTitledBorder("Grille"));
-		pan.setLayout(new GridLayout(cell_rows,cell_rows));
-		cells = new Cell[cell_rows][cell_rows];
-		for (int i = 0; i < cell_rows; i++) {
-			for (int j = 0; j < cell_rows; j++) {
-				Cell c = new Cell();
-				cells[i][j] = c;
-				pan.add(c);
-			}
-		}
-		return pan;
+	private JPanel initCells(int cell_rows){
+        JPanel pan = new JPanel();
+        pan.setBorder(BorderFactory.createTitledBorder("Grille"));
+        pan.setLayout(new GridLayout(cell_rows,cell_rows));
+        cells = new Cell[cell_rows][cell_rows];
+        for (int i = 0; i < cell_rows; i++) {
+            for (int j = 0; j < cell_rows; j++) {
+                Cell c = new Cell();
+                cells[i][j] = c;
+                pan.add(c);
+            }
+        }
+        return pan;
 	}
 
 	//initialise la partie du panel_gauche : OUVRIR MODELE et CONFIGURATION
@@ -125,13 +131,10 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		JPanel panel_modele = new JPanel(new BorderLayout());
 		panel_modele.setBorder(BorderFactory.createTitledBorder("Ouvrir modèle"));
 		panel_modele.setLayout(new BoxLayout(panel_modele, BoxLayout.X_AXIS));
-		panel_modele.add(Box.createHorizontalStrut(5));
-
-		String[] strPattern = new String[]{"-- Choisir --","Small exploder","spaceShip","Ten Cell Row","Gosper glider gun", "Glider","Test"};
+		panel_modele.add(Box.createHorizontalStrut(5));String[] strPattern = new String[]{"-- Choisir --","Small exploder","spaceShip","Ten Cell Row","Gosper glider gun", "Glider","Test"};
 		cbLoad = new JComboBox(strPattern);
 		cbLoad.addActionListener(this);
 		panel_modele.add(cbLoad);
-
 		//2 : PANEL CONFIG
 		JPanel panel_config = new JPanel(new BorderLayout());
 
@@ -162,8 +165,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		panel_config.add(panel_iterations_max,BorderLayout.SOUTH);
 
 		panel_haut.add(panel_modele,BorderLayout.NORTH);
-		panel_haut.add(panel_config,BorderLayout.SOUTH);
-		return panel_haut;
+		panel_haut.add(panel_config,BorderLayout.SOUTH);return panel_haut;
 	}
 
 	//initialise la partie du panel_gauche : REGLES
@@ -235,9 +237,9 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 				//rendre visible
 				fenetre_creation_regles.setVisible(true);
 			}
-		});
+	});
 
-		//on ferme la popup au click sur Créer et on ajoute la règle
+	//on ferme la popup au click sur Créer et on ajoute la règle
 		btnPopupCreate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -302,7 +304,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		labelEmpty.setText("");
 		panel_vide.add(labelEmpty);
 
-		setLayout(new BorderLayout());
+	 setLayout(new BorderLayout());
 		panel_milieu.setLayout(new BorderLayout());
 		panel_milieu.add(panel_regles,BorderLayout.NORTH);
 		panel_milieu.add(panel_vide,BorderLayout.SOUTH);
@@ -316,77 +318,76 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		pan.setBorder(BorderFactory.createTitledBorder("Actions"));
 		pan.setLayout(new BoxLayout(pan, BoxLayout.X_AXIS));
 
-		btnStart = new JButton("Démarrer");
-		btnStart.addActionListener(this);
-		btnReset = new JButton("Réinitialiser");
-		btnReset.addActionListener(this);
-		btnQuit = new JButton("Quitter");
-		btnQuit.addActionListener(this);
+        btnStart = new JButton("Démarrer");
+        btnStart.addActionListener(this);
+        btnReset = new JButton("Réinitialiser");
+        btnReset.addActionListener(this);
+        btnQuit = new JButton("Quitter");
+        btnQuit.addActionListener(this);
 
-		pan.add(Box.createHorizontalGlue());
-		pan.add(btnStart);
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(btnReset);
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(btnQuit);
+        pan.add(Box.createHorizontalGlue());
+        pan.add(btnStart);
+        pan.add(Box.createHorizontalStrut(5));
+        pan.add(btnReset);
+        pan.add(Box.createHorizontalStrut(5));
+        pan.add(btnQuit);
 
-		return pan;
-	}
+        return pan;
+    }
 
-	public static void main(String[] args) {
-		// putting the GUI in the Event dispatch thread
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new MainGUI();
-			}
-		});
-	}
+    public static void main(String[] args) {
+        // putting the GUI in the Event dispatch thread
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new MainGUI();
+            }
+        });
+    }
 
 	//tue toutes les cellules
 	private void killAll() {
-		for (int i = 0; i < Grid.rows; i++) {
-			for (int j = 0; j < Grid.rows; j++) {
-				cells[i][j].die();
-				cells[i][j].display();
+		for (int i = 0; i < grid.rows; i++) {
+			for (int j = 0; j < grid.rows; j++) {
+				cells[i][j].setState(0);
+				cells[i][j].display(cells[i][j].getState());
 			}
 		}
-		//reset nbIterations + nbMaxIterations
+	//reset nbIterations + nbMaxIterations
 		nbIterationsFaites.setText("0");
         lblReglesChoisies.setText("∅");
 		reglesChoisies.clear();
 		Grid.nbIterations = 0;
 		Grid.nbIterationsMax = 0;
-		Grid.IterationMaxAtteint = 0;
-	}
+		Grid.IterationMaxAtteint = 0;}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object obj = e.getSource();
-		if (obj == btnStart) {
-			if (btnStart.getText().equals("Démarrer")) {
-				btnStart.setText("Arrêter");
-				grid.resume(nbIterationsMax.getText());
-			} else {
-				btnStart.setText("Démarrer");
-				grid.pause();
-			}
-		} else if (obj == btnReset) {
-			killAll();
-		} else if (obj == btnQuit) {
-			grid.setRunning(false);
-			dispose();
-		} else if (obj == cbLoad) {
-			killAll();
-			PatternFactory pFact = new PatternFactory(cells);
-			this.cells = pFact.createPattern(pFact.patterns[cbLoad.getSelectedIndex()], 5, 5);
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object obj = e.getSource();
+        if (obj == btnStart) {
+            if (btnStart.getText().equals("Démarrer")) {
+                btnStart.setText("Arrêter");
+                grid.resume(nbIterationsMax.getText());
+            } else {
+                btnStart.setText("Démarrer");
+                grid.pause();
+            }
+        } else if (obj == btnReset) {
+            killAll();
+        } else if (obj == btnQuit) {
+            grid.setRunning(false);
+            dispose();
+        } else if (obj == cbLoad) {
+            killAll();
+            PatternFactory pFact = new PatternFactory(cells);
+            this.cells = pFact.createPattern(pFact.patterns[cbLoad.getSelectedIndex()], 5, 5);
+        }
+    }
 
-	@Override
-	public void stateChanged(ChangeEvent ce) {
-		grid.setSpeed(slider.getValue());
-		lblSpeed.setText(slider.getValue()+ "ms");
-	}
+    @Override
+    public void stateChanged(ChangeEvent ce) {
+        grid.setSpeed(slider.getValue());
+        lblSpeed.setText(slider.getValue()+ "ms");
+    }
 
 	//initialisation du Bouton Démarrer/Arrêter (Actions)
 	public static void setBtnStart(String text)

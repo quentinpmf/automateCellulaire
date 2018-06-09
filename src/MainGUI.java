@@ -356,6 +356,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 		for (int i = 0; i < grid.rows; i++) {
 			for (int j = 0; j < grid.rows; j++) {
 				cells[i][j].setState(0);
+				cells[i][j].setNextState(0);
 				cells[i][j].display(cells[i][j].getState());
 			}
 		}

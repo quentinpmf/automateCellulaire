@@ -28,63 +28,66 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener{
 
 		JPanel dialogBox = new JPanel(new BorderLayout());
 		int rows = Integer.parseInt(JOptionPane.showInputDialog(dialogBox,"Nombre de lignes ? [minimum 50]","50"));
-if(rows >= 50){
-		setTitle("Automate Cellulaire [Boudinot Delcourt Martinelli]");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		setResizable(false);
-		setLayout(gbTrace);
+		if(rows >= 50)
+		{
+            setTitle("Automate Cellulaire [Boudinot Delcourt Martinelli]");
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		JPanel panel_speedcontrol = initSpeedControl();
-		JPanel  panel_cells = initCells(rows);
-		JPanel panel_haut = initPanelHaut();
-			JPanel panel_milieu = initPanelMilieu();
-			JPanel panel_bas = initPanelBas();
+            setResizable(true);
+            setLayout(gbTrace);
 
-		setLayout(new BorderLayout());
-		//création du panel gauche
-		JPanel panel_gauche = new JPanel(new BorderLayout());
-		panel_gauche.setLayout(new BorderLayout());panel_gauche.setMaximumSize(new Dimension(300,800));
-			panel_gauche.setPreferredSize(new Dimension(300,800));
-		panel_gauche.add(panel_haut,BorderLayout.NORTH);
-		panel_gauche.add(panel_milieu,BorderLayout.CENTER);
-			panel_gauche.add(panel_bas,BorderLayout.SOUTH);
+            JPanel panel_speedcontrol = initSpeedControl();
+            JPanel  panel_cells = initCells(rows);
+            JPanel panel_haut = initPanelHaut();
+                JPanel panel_milieu = initPanelMilieu();
+                JPanel panel_bas = initPanelBas();
 
-		//création du panel droite
-		JPanel panel_droite = new JPanel(new BorderLayout());
-		panel_droite.setLayout(new BorderLayout());panel_droite.setMaximumSize(new Dimension(700,800));
-			panel_droite.setPreferredSize(new Dimension(700,800));
-		panel_droite.add(panel_speedcontrol,BorderLayout.NORTH);
-		panel_droite.add(panel_cells,BorderLayout.CENTER);
+            setLayout(new BorderLayout());
+            //création du panel gauche
+            JPanel panel_gauche = new JPanel(new BorderLayout());
+            panel_gauche.setLayout(new BorderLayout());panel_gauche.setMaximumSize(new Dimension(300,800));
+                panel_gauche.setPreferredSize(new Dimension(300,800));
+            panel_gauche.add(panel_haut,BorderLayout.NORTH);
+            panel_gauche.add(panel_milieu,BorderLayout.CENTER);
+                panel_gauche.add(panel_bas,BorderLayout.SOUTH);
 
-		//ajout des deux panel gauche et droite dans le jframe
-		add(panel_gauche,BorderLayout.WEST);
-		add(panel_droite,BorderLayout.EAST);
+            //création du panel droite
+            JPanel panel_droite = new JPanel(new BorderLayout());
+            panel_droite.setLayout(new BorderLayout());panel_droite.setMaximumSize(new Dimension(700,800));
+                panel_droite.setPreferredSize(new Dimension(700,800));
+            panel_droite.add(panel_speedcontrol,BorderLayout.NORTH);
+            panel_droite.add(panel_cells,BorderLayout.CENTER);
 
-		 //sizes the frame so that all its contents are at or above their preferred sizes
-pack();
+            //ajout des deux panel gauche et droite dans le jframe
+            add(panel_gauche,BorderLayout.WEST);
+            add(panel_droite,BorderLayout.EAST);
 
-		//JeuDeLaVie rules
-        //Si une cellule a exactement deux voisines vivantes, elle reste dans son état actuel à l’étape suivante.
-        rules.add(new Rule(0,"=",2,0));
-		rules.add(new Rule(1,"=",2,1));
-        //Si une cellule a exactement trois voisines vivantes, elle est vivante à l’étape suivante.
-        rules.add(new Rule(0,"=",3,1));
-		rules.add(new Rule(1,"=",3,1));
-//Si une cellule a strictement moins de deux ou strictement plus de trois voisines vivantes, elle est morte à l’étape suivante.
-        rules.add(new Rule(1,">",3,0));
-        rules.add(new Rule(1,"<",2,0));
+             //sizes the frame so that all its contents are at or above their preferred sizes
+            pack();
 
-		this.grid = new Grid(cells, rows);
-		grid.setSpeed(50);
-		slider.setValue(50);
-		setVisible(true);
-		new Thread(grid).start();
-}
+            //JeuDeLaVie rules
+            //Si une cellule a exactement deux voisines vivantes, elle reste dans son état actuel à l’étape suivante.
+            rules.add(new Rule(0,"=",2,0));
+            rules.add(new Rule(1,"=",2,1));
+            //Si une cellule a exactement trois voisines vivantes, elle est vivante à l’étape suivante.
+            rules.add(new Rule(0,"=",3,1));
+            rules.add(new Rule(1,"=",3,1));
+            //Si une cellule a strictement moins de deux ou strictement plus de trois voisines vivantes, elle est morte à l’étape suivante.
+            rules.add(new Rule(1,">",3,0));
+            rules.add(new Rule(1,"<",2,0));
+
+            this.grid = new Grid(cells, rows);
+            grid.setSpeed(50);
+            slider.setValue(50);
+            setVisible(true);
+            new Thread(grid).start();
+        }
 	}
 
 	//initialise la barre du controle de la vitesse d'animation
-	private JPanel initSpeedControl() {
+	private JPanel initSpeedControl()
+    {
 		JPanel pan = new JPanel(new BorderLayout());
 		pan.setBorder(BorderFactory.createTitledBorder("Vitesse d'animation"));
 		pan.setLayout(new BoxLayout(pan, BoxLayout.X_AXIS));
@@ -106,7 +109,8 @@ pack();
     }
 
 	//initialise la grille avec toutes les cellules
-	private JPanel initCells(int cell_rows){
+	private JPanel initCells(int cell_rows)
+    {
         JPanel pan = new JPanel();
         pan.setBorder(BorderFactory.createTitledBorder("Grille"));
         pan.setLayout(new GridLayout(cell_rows,cell_rows));
@@ -122,8 +126,8 @@ pack();
 	}
 
 	//initialise la partie du panel_gauche : OUVRIR MODELE et CONFIGURATION
-	private JPanel initPanelHaut(){
-
+	private JPanel initPanelHaut()
+    {
 		JPanel panel_haut = new JPanel(new BorderLayout());
 		panel_haut.setLayout(new BoxLayout(panel_haut, BoxLayout.Y_AXIS));
 
@@ -169,8 +173,8 @@ pack();
 	}
 
 	//initialise la partie du panel_gauche : REGLES
-	private JPanel initPanelMilieu() {
-
+	private JPanel initPanelMilieu()
+    {
 		JPanel panel_milieu = new JPanel(new BorderLayout());
 		panel_milieu.setLayout(new BoxLayout(panel_milieu, BoxLayout.Y_AXIS));
 
@@ -304,7 +308,7 @@ pack();
 		labelEmpty.setText("");
 		panel_vide.add(labelEmpty);
 
-	 setLayout(new BorderLayout());
+	    setLayout(new BorderLayout());
 		panel_milieu.setLayout(new BorderLayout());
 		panel_milieu.add(panel_regles,BorderLayout.NORTH);
 		panel_milieu.add(panel_vide,BorderLayout.SOUTH);
@@ -313,7 +317,8 @@ pack();
 	}
 
 	//initialise la partie du panel_gauche : ACTIONS
-	private JPanel initPanelBas(){
+	private JPanel initPanelBas()
+    {
 		JPanel pan = new JPanel(new BorderLayout());
 		pan.setBorder(BorderFactory.createTitledBorder("Actions"));
 		pan.setLayout(new BoxLayout(pan, BoxLayout.X_AXIS));
@@ -335,7 +340,8 @@ pack();
         return pan;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         // putting the GUI in the Event dispatch thread
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -345,20 +351,22 @@ pack();
     }
 
 	//tue toutes les cellules
-	private void killAll() {
+	private void killAll()
+    {
 		for (int i = 0; i < grid.rows; i++) {
 			for (int j = 0; j < grid.rows; j++) {
 				cells[i][j].setState(0);
 				cells[i][j].display(cells[i][j].getState());
 			}
 		}
-	//reset nbIterations + nbMaxIterations
+	    //reset nbIterations + nbMaxIterations
 		nbIterationsFaites.setText("0");
         lblReglesChoisies.setText("∅");
 		reglesChoisies.clear();
 		Grid.nbIterations = 0;
 		Grid.nbIterationsMax = 0;
-		Grid.IterationMaxAtteint = 0;}
+		Grid.IterationMaxAtteint = 0;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -389,19 +397,19 @@ pack();
         lblSpeed.setText(slider.getValue()+ "ms");
     }
 
-	//initialisation du Bouton Démarrer/Arrêter (Actions)
-	public static void setBtnStart(String text)
-	{
-		switch (text) {
-			case "Démarrer":
-				btnStart.setText("Démarrer");
-				break;
-			case "Arrêter":
-				btnStart.setText("Arrêter");
-			default:
-				btnStart.setText("Démarrer");
-		}
-	}
+    //initialisation du Bouton Démarrer/Arrêter (Actions)
+    public static void setBtnStart(String text)
+    {
+        switch (text) {
+            case "Démarrer":
+                btnStart.setText("Démarrer");
+                break;
+            case "Arrêter":
+                btnStart.setText("Arrêter");
+            default:
+                btnStart.setText("Démarrer");
+        }
+    }
 
     //initialisation des itérations dans un champ texte
     public static void showIterationsInLabel(String text)

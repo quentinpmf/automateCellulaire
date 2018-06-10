@@ -3,17 +3,29 @@
  */
 public class Rule {
 
+    private String name;
     private int initialCellState;
     private int nextCellState;
     private int neighborsPositionsAndColors; // où 1er est en haut à gauche, 4eme en haut au milieu et 8eme en bas a droite
     private int requiredAliveNeighbors;
     private String operator;
+    private boolean activated;
 
-    public Rule(int initialCellState, String operator, int requiredAliveNeighbors, int nextCellState) {
+    public Rule(String name, int initialCellState, String operator, int requiredAliveNeighbors, int nextCellState, boolean activated) {
+        this.name = name;
         this.initialCellState = initialCellState;
         this.nextCellState = nextCellState;
         this.operator = operator;
         this.requiredAliveNeighbors = requiredAliveNeighbors;
+        this.activated = activated;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 
     public int getNeighborsPositionsAndColors() {
@@ -22,6 +34,10 @@ public class Rule {
 
     public void setNeighborsPositionsAndColors(int neighborsPositionsAndColors) {
         this.neighborsPositionsAndColors = neighborsPositionsAndColors;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getInitialCellState() {
@@ -54,5 +70,15 @@ public class Rule {
 
     public void setNextCellState(int nextCellState) {
         this.nextCellState = nextCellState;
+    }
+
+    @Override
+    public String toString() {
+        return "Nom : [" + this.name +
+                "] Used : [" + this.activated +
+                "] Init : [" + this.initialCellState +
+                "] Final : [" + this.nextCellState +
+                "] OP : [" + this.operator +
+                "] Ran : [" + this.requiredAliveNeighbors + "]";
     }
 }

@@ -95,9 +95,6 @@ public class Grid implements Runnable{
                         }
                     }
 					setNbIterations(getNbIterations()+1);
-					System.out.println("nb d'iterations : "+getNbIterations());
-					System.out.println("nbIterationsMax : "+getNbIterationsMax());
-
 				}
 			}
 		}

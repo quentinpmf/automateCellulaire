@@ -57,18 +57,24 @@ public class Cell extends JPanel implements MouseListener {
 
 	public void nextState() {
 		int aliveNbCount = aliveNeighborsCount();
-		for (Rule item : MainGUI.rules) {
-			if (item.getInitialCellState() == getState()) {
-				switch (item.getInitialCellState()) {
-					case 0:
-						stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(),aliveNbCount);
-						break;
-					case 1:
-						stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(),aliveNbCount);
-						break;
-				}
-			}
-		}
+        if(MainGUI.rules.size() != 0){
+            for (Rule item : MainGUI.rules) {
+                if(item.isActivated()) {
+                    if (item.getInitialCellState() == getState()) {
+                        switch (item.getInitialCellState()) {
+                            case 0:
+                                stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
+                                break;
+                            case 1:
+                                stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
+                                break;
+                        }
+                    }
+                }
+            }
+        }else{
+            setNextState(getState());
+        }
 	}
 
 	public void stateCondition(String operator, int requiredNeighborsToChange, int nextCellState,int aliveNbCount) {

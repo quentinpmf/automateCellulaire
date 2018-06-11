@@ -6,8 +6,14 @@ public class PatternFactory {
         this.cells = cells;
     }
 
+    /** empty pattern */
+    private final String[] empty = new String[]{
+            "."
+    };
+
     /** SmallExploder pattern */
     private final String[] smallExploder = new String[]{
+            "....................................",
             "..................O.................",
             ".................OOO................",
             ".................O.O................",
@@ -48,8 +54,39 @@ public class PatternFactory {
             "................OOO................."
     };
 
+    /** test pattern */
+    private final String[] test = new String[]{
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "..O....O..........O...O.O..O...O..O.",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "..O....O...O...O..O.OO.....O...O..OO",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "OOO....O..O...O.OOO...O.O..O...O..O.",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "..O....O...O...O..O........O...O..O.",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "..O....O..........O...O.O..O...O..O.",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "..O....O...O...O..O.OO.....O...O..OO",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "OOO....O..O...O.OOO...O.O..O...O..O.",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "..O....O...O...O..O........O...O..O.",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "..O....O..........O...O.O..O...O..O.",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "..O....O...O...O..O.OO.....O...O..OO",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "OOO....O..O...O.OOO...O.O..O...O..O.",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
+            "..O....O...O...O..O........O...O..O.",
+            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
+    };
+
     /** All the patterns */
-    public final String[][] patterns = new String[][]{smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider};
+    public final String[][] patterns = new String[][]{empty,smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider, test};
 
     /**
      * Generates a cell-matrix from a pattern
@@ -65,11 +102,11 @@ public class PatternFactory {
                     throw new IllegalArgumentException("Pattern can't be loaded, too big. Increase grid size !");
                 }
                 if (pattern[i].charAt(j) == 'O') {
-                    cells[i+offsetX][j+offsetY].live();
+                    cells[i+offsetX][j+offsetY].setState(1);
                 }  else {
-                    cells[i+offsetX][j+offsetY].die();
+                    cells[i+offsetX][j+offsetY].setState(0);
                 }
-                cells[i+offsetX][j+offsetY].display();
+                cells[i+offsetX][j+offsetY].display(cells[i+offsetX][j+offsetY].getState());
             }
         }
         return cells;

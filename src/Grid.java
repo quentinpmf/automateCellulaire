@@ -1,7 +1,7 @@
 public class Grid implements Runnable{
 
 	private Cell[][] cells;
-	public static int rows;
+	public int rows;
 	private boolean running;
 	private int time;
 	public static int nbIterations = 0;
@@ -31,47 +31,47 @@ public class Grid implements Runnable{
 	public void setSpeed(int time) {
 		this.time = time;
 	}
-	
+
 	public void setRunning(boolean running) {
 		this.running = running;
 	}
-	
-	///////////////////////////
-	//Début Méthode à coder  //
-	///////////////////////////
 
-
+	/**
+	 * Intialize neighbors of a cell in the grid
+	 * @param rows
+	 */
 	private void initNeighbors(int rows) {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < rows; j++) {
 				Cell c = cells[i][j];
-				for (int k = i-1; k < i+2 && k < rows && k > 0; k++) {
-					for (int l = j-1; l < j+2 && l > 0 && l < rows; l++) {
+				for (int k = i-1; k < i+2 && k < rows ; k++) {
+					if((k < 0 || k > rows)){
+						continue;
+					}
+					for (int l = j-1; l < j+2 && l < rows; l++) {
+						if((l < 0 || l > rows)){
+							continue;
+						}
 						if ((k != i || l != j) ) {
-							c.addNeighboor(cells[k][l]);
+							c.addNeighbor(cells[k][l]);
 						}
 					}
 				}
-
 			}
 		}
 	}
-	
-	///////////////////////////
-	//Fin Méthode à coder    //
-	///////////////////////////
 
 	@Override
 	public void run() {
+		
 		while (true) {
-			
 			try {
 				Thread.sleep(time);
 			} catch (InterruptedException e) {
 				System.err.println("Thread exception - fatal error");
 				System.exit(-1);
 			}
-			
+
 			if (running) {
 				if(nbIterations >= nbIterationsMax)
 				{
@@ -83,16 +83,17 @@ public class Grid implements Runnable{
 				}
 				else
 				{
-					for (int i = 0; i < this.rows; i++) {
-						for (int j = 0; j < this.rows; j++) {
-							cells[i][j].nextState();
-						}
-					}
-					for (int i = 0; i < this.rows; i++) {
-						for (int j = 0; j < this.rows; j++) {
-							cells[i][j].display();
-						}
-					}
+                    for (int i = 0; i < this.rows; i++) {
+                        for (int j = 0; j < this.rows; j++) {
+                            cells[i][j].nextState();
+                        }
+                    }
+                    for (int i = 0; i < this.rows; i++) {
+                        for (int j = 0; j < this.rows; j++) {
+                            cells[i][j].display(cells[i][j].getNextState());
+                            cells[i][j].applyNextState();
+                        }
+                    }
 					setNbIterations(getNbIterations()+1);
 					System.out.println("nb d'iterations : "+getNbIterations());
 					System.out.println("nbIterationsMax : "+getNbIterationsMax());
@@ -109,10 +110,10 @@ public class Grid implements Runnable{
 	public void resume(String nbIterationsMax) {
 		int intNbIterationsMax = Integer.parseInt(nbIterationsMax);
 		if(intNbIterationsMax > 0) {
-			setNbIterationsMax((IterationMaxAtteint*intNbIterationsMax)+intNbIterationsMax);
+			setNbIterationsMax(getNbIterations()+intNbIterationsMax);
 		}
 		else {
-			setNbIterationsMax(999);
+			setNbIterationsMax(5000);
 		}
 		running = true;
 	}

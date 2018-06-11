@@ -377,10 +377,14 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 
         btnStart = new JButton("Démarrer");
         btnStart.addActionListener(this);
+		btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#98fb98")); //fond vert texte noir
+
         btnReset = new JButton("Réinitialiser");
         btnReset.addActionListener(this);
+
         btnQuit = new JButton("Quitter");
-        btnQuit.addActionListener(this);
+		btnQuit.addActionListener(this);
+		btnQuit.setForeground(Color.WHITE);btnQuit.setBackground(Color.decode("#f93535")); //fond rouge texte blanc
 
         pan.add(Box.createHorizontalGlue());
         pan.add(btnStart);
@@ -420,9 +424,11 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
             System.out.println(rules);
             if (btnStart.getText().equals("Démarrer")) {
                 btnStart.setText("Arrêter");
+				btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#ffa500")); //fond orange texte noir
                 grid.resume(nbIterationsMax.getText());
             } else {
                 btnStart.setText("Démarrer");
+				btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#98fb98")); //fond vert texte noir
                 grid.pause();
             }
         } else if (obj == btnReset) {
@@ -461,12 +467,15 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         switch (text) {
             case "Démarrer":
                 btnStart.setText("Démarrer");
+				btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#98fb98")); //fond vert texte noir
                 break;
             case "Arrêter":
                 btnStart.setText("Arrêter");
+				btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#ffa500")); //fond orange texte noir
             default:
                 btnStart.setText("Démarrer");
-        }
+				btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#98fb98")); //fond vert texte noir
+		}
     }
 
     //initialisation des itérations dans un champ texte

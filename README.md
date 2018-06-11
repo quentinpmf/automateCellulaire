@@ -10,7 +10,7 @@
   <li>Créations de règles pour le jeu de la vie</li>
 </ul>
 <b>Language utilisé </b>: JAVA
-<hr>
+<hr><br>
 Choix du nombre de lignes :
 ![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture.png)<br>
 

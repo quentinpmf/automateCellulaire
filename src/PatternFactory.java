@@ -6,16 +6,8 @@ public class PatternFactory {
         this.cells = cells;
     }
 
-    /** empty pattern */
-    private final String[] empty = new String[]{
-            "."
-    };
-
     /** SmallExploder pattern */
     private final String[] smallExploder = new String[]{
-            "....................................",
-            "....................................",
-            "....................................",
             "....................................",
             "..................O.................",
             ".................OOO................",
@@ -34,10 +26,6 @@ public class PatternFactory {
 
     /** TenCellRow pattern */
     private final String[] tenCellRow = new String[]{
-            "....................................",
-            "....................................",
-            "....................................",
-            "....................................",
             "..............OOOOOOOOOO............",
     };
 
@@ -61,39 +49,8 @@ public class PatternFactory {
             "................OOO................."
     };
 
-    /** test pattern */
-    private final String[] test = new String[]{
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O..........O...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O.OO.....O...O..OO",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "OOO....O..O...O.OOO...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O........O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O..........O...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O.OO.....O...O..OO",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "OOO....O..O...O.OOO...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O........O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O..........O...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O.OO.....O...O..OO",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "OOO....O..O...O.OOO...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O........O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
-    };
-
     /** All the patterns */
-    public final String[][] patterns = new String[][]{empty,smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider, test};
+    public final String[][] patterns = new String[][]{smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider};
 
     /**
      * Generates a cell-matrix from a pattern

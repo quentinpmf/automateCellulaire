@@ -14,7 +14,6 @@
 Choix du nombre de lignes :
 ![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture.png)
 
-<hr>
 Aperçu de l'interface et des différents paramètres :
 ![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture2.png)
 

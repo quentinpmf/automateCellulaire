@@ -12,29 +12,24 @@
 <b>Language utilisé </b>: JAVA
 <hr>
 Choix du nombre de lignes :
-![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture.png)<br>
 
 Aperçu de l'interface et des différents paramètres :
-![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture2.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture2.png)<br>
 
-<hr>
 Choix du nombre d'itérations max :
-![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture6.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture6.png)<br>
 
-<hr>
 Choix du modèle ou dessin avec la souris : 
-![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture3.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture3.png)<br>
 
-<hr>
 Création d'une règle : 
-![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture4.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture4.png)<br>
 
-<hr>
 Application d'une règle : 
-![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture5.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture5.png)<br>
 
-<hr>
 Résultat du programme pour la règle créée et le modèle dessiné : 
-![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702738-capture7.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702738-capture7.png)<br>
 
 <hr>

@@ -46,5 +46,3 @@ Résultat du programme pour la règle créée et le modèle dessiné :
 ![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702738-capture7.png)<br>
 
 <hr>
-
-<hr>

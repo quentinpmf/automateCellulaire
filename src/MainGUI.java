@@ -322,7 +322,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
                         //Si une cellule a strictement moins de deux ou strictement plus de trois voisines vivantes, elle est morte à l’étape suivante.
                         rules.add(new Rule("JDV5", 1, ">", 3, 0, true));
                         rules.add(new Rule("JDV6", 1, "<", 2, 0, true));
-                        lblReglesChoisies.setText(lblReglesChoisies.getText() + "Jeu de la vie" + "/");
+                        lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " /");
                     }
                 } else if (ruleName != "-- Choisir --") {
                     for (Rule item : rules) {
@@ -330,12 +330,13 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
                             if(!item.isActivated()) {
                                 if(lblReglesChoisies.getText() == "∅")lblReglesChoisies.setText("");
                                 item.setActivated(true);
-                                lblReglesChoisies.setText(lblReglesChoisies.getText() + item.getName() + "/");
+                                lblReglesChoisies.setText(lblReglesChoisies.getText() + item.getName() + " /");
                                 break;
                             }
                         }
                     }
                 }
+                checkIfIssetOneRule();
             }
         });
 
@@ -376,6 +377,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 
         pan.add(Box.createHorizontalGlue());
         pan.add(btnStart);
+		btnStart.setEnabled(false);
         pan.add(Box.createHorizontalStrut(5));
         pan.add(btnReset);
         pan.add(Box.createHorizontalStrut(5));
@@ -425,6 +427,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
             Grid.nbIterations = 0;
             Grid.nbIterationsMax = 0;
             Grid.IterationMaxAtteint = 0;
+			btnStart.setEnabled(false);
             cbRules.removeAllItems();
             cbRules.addItem("--Choisir--");
             cbRules.addItem("Jeu de la vie");
@@ -464,4 +467,12 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         nbIterationsFaites.setText(text);
     }
 
+    //vérifie si au moins une règle est choisie (déverrouillage du bouton démarrer)
+	public void checkIfIssetOneRule()
+	{
+		if(!lblReglesChoisies.getText().equals(""))
+		{
+			btnStart.setEnabled(true);
+		}
+	}
 }

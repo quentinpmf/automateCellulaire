@@ -25,10 +25,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
     private JSlider slider;
     private JLabel lblSpeed;
     private JTextField RuleName = new JTextField();
-    private JTextField regleEtatInitial = new JTextField();
-    private static JComboBox cbRegleOperateur;
+    private static JComboBox cbRegleOperateur,cbEtatInitial,cbEtatFinal;
     private JTextField regleNbVoisins = new JTextField();
-    private JTextField regleEtatFinal = new JTextField();
 
     //Constructeur
     public MainGUI() {
@@ -222,9 +220,12 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         JPanel panel_fenetre_rules_state = new JPanel(new BorderLayout());
         panel_fenetre_rules_state.setBorder(BorderFactory.createTitledBorder("Etat initial"));
         panel_fenetre_rules_state.setLayout(new BoxLayout(panel_fenetre_rules_state, BoxLayout.Y_AXIS));
-        regleEtatInitial.setPreferredSize(new Dimension(300, 20));
-        regleEtatInitial.setMaximumSize(new Dimension(300, 20));
-        panel_fenetre_rules_state.add(regleEtatInitial);
+		String[] strEtats = new String[]{"Blanc", "Noir"};
+		cbEtatInitial = new JComboBox(strEtats);
+		cbEtatInitial.setPreferredSize(new Dimension(300, 20));
+		cbEtatInitial.setMaximumSize(new Dimension(300, 20));
+		cbEtatInitial.addActionListener(this);
+		panel_fenetre_rules_state.add(cbEtatInitial);
 
         //opérateurs
         JPanel panel_fenetre_rules_operators = new JPanel(new BorderLayout());
@@ -249,9 +250,12 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         JPanel panel_fenetre_rules_finalstate = new JPanel(new BorderLayout());
         panel_fenetre_rules_finalstate.setBorder(BorderFactory.createTitledBorder("Etat final"));
         panel_fenetre_rules_finalstate.setLayout(new BoxLayout(panel_fenetre_rules_finalstate, BoxLayout.Y_AXIS));
-        regleEtatFinal.setPreferredSize(new Dimension(300, 20));
-        regleEtatFinal.setMaximumSize(new Dimension(300, 20));
-        panel_fenetre_rules_finalstate.add(regleEtatFinal);
+		cbEtatFinal = new JComboBox(strEtats);
+		cbEtatFinal.setPreferredSize(new Dimension(300, 20));
+		cbEtatFinal.setMaximumSize(new Dimension(300, 20));
+		cbEtatFinal.addActionListener(this);
+		cbEtatFinal.setSelectedItem("Noir");
+		panel_fenetre_rules_finalstate.add(cbEtatFinal);
 
         //bouton créer
         btnPopupCreate = new JButton("Créer");
@@ -287,7 +291,10 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //ajout de la nouvelle regle au tableau des regles
-                rules.add(new Rule(RuleName.getText(), Integer.parseInt(regleEtatInitial.getText()), (String) cbRegleOperateur.getSelectedItem(), Integer.parseInt(regleNbVoisins.getText()), Integer.parseInt(regleEtatFinal.getText()), false));
+				int etatInitial = getIntFromCbChar(cbEtatInitial);
+				int etatFinal = getIntFromCbChar(cbEtatFinal);
+
+                rules.add(new Rule(RuleName.getText(), etatInitial, (String) cbRegleOperateur.getSelectedItem(), Integer.parseInt(regleNbVoisins.getText()), etatFinal, false));
                 //ajout de la nouvelle regle dans le ComboBox
                 cbRules.addItem(RuleName.getText());
                 //selection de la nouvelle regle dans le ComboBox
@@ -296,8 +303,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
                 fenetre_creation_regles.setVisible(false);
                 //réinitialisation des paramètres
                 RuleName.setText("");
-                regleEtatInitial.setText("");
-                regleEtatFinal.setText("");
+				cbEtatInitial.setSelectedItem("Blanc");
+				cbEtatFinal.setSelectedItem("Noir");
                 regleNbVoisins.setText("");
             }
         });
@@ -473,6 +480,19 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 		if(!lblReglesChoisies.getText().equals(""))
 		{
 			btnStart.setEnabled(true);
+		}
+	}
+
+	//transforme "Blanc" => int 0, "Noir" => int 1
+	int getIntFromCbChar(JComboBox cb)
+	{
+		if(cb.getSelectedItem().equals("Blanc"))
+		{
+			return 0;
+		}
+		else
+		{
+			return 1;
 		}
 	}
 }

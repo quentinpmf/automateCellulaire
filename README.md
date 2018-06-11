@@ -10,3 +10,10 @@
   <li>Créations de règles pour le jeu de la vie</li>
 </ul>
 <b>Language utilisé </b>: JAVA
+
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture2.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture3.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture4.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture5.png)
+![alt text](https://image.noelshack.com/fichiers/2018/24/1/1528702459-capture6.png)

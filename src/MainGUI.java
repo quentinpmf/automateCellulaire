@@ -128,7 +128,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         panel_modele.setBorder(BorderFactory.createTitledBorder("Ouvrir modèle"));
         panel_modele.setLayout(new BoxLayout(panel_modele, BoxLayout.X_AXIS));
         panel_modele.add(Box.createHorizontalStrut(5));
-        String[] strPattern = new String[]{"-- Choisir --", "Small exploder", "spaceShip", "Ten Cell Row", "Gosper glider gun", "Glider", "Test"};
+        String[] strPattern = new String[]{"-- Choisir --", "Small exploder", "spaceShip", "Ten Cell Row", "Gosper glider gun", "Glider", "The Floor Is Lava"};
         cbLoad = new JComboBox(strPattern);
         cbLoad.addActionListener(this);
         panel_modele.add(cbLoad);
@@ -471,7 +471,16 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         } else if (obj == cbLoad) {
             killAll();
             PatternFactory pFact = new PatternFactory(cells);
-            this.cells = pFact.createPattern(pFact.patterns[cbLoad.getSelectedIndex()], 5, 5);
+
+            if(cbLoad.getSelectedIndex() != 6) //Floor is lava
+            {
+                this.cells = pFact.createPattern(pFact.patterns[cbLoad.getSelectedIndex()], 5, 5);
+            }
+            else
+            {
+                this.cells = pFact.createPattern(pFact.patterns[cbLoad.getSelectedIndex()], 0, 0);
+            }
+
         }
     }
 

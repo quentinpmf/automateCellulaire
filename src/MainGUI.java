@@ -338,6 +338,12 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
                         if (lblReglesChoisies.getText() == "∅") lblReglesChoisies.setText("");
                         //TheFloorIsLava rules
                         //une cellule passe d'un état (i) au suivant (i+1) dans le cycle d'états dès que i+1 est présent dans au moins 3 cellules voisines (strict 2)
+
+                        rules.add(new Rule("Yellow", 2, ">", 0,-1, 2, true));
+                        rules.add(new Rule("OrangeLight", 3, ">", 0,-1, 3, true));
+                        rules.add(new Rule("OrangeDark", 4, ">", 0,-1, 4, true));
+                        rules.add(new Rule("Red", 5, ">", 0,-1, 5, true));
+
                         rules.add(new Rule("TFIL1", 2, ">", 2,3, 3, true));
                         rules.add(new Rule("TFIL2", 3, ">", 2,4, 4, true));
                         rules.add(new Rule("TFIL3", 4, ">", 2,5, 5, true));

@@ -30,7 +30,12 @@ public class Cell extends JPanel implements MouseListener {
 	public int aliveNeighborsCount(int state) {
 		int count = 0;
 		for (Cell c : getNeighbors()) {
-			if(c.getState() == state) count++;
+			if(state != -1) {
+				if(c.getState() == state) count++;
+			}
+			else {
+				if(c.getState() > 0) count++;
+			}
 		}
 		return count;
 	}

@@ -25,7 +25,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
     private JSlider slider;
     private JLabel lblSpeed;
     private JTextField RuleName = new JTextField();
-    private static JComboBox cbRegleOperateur,cbEtatInitial,cbEtatFinal;
+    private static JComboBox cbRegleOperateur,cbEtatInitial,cbCouleursVoisins,cbEtatFinal;
     private JTextField regleNbVoisins = new JTextField();
 
     //Constructeur
@@ -219,9 +219,10 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 
         //état initial
         JPanel panel_fenetre_rules_state = new JPanel(new BorderLayout());
-        panel_fenetre_rules_state.setBorder(BorderFactory.createTitledBorder("Etat initial"));
+        panel_fenetre_rules_state.setBorder(BorderFactory.createTitledBorder("Couleur initiale"));
         panel_fenetre_rules_state.setLayout(new BoxLayout(panel_fenetre_rules_state, BoxLayout.Y_AXIS));
-		String[] strEtats = new String[]{"Blanc", "Noir"};
+		String[] strEtats = new String[]{"Blanc", "Noir", "Jaune", "Orange clair", "Orange foncé" , "Rouge", "Vert", "Gris"};
+		String[] strCouleursVoisins = new String[]{"Indifférent", "Blanc", "Noir", "Jaune", "Orange clair", "Orange foncé" , "Rouge", "Vert", "Gris"};
 		cbEtatInitial = new JComboBox(strEtats);
 		cbEtatInitial.setPreferredSize(new Dimension(300, 20));
 		cbEtatInitial.setMaximumSize(new Dimension(300, 20));
@@ -230,9 +231,9 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 
         //opérateurs
         JPanel panel_fenetre_rules_operators = new JPanel(new BorderLayout());
-        panel_fenetre_rules_operators.setBorder(BorderFactory.createTitledBorder("Opérateur"));
+        panel_fenetre_rules_operators.setBorder(BorderFactory.createTitledBorder("Opérations"));
         panel_fenetre_rules_operators.setLayout(new BoxLayout(panel_fenetre_rules_operators, BoxLayout.Y_AXIS));
-        String[] strOperators = new String[]{"<", ">", "="};
+        String[] strOperators = new String[]{"a strictement moins de (<)", "a strictement plus de (>)", "a exactement (=)"};
         cbRegleOperateur = new JComboBox(strOperators);
         cbRegleOperateur.setPreferredSize(new Dimension(300, 20));
         cbRegleOperateur.setMaximumSize(new Dimension(300, 20));
@@ -246,6 +247,16 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         regleNbVoisins.setPreferredSize(new Dimension(300, 20));
         regleNbVoisins.setMaximumSize(new Dimension(300, 20));
         panel_fenetre_rules_nbvoisins.add(regleNbVoisins);
+
+        //couleur des voisins
+        JPanel panel_fenetre_rules_couleur_voisins = new JPanel(new BorderLayout());
+        panel_fenetre_rules_couleur_voisins.setBorder(BorderFactory.createTitledBorder("Couleur des voisins"));
+        panel_fenetre_rules_couleur_voisins.setLayout(new BoxLayout(panel_fenetre_rules_couleur_voisins, BoxLayout.Y_AXIS));
+        cbCouleursVoisins = new JComboBox(strCouleursVoisins);
+        cbCouleursVoisins.setPreferredSize(new Dimension(300, 20));
+        cbCouleursVoisins.setMaximumSize(new Dimension(300, 20));
+        cbCouleursVoisins.addActionListener(this);
+        panel_fenetre_rules_couleur_voisins.add(cbCouleursVoisins);
 
         //état final
         JPanel panel_fenetre_rules_finalstate = new JPanel(new BorderLayout());
@@ -268,9 +279,10 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 
         panel_fenetre_rules.add(panel_fenetre_rules_name);
         panel_fenetre_rules.add(panel_fenetre_rules_state);
-        panel_fenetre_rules.add(panel_fenetre_rules_nbvoisins);
-        panel_fenetre_rules.add(panel_fenetre_rules_finalstate);
         panel_fenetre_rules.add(panel_fenetre_rules_operators);
+        panel_fenetre_rules.add(panel_fenetre_rules_nbvoisins);
+        panel_fenetre_rules.add(panel_fenetre_rules_couleur_voisins);
+        panel_fenetre_rules.add(panel_fenetre_rules_finalstate);
         panel_fenetre_rules.add(panel_fenetre_rules_btnCreer);
 
         fenetre_creation_regles.add(panel_fenetre_rules);
@@ -293,10 +305,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //ajout de la nouvelle regle au tableau des regles
-				int etatInitial = getIntFromCbChar(cbEtatInitial);
-				int etatFinal = getIntFromCbChar(cbEtatFinal);
-
-                rules.add(new Rule(RuleName.getText(), etatInitial, (String) cbRegleOperateur.getSelectedItem(), Integer.parseInt(regleNbVoisins.getText()), 1, etatFinal, false));
+                rules.add(new Rule(RuleName.getText(), cbEtatInitial.getSelectedIndex(), (String) cbRegleOperateur.getSelectedItem(), Integer.parseInt(regleNbVoisins.getText()), cbCouleursVoisins.getSelectedIndex()-1, cbEtatFinal.getSelectedIndex(), false));
                 //ajout de la nouvelle regle dans le ComboBox
                 cbRules.addItem(RuleName.getText());
                 //selection de la nouvelle regle dans le ComboBox
@@ -306,6 +315,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
                 //réinitialisation des paramètres
                 RuleName.setText("");
 				cbEtatInitial.setSelectedItem("Blanc");
+				cbCouleursVoisins.setSelectedItem("Indifférent");
 				cbEtatFinal.setSelectedItem("Noir");
                 regleNbVoisins.setText("");
             }

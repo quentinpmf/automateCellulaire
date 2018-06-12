@@ -103,15 +103,15 @@ public class Cell extends JPanel implements MouseListener {
 	}
 
 	public void stateCondition(String operator, int requiredNeighborsToChange, int nextCellState,int aliveNbCount) {
-		if (operator == "=") {
+		if (operator == "a exactement (=)" || operator == "=") {
 			if (aliveNbCount == requiredNeighborsToChange) {
 				setNextState(nextCellState);
 			}
-		} else if (operator == "<") {
+		} else if (operator == "a strictement moins de (<)" || operator == "<") {
 			if (aliveNbCount < requiredNeighborsToChange) {
 				setNextState(nextCellState);
 			}
-		} else if (operator == ">") {
+		} else if (operator == "a strictement plus de (>)" || operator == ">") {
 			if (aliveNbCount > requiredNeighborsToChange) {
 				setNextState(nextCellState);
 			}

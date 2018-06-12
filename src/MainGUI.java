@@ -184,6 +184,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         cbRules.addActionListener(this);
 
         btnAppliquer = new JButton("Appliquer");
+        btnAppliquer.setForeground(Color.BLACK);btnAppliquer.setBackground(Color.decode("#e0ea45")); //fond jaune texte noir
         btnAppliquer.addActionListener(this);
 
         panel_liste_appliquer.add(cbRules, BorderLayout.WEST);
@@ -275,6 +276,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         fenetre_creation_regles.add(panel_fenetre_rules);
 
         btnCreate = new JButton("Créer une règle");
+        btnCreate.setForeground(Color.BLACK);btnCreate.setBackground(Color.decode("#64e0fb")); //fond lightblue texte noir
         btnCreate.addActionListener(this);
 
         //on ouvre la popup au click sur Créer
@@ -388,10 +390,14 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 
         btnStart = new JButton("Démarrer");
         btnStart.addActionListener(this);
+		btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#98fb98")); //fond vert texte noir
+
         btnReset = new JButton("Réinitialiser");
         btnReset.addActionListener(this);
+
         btnQuit = new JButton("Quitter");
-        btnQuit.addActionListener(this);
+		btnQuit.addActionListener(this);
+		btnQuit.setForeground(Color.WHITE);btnQuit.setBackground(Color.decode("#f93535")); //fond rouge texte blanc
 
         pan.add(Box.createHorizontalGlue());
         pan.add(btnStart);
@@ -430,9 +436,11 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         if (obj == btnStart) {
             if (btnStart.getText().equals("Démarrer")) {
                 btnStart.setText("Arrêter");
+				btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#ffa500")); //fond orange texte noir
                 grid.resume(nbIterationsMax.getText());
             } else {
                 btnStart.setText("Démarrer");
+				btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#98fb98")); //fond vert texte noir
                 grid.pause();
             }
         } else if (obj == btnReset) {
@@ -472,12 +480,15 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         switch (text) {
             case "Démarrer":
                 btnStart.setText("Démarrer");
+				btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#98fb98")); //fond vert texte noir
                 break;
             case "Arrêter":
                 btnStart.setText("Arrêter");
+				btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#ffa500")); //fond orange texte noir
             default:
                 btnStart.setText("Démarrer");
-        }
+				btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#98fb98")); //fond vert texte noir
+		}
     }
 
     //initialisation des itérations dans un champ texte
@@ -488,7 +499,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
     //vérifie si au moins une règle est choisie (déverrouillage du bouton démarrer)
 	public void checkIfIssetOneRule()
 	{
-		if(!lblReglesChoisies.getText().equals(""))
+		if(!lblReglesChoisies.getText().equals("") && !lblReglesChoisies.getText().equals("∅"))
 		{
 			btnStart.setEnabled(true);
 		}

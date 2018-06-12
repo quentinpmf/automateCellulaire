@@ -85,6 +85,12 @@ public class Cell extends JPanel implements MouseListener {
 							case 5:
 								stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
 								break;
+							case 6:
+								stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
+								break;
+							case 7:
+								stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
+								break;
 							default:
 								setNextState(getState());
                         }
@@ -97,15 +103,15 @@ public class Cell extends JPanel implements MouseListener {
 	}
 
 	public void stateCondition(String operator, int requiredNeighborsToChange, int nextCellState,int aliveNbCount) {
-		if (operator == "=") {
+		if (operator == "a exactement (=)" || operator == "=") {
 			if (aliveNbCount == requiredNeighborsToChange) {
 				setNextState(nextCellState);
 			}
-		} else if (operator == "<") {
+		} else if (operator == "a strictement moins de (<)" || operator == "<") {
 			if (aliveNbCount < requiredNeighborsToChange) {
 				setNextState(nextCellState);
 			}
-		} else if (operator == ">") {
+		} else if (operator == "a strictement plus de (>)" || operator == ">") {
 			if (aliveNbCount > requiredNeighborsToChange) {
 				setNextState(nextCellState);
 			}
@@ -133,6 +139,8 @@ public class Cell extends JPanel implements MouseListener {
 			case 1:
 				setBackground(Color.black);
 				break;
+
+			//Floor is lava
 			case 2:
 				setBackground(Color.yellow);
 				break;
@@ -145,6 +153,15 @@ public class Cell extends JPanel implements MouseListener {
 			case 5:
 				setBackground(Color.red);
 				break;
+
+			//Feu de foret
+			case 6:
+				setBackground(Color.green);
+				break;
+			case 7:
+				setBackground(Color.gray);
+				break;
+
 			default:
 				setBackground(Color.pink);
 				break;
@@ -169,6 +186,10 @@ public class Cell extends JPanel implements MouseListener {
 		}else if (getState() == 4) {
 			setState(5);
 		}else if (getState() == 5) {
+			setState(6);
+		}else if (getState() == 6) {
+			setState(7);
+		}else if (getState() == 7) {
 			setState(0);
 		}
 		display(getState());

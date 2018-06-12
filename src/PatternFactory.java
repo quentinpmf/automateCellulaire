@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class PatternFactory {
 
     private Cell[][] cells;
@@ -75,66 +77,39 @@ public class PatternFactory {
             "................OOO................."
     };
 
+    private static final String FloorIsLavaLetters  = "LAVE";
+    private static final String FeuDeForetLetters  = "F-";
+
     /**
      * TheFloorIsLava pattern
      */
-    private final String[] TheFloorIsLava = new String[]{
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEAAAAVALEVALEVALEVALEVALEV",
-            "VELAVELEEEEEEEEAVELAVELAVELEEEEEEEEAVELAVELEEEEEEE",
-            "LEVALEVALEEEEEEALEVALEVAAAAAAAVALEVAVALEVAVALEVAVA",
-            "LEVALEEEEEEEEEEALEVALEVALEVALEVALEVALEVALEVALEVALE",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEVALEVALEVALEVALEEVALEEVAL",
-            "VELAVELAVELALLLLLELAVELAVELAVELAVELAVELAVELAVELAVE",
-            "LEVALEVALEVLLLLLLLLALEVALEVALEVALEVALEVALELEVALELE",
-            "LEVALEVALEVALLLLLEVALEVALEVALEVALEVALLLLLELLLLLELL",
-            "EVVVVVVVVVVVVVALEVALEVALEVALEVALEVALEVVVVVVEVVVVVV",
-            "VELAVVVVVVLAVELAVELLLLLLLLLLLLLLVELAVVVVVVLVVVVVVL",
-            "LEVAVVVVVVVVVVVALEVALEVALEVALEVALEVALEVAVVLEVAVVLE",
-            "LEVALEVALEVALEVALEVALEVALEVALEVALEVAALEVAALEVAALEV",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEAAAAVALEVALEVALEVALEVALEV",
-            "VELAVELEEEEEEEEAVELAVELAVELEEEEEEEEAVELAVELEEEEEEE",
-            "LEVALEVALEEEEEEALEVALEVAAAAAAAVALEVAVALEVAVALEVAVA",
-            "LEVALEEEEEEEEEEALEVALEVALEVALEVALEVALEVALEVALEVALE",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEVALEVALEVALEVALEEVALEEVAL",
-            "VELAVELAVELALLLLLELAVELAVELAVELAVELAVELAVELAVELAVE",
-            "LEVALEVALEVLLLLLLLLALEVALEVALEVALEVALEVALELEVALELE",
-            "LEVALEVALEVALLLLLEVALEVALEVALEVALEVALLLLLELLLLLELL",
-            "EVVVVVVVVVVVVVALEVALEVALEVALEVALEVALEVVVVVVEVVVVVV",
-            "VELAVVVVVVLAVELAVELLLLLLLLLLLLLLVELAVVVVVVLVVVVVVL",
-            "LEVAVVVVVVVVVVVALEVALEVALEVALEVALEVALEVAVVLEVAVVLE",
-            "LEVALEVALEVALEVALEVALEVALEVALEVALEVAALEVAALEVAALEV",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEAAAAVALEVALEVALEVALEVALEV",
-            "VELAVELEEEEEEEEAVELAVELAVELEEEEEEEEAVELAVELEEEEEEE",
-            "LEVALEVALEEEEEEALEVALEVAAAAAAAVALEVAVALEVAVALEVAVA",
-            "LEVALEEEEEEEEEEALEVALEVALEVALEVALEVALEVALEVALEVALE",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEVALEVALEVALEVALEEVALEEVAL",
-            "VELAVELAVELALLLLLELAVELAVELAVELAVELAVELAVELAVELAVE",
-            "LEVALEVALEVLLLLLLLLALEVALEVALEVALEVALEVALELEVALELE",
-            "LEVALEVALEVALLLLLEVALEVALEVALEVALEVALLLLLELLLLLELL",
-            "EVVVVVVVVVVVVVALEVALEVALEVALEVALEVALEVVVVVVEVVVVVV",
-            "VELAVVVVVVLAVELAVELLLLLLLLLLLLLLVELAVVVVVVLVVVVVVL",
-            "LEVAVVVVVVVVVVVALEVALEVALEVALEVALEVALEVAVVLEVAVVLE",
-            "LEVALEVALEVALEVALEVALEVALEVALEVALEVAALEVAALEVAALEV",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEAAAAVALEVALEVALEVALEVALEV",
-            "VELAVELEEEEEEEEAVELAVELAVELEEEEEEEEAVELAVELEEEEEEE",
-            "LEVALEVALEEEEEEALEVALEVAAAAAAAVALEVAVALEVAVALEVAVA",
-            "LEVALEEEEEEEEEEALEVALEVALEVALEVALEVALEVALEVALEVALE",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEVALEVALEVALEVALEEVALEEVAL",
-            "VELAVELAVELALLLLLELAVELAVELAVELAVELAVELAVELAVELAVE",
-    };
+    private String[] TheFloorIsLava = new String[MainGUI.rows];
+    int generateFloorIsLavaPattern() {
+        for(int i = 0; i < MainGUI.rows; i++)
+        {
+            char[] patternLine = generatePatternLine(MainGUI.rows, MainGUI.rows, MainGUI.rows,FloorIsLavaLetters);
+            TheFloorIsLava[i] = new String(patternLine);
+        }
+        return 0;
+    }
+
+    /**
+     * FeuDeForet pattern
+     */
+    private String[] FeuDeForet = new String[MainGUI.rows];
+    int generateFeuDeForetPattern() {
+        for(int i = 0; i < MainGUI.rows; i++)
+        {
+            char[] patternLine = generatePatternLine(MainGUI.rows, MainGUI.rows, MainGUI.rows,FeuDeForetLetters);
+            FeuDeForet[i] = new String(patternLine);
+        }
+        return 0;
+    }
 
     /**
      * All the patterns
      */
-    public final String[][] patterns = new String[][]{empty, smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider, TheFloorIsLava};
+    public final String[][] patterns = new String[][]{empty, smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider, TheFloorIsLava, FeuDeForet};
 
     /**
      * Generates a cell-matrix from a pattern
@@ -160,13 +135,38 @@ public class PatternFactory {
                     cells[i + offsetX][j + offsetY].setState(4);
                 } else if (pattern[i].charAt(j) == 'E') {
                     cells[i + offsetX][j + offsetY].setState(5);
-                } else {
+                } else if (pattern[i].charAt(j) == 'F') {
+                    cells[i + offsetX][j + offsetY].setState(6);
+                } else if (pattern[i].charAt(j) == 'R') {
+                    cells[i + offsetX][j + offsetY].setState(7);
+                }
+                else {
                     cells[i + offsetX][j + offsetY].setState(0);
                 }
                 cells[i + offsetX][j + offsetY].display(cells[i + offsetX][j + offsetY].getState());
             }
         }
         return cells;
+    }
+
+    //génère une ligne de 50 caractères pour le pattern
+    public static char[] generatePatternLine(int longueurMin, int longueurMax, int nbDeLettres, String tableauDeLettres) {
+        Random random = new Random();
+        int longueur = random.nextInt(longueurMax - longueurMin + 1) + longueurMin;
+        char[] patternLine = new char[longueur];
+        int index = 0;
+        for (int i = 0; i < nbDeLettres; i++) {
+            index = getNextIndex(random, longueur, patternLine);
+            patternLine[index] = tableauDeLettres.charAt(random.nextInt(tableauDeLettres.length()));
+        }
+        return patternLine;
+    }
+
+    //récupère de manière aléatoire la lettre suivante dans le tabeau.
+    private static int getNextIndex(Random random, int longueur, char[] patternLine) {
+        int index = random.nextInt(longueur);
+        while(patternLine[index = random.nextInt(longueur)] != 0);
+        return index;
     }
 
 }

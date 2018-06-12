@@ -27,12 +27,12 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
     private JTextField RuleName = new JTextField();
     private static JComboBox cbRegleOperateur,cbEtatInitial,cbCouleursVoisins,cbEtatFinal;
     private JTextField regleNbVoisins = new JTextField();
-
+    public static int rows = 0;
     //Constructeur
     public MainGUI() {
 
         JPanel dialogBox = new JPanel(new BorderLayout());
-        int rows = Integer.parseInt(JOptionPane.showInputDialog(dialogBox, "Nombre de lignes ? [minimum 50]", "50"));
+        rows = Integer.parseInt(JOptionPane.showInputDialog(dialogBox, "Nombre de lignes ? [minimum 50]", "50"));
 
         if (rows >= 50) {
             setTitle("Automate Cellulaire [Boudinot Delcourt Martinelli]");
@@ -552,19 +552,6 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 		if(!lblReglesChoisies.getText().equals("") && !lblReglesChoisies.getText().equals("∅"))
 		{
 			btnStart.setEnabled(true);
-		}
-	}
-
-	//transforme "Blanc" => int 0, "Noir" => int 1
-	int getIntFromCbChar(JComboBox cb)
-	{
-		if(cb.getSelectedItem().equals("Blanc"))
-		{
-			return 0;
-		}
-		else
-		{
-			return 1;
 		}
 	}
 }

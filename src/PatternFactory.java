@@ -83,11 +83,11 @@ public class PatternFactory {
     /**
      * TheFloorIsLava pattern
      */
-    private String[] TheFloorIsLava = new String[50];
+    private String[] TheFloorIsLava = new String[MainGUI.rows];
     int generateFloorIsLavaPattern() {
-        for(int i = 0; i < 50; i++)
+        for(int i = 0; i < MainGUI.rows; i++)
         {
-            char[] patternLine = generatePatternLine(50, 50, 50,FloorIsLavaLetters);
+            char[] patternLine = generatePatternLine(MainGUI.rows, MainGUI.rows, MainGUI.rows,FloorIsLavaLetters);
             TheFloorIsLava[i] = new String(patternLine);
         }
         return 0;
@@ -96,11 +96,11 @@ public class PatternFactory {
     /**
      * FeuDeForet pattern
      */
-    private String[] FeuDeForet = new String[50];
+    private String[] FeuDeForet = new String[MainGUI.rows];
     int generateFeuDeForetPattern() {
-        for(int i = 0; i < 50; i++)
+        for(int i = 0; i < MainGUI.rows; i++)
         {
-            char[] patternLine = generatePatternLine(50, 50, 50,FeuDeForetLetters);
+            char[] patternLine = generatePatternLine(MainGUI.rows, MainGUI.rows, MainGUI.rows,FeuDeForetLetters);
             FeuDeForet[i] = new String(patternLine);
         }
         return 0;

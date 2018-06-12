@@ -6,12 +6,16 @@ public class PatternFactory {
         this.cells = cells;
     }
 
-    /** empty pattern */
+    /**
+     * empty pattern
+     */
     private final String[] empty = new String[]{
             "."
     };
 
-    /** SmallExploder pattern */
+    /**
+     * SmallExploder pattern
+     */
     private final String[] smallExploder = new String[]{
             "....................................",
             "....................................",
@@ -23,7 +27,9 @@ public class PatternFactory {
             "..................O................."
     };
 
-    /** SpaceShip pattern */
+    /**
+     * SpaceShip pattern
+     */
     private final String[] spaceShip = new String[]{
             "....................................",
             ".................OOOO...............",
@@ -32,8 +38,12 @@ public class PatternFactory {
             "................O..O................",
     };
 
-    /** TenCellRow pattern */
+    /**
+     * TenCellRow pattern
+     */
     private final String[] tenCellRow = new String[]{
+            "....................................",
+            "....................................",
             "....................................",
             "....................................",
             "....................................",
@@ -41,7 +51,9 @@ public class PatternFactory {
             "..............OOOOOOOOOO............",
     };
 
-    /** GosperGliderGun pattern */
+    /**
+     * GosperGliderGun pattern
+     */
     private final String[] gosperGliderGun = new String[]{
             "........................O...........",
             "......................O.O...........",
@@ -54,49 +66,43 @@ public class PatternFactory {
             "............OO......................"
     };
 
-    /** Glider pattern */
+    /**
+     * Glider pattern
+     */
     private final String[] glider = new String[]{
             ".................O..................",
             "..................O.................",
             "................OOO................."
     };
 
-    /** test pattern */
+    /**
+     * test pattern
+     */
     private final String[] test = new String[]{
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O..........O...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O.OO.....O...O..OO",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "OOO....O..O...O.OOO...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O........O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O..........O...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O.OO.....O...O..OO",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "OOO....O..O...O.OOO...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O........O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O..........O...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O.OO.....O...O..OO",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "OOO....O..O...O.OOO...O.O..O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",
-            "..O....O...O...O..O........O...O..O.",
-            "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
+            "LAVELAVELAVELAVELAVELAVELAVELAVELAVE",
+            "EVALEVALEVALEVALEVALEVALEAAAAVALEVAL",
+            "VELAVELEEEEEEEEAVELAVELAAAAAAAAAVELA",
+            "LEVALEVALEEEEEEALEVALEVAAAAAAAVALEVA",
+            "LEVALEEEEEEEEEEALEVALEVALEVALEVALEVA",
+            "LAVELAVELAVELAVELAVELAVELAVELAVELAVE",
+            "EVALEVALEVALEVALEVALEVALEVALEVALEVAL",
+            "VELAVELAVELALLLLLELAVELAVELAVELAVELA",
+            "LEVALEVALEVLLLLLLLLALEVALEVALEVALEVA",
+            "LEVALEVALEVALLLLLEVALEVALEVALEVALEVA",
+            "EVVVVVVVVVVVVVALEVALEVALEVALEVALEVAL",
+            "VELAVVVVVVLAVELAVELLLLLLLLLLLLLLVELA",
+            "LEVAVVVVVVVVVVVALEVALEVALEVALEVALEVA",
+            "LEVALEVALEVALEVALEVALEVALEVALEVALEVA",
     };
 
-    /** All the patterns */
-    public final String[][] patterns = new String[][]{empty,smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider, test};
+    /**
+     * All the patterns
+     */
+    public final String[][] patterns = new String[][]{empty, smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider, test};
 
     /**
      * Generates a cell-matrix from a pattern
+     *
      * @param pattern the pattern to copy
      * @param offsetX the horizontal margin from left
      * @param offsetY the vertical margin from top
@@ -105,15 +111,23 @@ public class PatternFactory {
     public Cell[][] createPattern(String[] pattern, int offsetX, int offsetY) {
         for (int i = 0; i < pattern.length; i++) {
             for (int j = 0; j < pattern[i].length(); j++) {
-                if (i+offsetX >= cells.length || j+offsetY >= cells[i].length) {
+                if (i + offsetX >= cells.length || j + offsetY >= cells[i].length) {
                     throw new IllegalArgumentException("Pattern can't be loaded, too big. Increase grid size !");
                 }
                 if (pattern[i].charAt(j) == 'O') {
-                    cells[i+offsetX][j+offsetY].setState(1);
-                }  else {
-                    cells[i+offsetX][j+offsetY].setState(0);
+                    cells[i + offsetX][j + offsetY].setState(1);
+                } else if (pattern[i].charAt(j) == 'L') {
+                    cells[i + offsetX][j + offsetY].setState(2);
+                } else if (pattern[i].charAt(j) == 'A') {
+                    cells[i + offsetX][j + offsetY].setState(3);
+                } else if (pattern[i].charAt(j) == 'V') {
+                    cells[i + offsetX][j + offsetY].setState(4);
+                } else if (pattern[i].charAt(j) == 'E') {
+                    cells[i + offsetX][j + offsetY].setState(5);
+                } else {
+                    cells[i + offsetX][j + offsetY].setState(0);
                 }
-                cells[i+offsetX][j+offsetY].display(cells[i+offsetX][j+offsetY].getState());
+                cells[i + offsetX][j + offsetY].display(cells[i + offsetX][j + offsetY].getState());
             }
         }
         return cells;

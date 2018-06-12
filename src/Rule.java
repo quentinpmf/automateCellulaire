@@ -20,7 +20,6 @@ public class Rule {
         this.requiredAliveNeighbors = requiredAliveNeighbors;
         this.requiredAliveNeighborsColor = requiredAliveNeighborsColor;
         this.activated = activated;
-        System.out.println(name+" "+initialCellState+" "+operator+" "+requiredAliveNeighbors+" "+requiredAliveNeighborsColor+" "+nextCellState+" "+activated);
     }
 
     public int getRequiredAliveNeighborsColor() {

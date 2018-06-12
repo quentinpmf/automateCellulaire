@@ -75,7 +75,6 @@ public class Grid implements Runnable{
 			if (running) {
 				if(nbIterations >= nbIterationsMax)
 				{
-					System.out.println("ici");
 					running = false;
 					IterationMaxAtteint = IterationMaxAtteint+1;
 					setNbIterationsMax(getNbIterationsMax()*2);

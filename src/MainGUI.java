@@ -25,14 +25,14 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
     private JSlider slider;
     private JLabel lblSpeed;
     private JTextField RuleName = new JTextField();
-    private static JComboBox cbRegleOperateur,cbEtatInitial,cbEtatFinal;
+    private static JComboBox cbRegleOperateur,cbEtatInitial,cbCouleursVoisins,cbEtatFinal;
     private JTextField regleNbVoisins = new JTextField();
-
+    public static int rows = 0;
     //Constructeur
     public MainGUI() {
 
         JPanel dialogBox = new JPanel(new BorderLayout());
-        int rows = Integer.parseInt(JOptionPane.showInputDialog(dialogBox, "Nombre de lignes ? [minimum 50]", "50"));
+        rows = Integer.parseInt(JOptionPane.showInputDialog(dialogBox, "Nombre de lignes ? [minimum 50]", "50"));
 
         if (rows >= 50) {
             setTitle("Automate Cellulaire [Boudinot Delcourt Martinelli]");
@@ -128,7 +128,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         panel_modele.setBorder(BorderFactory.createTitledBorder("Ouvrir modèle"));
         panel_modele.setLayout(new BoxLayout(panel_modele, BoxLayout.X_AXIS));
         panel_modele.add(Box.createHorizontalStrut(5));
-        String[] strPattern = new String[]{"-- Choisir --", "Small exploder", "spaceShip", "Ten Cell Row", "Gosper glider gun", "Glider", "Test"};
+        String[] strPattern = new String[]{"-- Choisir --", "Small exploder", "spaceShip", "Ten Cell Row", "Gosper glider gun", "Glider", "The Floor Is Lava", "Feu de foret"};
         cbLoad = new JComboBox(strPattern);
         cbLoad.addActionListener(this);
         panel_modele.add(cbLoad);
@@ -179,7 +179,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         JPanel panel_liste_appliquer = new JPanel(new BorderLayout());
         panel_liste_appliquer.setBorder(BorderFactory.createTitledBorder("Liste des règles disponibles"));
         panel_liste_appliquer.setLayout(new BoxLayout(panel_liste_appliquer, BoxLayout.X_AXIS));
-        String[] strPattern = new String[]{"-- Choisir --", "Jeu de la vie"};
+        String[] strPattern = new String[]{"-- Choisir --", "Jeu de la vie","The floor is lava", "Feu de foret"};
         cbRules = new JComboBox(strPattern);
         cbRules.addActionListener(this);
 
@@ -219,9 +219,10 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 
         //état initial
         JPanel panel_fenetre_rules_state = new JPanel(new BorderLayout());
-        panel_fenetre_rules_state.setBorder(BorderFactory.createTitledBorder("Etat initial"));
+        panel_fenetre_rules_state.setBorder(BorderFactory.createTitledBorder("Couleur initiale"));
         panel_fenetre_rules_state.setLayout(new BoxLayout(panel_fenetre_rules_state, BoxLayout.Y_AXIS));
-		String[] strEtats = new String[]{"Blanc", "Noir"};
+		String[] strEtats = new String[]{"Blanc", "Noir", "Jaune", "Orange clair", "Orange foncé" , "Rouge", "Vert", "Gris"};
+		String[] strCouleursVoisins = new String[]{"Indifférent", "Blanc", "Noir", "Jaune", "Orange clair", "Orange foncé" , "Rouge", "Vert", "Gris"};
 		cbEtatInitial = new JComboBox(strEtats);
 		cbEtatInitial.setPreferredSize(new Dimension(300, 20));
 		cbEtatInitial.setMaximumSize(new Dimension(300, 20));
@@ -230,9 +231,9 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 
         //opérateurs
         JPanel panel_fenetre_rules_operators = new JPanel(new BorderLayout());
-        panel_fenetre_rules_operators.setBorder(BorderFactory.createTitledBorder("Opérateur"));
+        panel_fenetre_rules_operators.setBorder(BorderFactory.createTitledBorder("Opérations"));
         panel_fenetre_rules_operators.setLayout(new BoxLayout(panel_fenetre_rules_operators, BoxLayout.Y_AXIS));
-        String[] strOperators = new String[]{"+", "-", "="};
+        String[] strOperators = new String[]{"a strictement moins de (<)", "a strictement plus de (>)", "a exactement (=)"};
         cbRegleOperateur = new JComboBox(strOperators);
         cbRegleOperateur.setPreferredSize(new Dimension(300, 20));
         cbRegleOperateur.setMaximumSize(new Dimension(300, 20));
@@ -246,6 +247,16 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         regleNbVoisins.setPreferredSize(new Dimension(300, 20));
         regleNbVoisins.setMaximumSize(new Dimension(300, 20));
         panel_fenetre_rules_nbvoisins.add(regleNbVoisins);
+
+        //couleur des voisins
+        JPanel panel_fenetre_rules_couleur_voisins = new JPanel(new BorderLayout());
+        panel_fenetre_rules_couleur_voisins.setBorder(BorderFactory.createTitledBorder("Couleur des voisins"));
+        panel_fenetre_rules_couleur_voisins.setLayout(new BoxLayout(panel_fenetre_rules_couleur_voisins, BoxLayout.Y_AXIS));
+        cbCouleursVoisins = new JComboBox(strCouleursVoisins);
+        cbCouleursVoisins.setPreferredSize(new Dimension(300, 20));
+        cbCouleursVoisins.setMaximumSize(new Dimension(300, 20));
+        cbCouleursVoisins.addActionListener(this);
+        panel_fenetre_rules_couleur_voisins.add(cbCouleursVoisins);
 
         //état final
         JPanel panel_fenetre_rules_finalstate = new JPanel(new BorderLayout());
@@ -268,9 +279,10 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 
         panel_fenetre_rules.add(panel_fenetre_rules_name);
         panel_fenetre_rules.add(panel_fenetre_rules_state);
-        panel_fenetre_rules.add(panel_fenetre_rules_nbvoisins);
-        panel_fenetre_rules.add(panel_fenetre_rules_finalstate);
         panel_fenetre_rules.add(panel_fenetre_rules_operators);
+        panel_fenetre_rules.add(panel_fenetre_rules_nbvoisins);
+        panel_fenetre_rules.add(panel_fenetre_rules_couleur_voisins);
+        panel_fenetre_rules.add(panel_fenetre_rules_finalstate);
         panel_fenetre_rules.add(panel_fenetre_rules_btnCreer);
 
         fenetre_creation_regles.add(panel_fenetre_rules);
@@ -293,10 +305,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //ajout de la nouvelle regle au tableau des regles
-				int etatInitial = getIntFromCbChar(cbEtatInitial);
-				int etatFinal = getIntFromCbChar(cbEtatFinal);
-
-                rules.add(new Rule(RuleName.getText(), etatInitial, (String) cbRegleOperateur.getSelectedItem(), Integer.parseInt(regleNbVoisins.getText()), etatFinal, false));
+                rules.add(new Rule(RuleName.getText(), cbEtatInitial.getSelectedIndex(), (String) cbRegleOperateur.getSelectedItem(), Integer.parseInt(regleNbVoisins.getText()), cbCouleursVoisins.getSelectedIndex()-1, cbEtatFinal.getSelectedIndex(), false));
                 //ajout de la nouvelle regle dans le ComboBox
                 cbRules.addItem(RuleName.getText());
                 //selection de la nouvelle regle dans le ComboBox
@@ -306,6 +315,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
                 //réinitialisation des paramètres
                 RuleName.setText("");
 				cbEtatInitial.setSelectedItem("Blanc");
+				cbCouleursVoisins.setSelectedItem("Indifférent");
 				cbEtatFinal.setSelectedItem("Noir");
                 regleNbVoisins.setText("");
             }
@@ -323,23 +333,51 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
                         if (lblReglesChoisies.getText() == "∅") lblReglesChoisies.setText("");
                         //JeuDeLaVie rules
                         //Si une cellule a exactement deux voisines vivantes, elle reste dans son état actuel à l’étape suivante.
-                        rules.add(new Rule("JDV1", 0, "=", 2, 0, true));
-                        rules.add(new Rule("JDV2", 1, "=", 2, 1, true));
+                        rules.add(new Rule("JDV1", 0, "=", 2,1, 0, true));
+                        rules.add(new Rule("JDV2", 1, "=", 2,1, 1, true));
                         //Si une cellule a exactement trois voisines vivantes, elle est vivante à l’étape suivante.
-                        rules.add(new Rule("JDV3", 0, "=", 3, 1, true));
-                        rules.add(new Rule("JDV4", 1, "=", 3, 1, true));
+                        rules.add(new Rule("JDV3", 0, "=", 3,1, 1, true));
+                        rules.add(new Rule("JDV4", 1, "=", 3,1, 1, true));
                         //Si une cellule a strictement moins de deux ou strictement plus de trois voisines vivantes, elle est morte à l’étape suivante.
-                        rules.add(new Rule("JDV5", 1, ">", 3, 0, true));
-                        rules.add(new Rule("JDV6", 1, "<", 2, 0, true));
-                        lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " /");
+                        rules.add(new Rule("JDV5", 1, ">", 3,1, 0, true));
+                        rules.add(new Rule("JDV6", 1, "<", 2,1, 0, true));
+                        lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " / ");
                     }
-                } else if (ruleName != "-- Choisir --") {
+                } else if (ruleName == "The floor is lava") {
+                    if(!lblReglesChoisies.getText().contains("The floor is lava")) {
+                        if (lblReglesChoisies.getText() == "∅") lblReglesChoisies.setText("");
+                        //TheFloorIsLava rules
+                        //une cellule passe d'un état (i) au suivant (i+1) dans le cycle d'états dès que i+1 est présent dans au moins 3 cellules voisines (strict 2)
+
+                        rules.add(new Rule("Yellow", 2, ">", 0,-1, 2, true));
+                        rules.add(new Rule("OrangeLight", 3, ">", 0,-1, 3, true));
+                        rules.add(new Rule("OrangeDark", 4, ">", 0,-1, 4, true));
+                        rules.add(new Rule("Red", 5, ">", 0,-1, 5, true));
+
+                        rules.add(new Rule("TFIL1", 2, ">", 2,3, 3, true));
+                        rules.add(new Rule("TFIL2", 3, ">", 2,4, 4, true));
+                        rules.add(new Rule("TFIL3", 4, ">", 2,5, 5, true));
+                        rules.add(new Rule("TFIL4", 5, ">", 2,2, 2, true));
+                        lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " / ");
+                    }
+                } else if (ruleName == "Feu de foret") {
+                if(!lblReglesChoisies.getText().contains("Feu de foret")) {
+                    if (lblReglesChoisies.getText() == "∅") lblReglesChoisies.setText("");
+
+                    rules.add(new Rule("Green", 6, ">", 0,-1, 6, true));
+
+                    rules.add(new Rule("TFDF1", 6, ">", 0,5, 5, true));
+                    rules.add(new Rule("TFDF2", 5, ">", 0,-1, 7, true));
+
+                    lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " / ");
+                }
+            } else if (ruleName != "-- Choisir --") {
                     for (Rule item : rules) {
                         if (ruleName.equals(item.getName())) {
                             if(!item.isActivated()) {
                                 if(lblReglesChoisies.getText() == "∅")lblReglesChoisies.setText("");
                                 item.setActivated(true);
-                                lblReglesChoisies.setText(lblReglesChoisies.getText() + item.getName() + " /");
+                                lblReglesChoisies.setText(lblReglesChoisies.getText() + item.getName() + " / ");
                                 break;
                             }
                         }
@@ -423,7 +461,6 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
     public void actionPerformed(ActionEvent e) {
         Object obj = e.getSource();
         if (obj == btnStart) {
-            System.out.println(rules);
             if (btnStart.getText().equals("Démarrer")) {
                 btnStart.setText("Arrêter");
 				btnStart.setForeground(Color.BLACK);btnStart.setBackground(Color.decode("#ffa500")); //fond orange texte noir
@@ -435,17 +472,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
             }
         } else if (obj == btnReset) {
             killAll();
-            //reset nbIterations + nbMaxIterations
-            nbIterationsFaites.setText("0");
-            lblReglesChoisies.setText("∅");
-            reglesChoisies.clear();
-            Grid.nbIterations = 0;
-            Grid.nbIterationsMax = 0;
-            Grid.IterationMaxAtteint = 0;
-			btnStart.setEnabled(false);
-            cbRules.removeAllItems();
-            cbRules.addItem("--Choisir--");
-            cbRules.addItem("Jeu de la vie");
+            resetAll();
+
             rules.clear();
         } else if (obj == btnQuit) {
             grid.setRunning(false);
@@ -453,9 +481,42 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
             dispose();
         } else if (obj == cbLoad) {
             killAll();
+            resetAll();
+
             PatternFactory pFact = new PatternFactory(cells);
-            this.cells = pFact.createPattern(pFact.patterns[cbLoad.getSelectedIndex()], 5, 5);
+
+            if(cbLoad.getSelectedIndex() != 6 && cbLoad.getSelectedIndex() != 7) //FloorIsLava ou FeuDeForet
+            {
+                this.cells = pFact.createPattern(pFact.patterns[cbLoad.getSelectedIndex()], 5, 5);
+            }
+            else
+            {
+                if(cbLoad.getSelectedIndex() == 6) //FloorIsLava
+                {
+                    pFact.generateFloorIsLavaPattern();
+                }
+                if(cbLoad.getSelectedIndex() == 7) //FeuDeForet
+                {
+                    pFact.generateFeuDeForetPattern();
+                }
+                this.cells = pFact.createPattern(pFact.patterns[cbLoad.getSelectedIndex()], 0, 0);
+            }
         }
+    }
+
+    public void resetAll() {
+        nbIterationsFaites.setText("0");
+        lblReglesChoisies.setText("∅");
+        reglesChoisies.clear();
+        Grid.nbIterations = 0;
+        Grid.nbIterationsMax = 0;
+        Grid.IterationMaxAtteint = 0;
+        btnStart.setEnabled(false);
+        cbRules.removeAllItems();
+        cbRules.addItem("--Choisir--");
+        cbRules.addItem("Jeu de la vie");
+        cbRules.addItem("The floor is lava");
+        cbRules.addItem("Feu de foret");
     }
 
     @Override
@@ -491,19 +552,6 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
 		if(!lblReglesChoisies.getText().equals("") && !lblReglesChoisies.getText().equals("∅"))
 		{
 			btnStart.setEnabled(true);
-		}
-	}
-
-	//transforme "Blanc" => int 0, "Noir" => int 1
-	int getIntFromCbChar(JComboBox cb)
-	{
-		if(cb.getSelectedItem().equals("Blanc"))
-		{
-			return 0;
-		}
-		else
-		{
-			return 1;
 		}
 	}
 }

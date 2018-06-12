@@ -331,7 +331,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
                         //Si une cellule a strictement moins de deux ou strictement plus de trois voisines vivantes, elle est morte à l’étape suivante.
                         rules.add(new Rule("JDV5", 1, ">", 3,1, 0, true));
                         rules.add(new Rule("JDV6", 1, "<", 2,1, 0, true));
-                        lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " /");
+                        lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " / ");
                     }
                 } else if (ruleName == "The floor is lava") {
                     if(!lblReglesChoisies.getText().contains("The floor is lava")) {
@@ -348,19 +348,18 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
                         rules.add(new Rule("TFIL2", 3, ">", 2,4, 4, true));
                         rules.add(new Rule("TFIL3", 4, ">", 2,5, 5, true));
                         rules.add(new Rule("TFIL4", 5, ">", 2,2, 2, true));
-                        lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " /");
+                        lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " / ");
                     }
                 } else if (ruleName == "Feu de foret") {
                 if(!lblReglesChoisies.getText().contains("Feu de foret")) {
                     if (lblReglesChoisies.getText() == "∅") lblReglesChoisies.setText("");
-                    //Feu de foret rules
-                    //une cellule passe d'un état (i) au suivant (i+1) dans le cycle d'états dès que i+1 est présent dans au moins 3 cellules voisines (strict 2)
 
                     rules.add(new Rule("Green", 6, ">", 0,-1, 6, true));
 
                     rules.add(new Rule("TFDF1", 6, ">", 0,5, 5, true));
                     rules.add(new Rule("TFDF2", 5, ">", 0,-1, 7, true));
-                    lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " /");
+
+                    lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " / ");
                 }
             } else if (ruleName != "-- Choisir --") {
                     for (Rule item : rules) {
@@ -368,7 +367,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
                             if(!item.isActivated()) {
                                 if(lblReglesChoisies.getText() == "∅")lblReglesChoisies.setText("");
                                 item.setActivated(true);
-                                lblReglesChoisies.setText(lblReglesChoisies.getText() + item.getName() + " /");
+                                lblReglesChoisies.setText(lblReglesChoisies.getText() + item.getName() + " / ");
                                 break;
                             }
                         }
@@ -463,19 +462,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
             }
         } else if (obj == btnReset) {
             killAll();
-            //reset nbIterations + nbMaxIterations
-            nbIterationsFaites.setText("0");
-            lblReglesChoisies.setText("∅");
-            reglesChoisies.clear();
-            Grid.nbIterations = 0;
-            Grid.nbIterationsMax = 0;
-            Grid.IterationMaxAtteint = 0;
-			btnStart.setEnabled(false);
-            cbRules.removeAllItems();
-            cbRules.addItem("--Choisir--");
-            cbRules.addItem("Jeu de la vie");
-            cbRules.addItem("The floor is lava");
-            cbRules.addItem("Feu de foret");
+            resetAll();
+
             rules.clear();
         } else if (obj == btnQuit) {
             grid.setRunning(false);
@@ -483,19 +471,42 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
             dispose();
         } else if (obj == cbLoad) {
             killAll();
+            resetAll();
+
             PatternFactory pFact = new PatternFactory(cells);
 
-            System.out.println(cbLoad.getSelectedIndex());
             if(cbLoad.getSelectedIndex() != 6 && cbLoad.getSelectedIndex() != 7) //FloorIsLava ou FeuDeForet
             {
                 this.cells = pFact.createPattern(pFact.patterns[cbLoad.getSelectedIndex()], 5, 5);
             }
             else
             {
+                if(cbLoad.getSelectedIndex() == 6) //FloorIsLava
+                {
+                    pFact.generateFloorIsLavaPattern();
+                }
+                if(cbLoad.getSelectedIndex() == 7) //FeuDeForet
+                {
+                    pFact.generateFeuDeForetPattern();
+                }
                 this.cells = pFact.createPattern(pFact.patterns[cbLoad.getSelectedIndex()], 0, 0);
             }
-
         }
+    }
+
+    public void resetAll() {
+        nbIterationsFaites.setText("0");
+        lblReglesChoisies.setText("∅");
+        reglesChoisies.clear();
+        Grid.nbIterations = 0;
+        Grid.nbIterationsMax = 0;
+        Grid.IterationMaxAtteint = 0;
+        btnStart.setEnabled(false);
+        cbRules.removeAllItems();
+        cbRules.addItem("--Choisir--");
+        cbRules.addItem("Jeu de la vie");
+        cbRules.addItem("The floor is lava");
+        cbRules.addItem("Feu de foret");
     }
 
     @Override

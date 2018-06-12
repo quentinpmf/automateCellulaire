@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class PatternFactory {
 
     private Cell[][] cells;
@@ -75,117 +77,34 @@ public class PatternFactory {
             "................OOO................."
     };
 
+    private static final String FloorIsLavaLetters  = "LAVE";
+    private static final String FeuDeForetLetters  = "F-";
+
     /**
      * TheFloorIsLava pattern
      */
-    private final String[] TheFloorIsLava = new String[]{
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEAAAAVALEVALEVALEVALEVALEV",
-            "VELAVELEEEEEEEEAVELAVELAVELEEEEEEEEAVELAVELEEEEEEE",
-            "LEVALEVALEEEEEEALEVALEVAAAAAAAVALEVAVALEVAVALEVAVA",
-            "LEVALEEEEEEEEEEALEVALEVALEVALEVALEVALEVALEVALEVALE",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEVALEVALEVALEVALEEVALEEVAL",
-            "VELAVELAVELALLLLLELAVELAVELAVELAVELAVELAVELAVELAVE",
-            "LEVALEVALEVLLLLLLLLALEVALEVALEVALEVALEVALELEVALELE",
-            "LEVALEVALEVALLLLLEVALEVALEVALEVALEVALLLLLELLLLLELL",
-            "EVVVVVVVVVVVVVALEVALEVALEVALEVALEVALEVVVVVVEVVVVVV",
-            "VELAVVVVVVLAVELAVELLLLLLLLLLLLLLVELAVVVVVVLVVVVVVL",
-            "LEVAVVVVVVVVVVVALEVALEVALEVALEVALEVALEVAVVLEVAVVLE",
-            "LEVALEVALEVALEVALEVALEVALEVALEVALEVAALEVAALEVAALEV",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEAAAAVALEVALEVALEVALEVALEV",
-            "VELAVELEEEEEEEEAVELAVELAVELEEEEEEEEAVELAVELEEEEEEE",
-            "LEVALEVALEEEEEEALEVALEVAAAAAAAVALEVAVALEVAVALEVAVA",
-            "LEVALEEEEEEEEEEALEVALEVALEVALEVALEVALEVALEVALEVALE",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEVALEVALEVALEVALEEVALEEVAL",
-            "VELAVELAVELALLLLLELAVELAVELAVELAVELAVELAVELAVELAVE",
-            "LEVALEVALEVLLLLLLLLALEVALEVALEVALEVALEVALELEVALELE",
-            "LEVALEVALEVALLLLLEVALEVALEVALEVALEVALLLLLELLLLLELL",
-            "EVVVVVVVVVVVVVALEVALEVALEVALEVALEVALEVVVVVVEVVVVVV",
-            "VELAVVVVVVLAVELAVELLLLLLLLLLLLLLVELAVVVVVVLVVVVVVL",
-            "LEVAVVVVVVVVVVVALEVALEVALEVALEVALEVALEVAVVLEVAVVLE",
-            "LEVALEVALEVALEVALEVALEVALEVALEVALEVAALEVAALEVAALEV",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEAAAAVALEVALEVALEVALEVALEV",
-            "VELAVELEEEEEEEEAVELAVELAVELEEEEEEEEAVELAVELEEEEEEE",
-            "LEVALEVALEEEEEEALEVALEVAAAAAAAVALEVAVALEVAVALEVAVA",
-            "LEVALEEEEEEEEEEALEVALEVALEVALEVALEVALEVALEVALEVALE",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEVALEVALEVALEVALEEVALEEVAL",
-            "VELAVELAVELALLLLLELAVELAVELAVELAVELAVELAVELAVELAVE",
-            "LEVALEVALEVLLLLLLLLALEVALEVALEVALEVALEVALELEVALELE",
-            "LEVALEVALEVALLLLLEVALEVALEVALEVALEVALLLLLELLLLLELL",
-            "EVVVVVVVVVVVVVALEVALEVALEVALEVALEVALEVVVVVVEVVVVVV",
-            "VELAVVVVVVLAVELAVELLLLLLLLLLLLLLVELAVVVVVVLVVVVVVL",
-            "LEVAVVVVVVVVVVVALEVALEVALEVALEVALEVALEVAVVLEVAVVLE",
-            "LEVALEVALEVALEVALEVALEVALEVALEVALEVAALEVAALEVAALEV",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEAAAAVALEVALEVALEVALEVALEV",
-            "VELAVELEEEEEEEEAVELAVELAVELEEEEEEEEAVELAVELEEEEEEE",
-            "LEVALEVALEEEEEEALEVALEVAAAAAAAVALEVAVALEVAVALEVAVA",
-            "LEVALEEEEEEEEEEALEVALEVALEVALEVALEVALEVALEVALEVALE",
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
-            "EVALEVALEVALEVALEVALEVALEVALEVALEVALEVALEEVALEEVAL",
-            "VELAVELAVELALLLLLELAVELAVELAVELAVELAVELAVELAVELAVE",
-    };
+    private String[] TheFloorIsLava = new String[50];
+    int generateFloorIsLavaPattern() {
+        for(int i = 0; i < 50; i++)
+        {
+            char[] patternLine = generatePatternLine(50, 50, 50,FloorIsLavaLetters);
+            TheFloorIsLava[i] = new String(patternLine);
+        }
+        return 0;
+    }
 
     /**
      * FeuDeForet pattern
      */
-    private final String[] FeuDeForet = new String[]{
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFEFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
-            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
-    };
+    private String[] FeuDeForet = new String[50];
+    int generateFeuDeForetPattern() {
+        for(int i = 0; i < 50; i++)
+        {
+            char[] patternLine = generatePatternLine(50, 50, 50,FeuDeForetLetters);
+            FeuDeForet[i] = new String(patternLine);
+        }
+        return 0;
+    }
 
     /**
      * All the patterns
@@ -228,6 +147,26 @@ public class PatternFactory {
             }
         }
         return cells;
+    }
+
+    //génère une ligne de 50 caractères pour le pattern
+    public static char[] generatePatternLine(int longueurMin, int longueurMax, int nbDeLettres, String tableauDeLettres) {
+        Random random = new Random();
+        int longueur = random.nextInt(longueurMax - longueurMin + 1) + longueurMin;
+        char[] patternLine = new char[longueur];
+        int index = 0;
+        for (int i = 0; i < nbDeLettres; i++) {
+            index = getNextIndex(random, longueur, patternLine);
+            patternLine[index] = tableauDeLettres.charAt(random.nextInt(tableauDeLettres.length()));
+        }
+        return patternLine;
+    }
+
+    //récupère de manière aléatoire la lettre suivante dans le tabeau.
+    private static int getNextIndex(Random random, int longueur, char[] patternLine) {
+        int index = random.nextInt(longueur);
+        while(patternLine[index = random.nextInt(longueur)] != 0);
+        return index;
     }
 
 }

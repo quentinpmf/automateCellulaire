@@ -128,7 +128,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         panel_modele.setBorder(BorderFactory.createTitledBorder("Ouvrir modèle"));
         panel_modele.setLayout(new BoxLayout(panel_modele, BoxLayout.X_AXIS));
         panel_modele.add(Box.createHorizontalStrut(5));
-        String[] strPattern = new String[]{"-- Choisir --", "Small exploder", "spaceShip", "Ten Cell Row", "Gosper glider gun", "Glider", "The Floor Is Lava"};
+        String[] strPattern = new String[]{"-- Choisir --", "Small exploder", "spaceShip", "Ten Cell Row", "Gosper glider gun", "Glider", "The Floor Is Lava", "Feu de foret"};
         cbLoad = new JComboBox(strPattern);
         cbLoad.addActionListener(this);
         panel_modele.add(cbLoad);
@@ -179,7 +179,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
         JPanel panel_liste_appliquer = new JPanel(new BorderLayout());
         panel_liste_appliquer.setBorder(BorderFactory.createTitledBorder("Liste des règles disponibles"));
         panel_liste_appliquer.setLayout(new BoxLayout(panel_liste_appliquer, BoxLayout.X_AXIS));
-        String[] strPattern = new String[]{"-- Choisir --", "Jeu de la vie","The floor is lava"};
+        String[] strPattern = new String[]{"-- Choisir --", "Jeu de la vie","The floor is lava", "Feu de foret"};
         cbRules = new JComboBox(strPattern);
         cbRules.addActionListener(this);
 
@@ -350,7 +350,19 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
                         rules.add(new Rule("TFIL4", 5, ">", 2,2, 2, true));
                         lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " /");
                     }
-                } else if (ruleName != "-- Choisir --") {
+                } else if (ruleName == "Feu de foret") {
+                if(!lblReglesChoisies.getText().contains("Feu de foret")) {
+                    if (lblReglesChoisies.getText() == "∅") lblReglesChoisies.setText("");
+                    //Feu de foret rules
+                    //une cellule passe d'un état (i) au suivant (i+1) dans le cycle d'états dès que i+1 est présent dans au moins 3 cellules voisines (strict 2)
+
+                    rules.add(new Rule("Green", 6, ">", 0,-1, 6, true));
+
+                    rules.add(new Rule("TFDF1", 6, ">", 0,5, 5, true));
+                    rules.add(new Rule("TFDF2", 5, ">", 0,-1, 7, true));
+                    lblReglesChoisies.setText(lblReglesChoisies.getText() + ruleName + " /");
+                }
+            } else if (ruleName != "-- Choisir --") {
                     for (Rule item : rules) {
                         if (ruleName.equals(item.getName())) {
                             if(!item.isActivated()) {
@@ -463,6 +475,7 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
             cbRules.addItem("--Choisir--");
             cbRules.addItem("Jeu de la vie");
             cbRules.addItem("The floor is lava");
+            cbRules.addItem("Feu de foret");
             rules.clear();
         } else if (obj == btnQuit) {
             grid.setRunning(false);
@@ -472,7 +485,8 @@ public class MainGUI extends JFrame implements ActionListener, ChangeListener {
             killAll();
             PatternFactory pFact = new PatternFactory(cells);
 
-            if(cbLoad.getSelectedIndex() != 6) //Floor is lava
+            System.out.println(cbLoad.getSelectedIndex());
+            if(cbLoad.getSelectedIndex() != 6 && cbLoad.getSelectedIndex() != 7) //FloorIsLava ou FeuDeForet
             {
                 this.cells = pFact.createPattern(pFact.patterns[cbLoad.getSelectedIndex()], 5, 5);
             }

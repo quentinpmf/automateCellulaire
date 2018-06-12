@@ -79,7 +79,7 @@ public class PatternFactory {
      * TheFloorIsLava pattern
      */
     private final String[] TheFloorIsLava = new String[]{
-            "LAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELAVELA",
+            "F",
             "EVALEVALEVALEVALEVALEVALEAAAAVALEVALEVALEVALEVALEV",
             "VELAVELEEEEEEEEAVELAVELAVELEEEEEEEEAVELAVELEEEEEEE",
             "LEVALEVALEEEEEEALEVALEVAAAAAAAVALEVAVALEVAVALEVAVA",
@@ -132,9 +132,65 @@ public class PatternFactory {
     };
 
     /**
+     * FeuDeForet pattern
+     */
+    private final String[] FeuDeForet = new String[]{
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFEFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFF----------------------------",
+            "FFFFFFFFFFFFFFFFFFFFFFFFF-------------------------",
+    };
+
+    /**
      * All the patterns
      */
-    public final String[][] patterns = new String[][]{empty, smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider, TheFloorIsLava};
+    public final String[][] patterns = new String[][]{empty, smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider, TheFloorIsLava, FeuDeForet};
 
     /**
      * Generates a cell-matrix from a pattern
@@ -160,7 +216,12 @@ public class PatternFactory {
                     cells[i + offsetX][j + offsetY].setState(4);
                 } else if (pattern[i].charAt(j) == 'E') {
                     cells[i + offsetX][j + offsetY].setState(5);
-                } else {
+                } else if (pattern[i].charAt(j) == 'F') {
+                    cells[i + offsetX][j + offsetY].setState(6);
+                } else if (pattern[i].charAt(j) == 'R') {
+                    cells[i + offsetX][j + offsetY].setState(7);
+                }
+                else {
                     cells[i + offsetX][j + offsetY].setState(0);
                 }
                 cells[i + offsetX][j + offsetY].display(cells[i + offsetX][j + offsetY].getState());

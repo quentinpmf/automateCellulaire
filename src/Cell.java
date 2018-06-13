@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
 
 public class Cell extends JPanel implements MouseListener {
 	private ArrayList<Cell> neighbors = new ArrayList<Cell>();
-	private int state;
+	private int currentState;
 	private int nextState = 0;
 
 	public Cell() {
@@ -27,25 +27,30 @@ public class Cell extends JPanel implements MouseListener {
 		return neighbors;
 	}
 
+	/**
+	 * Count neighbors of the cell according to their color
+	 * @param state
+	 * @return count
+	 */
 	public int aliveNeighborsCount(int state) {
 		int count = 0;
 		for (Cell c : getNeighbors()) {
 			if(state != -1) {
-				if(c.getState() == state) count++;
+				if(c.getCurrentState() == state) count++;
 			}
 			else {
-				if(c.getState() > 0) count++;
+				if(c.getCurrentState() > 0) count++;
 			}
 		}
 		return count;
 	}
 
-	public int getState() {
-		return state;
+	public int getCurrentState() {
+		return currentState;
 	}
 
-	public void setState(int etat) {
-		this.state = etat;
+	public void setCurrentState(int etat) {
+		this.currentState = etat;
 	}
 
 	public int getNextState() {
@@ -56,80 +61,47 @@ public class Cell extends JPanel implements MouseListener {
 		this.nextState = nextState;
 	}
 
+	/**
+	 * Affect next state to current state to prepare next iteration
+	 */
 	public void applyNextState(){
-		this.state = nextState;
+		this.currentState = nextState;
 	}
 
+	/**
+	 * Set next state of a cell according to the rules
+	 */
 	public void nextState() {
         if(MainGUI.rules.size() != 0){
             for (Rule item : MainGUI.rules) {
                 if(item.isActivated()) {
 					int aliveNbCount = aliveNeighborsCount(item.getRequiredAliveNeighborsColor());
-                    if (item.getInitialCellState() == getState()) {
-                        switch (item.getInitialCellState()) {
-                            case 0:
-                                stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
-                                break;
-                            case 1:
-                                stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
-                                break;
-							case 2:
-								stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
-								break;
-							case 3:
-								stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
-								break;
-							case 4:
-								stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
-								break;
-							case 5:
-								stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
-								break;
-							case 6:
-								stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
-								break;
-							case 7:
-								stateCondition(item.getOperator(), item.getRequiredAliveNeighbors(), item.getNextCellState(), aliveNbCount);
-								break;
-							default:
-								setNextState(getState());
-                        }
+                    if (item.getInitialCellState() == getCurrentState()) {
+						if (item.getOperator() == "a exactement (=)" || item.getOperator() == "=") {
+							if (aliveNbCount == item.getRequiredAliveNeighbors()) {
+								setNextState(item.getNextCellState());
+							}
+						} else if (item.getOperator() == "a strictement moins de (<)" || item.getOperator() == "<") {
+							if (aliveNbCount < item.getRequiredAliveNeighbors()) {
+								setNextState(item.getNextCellState());
+							}
+						} else if (item.getOperator() == "a strictement plus de (>)" || item.getOperator() == ">") {
+							if (aliveNbCount > item.getRequiredAliveNeighbors()) {
+								setNextState(item.getNextCellState());
+							}
+						} else {
+							System.out.println("Operator error");
+						}
                     }
                 }
             }
         }else{
-            setNextState(getState());
+            setNextState(getCurrentState());
         }
 	}
 
-	public void stateCondition(String operator, int requiredNeighborsToChange, int nextCellState,int aliveNbCount) {
-		if (operator == "a exactement (=)" || operator == "=") {
-			if (aliveNbCount == requiredNeighborsToChange) {
-				setNextState(nextCellState);
-			}
-		} else if (operator == "a strictement moins de (<)" || operator == "<") {
-			if (aliveNbCount < requiredNeighborsToChange) {
-				setNextState(nextCellState);
-			}
-		} else if (operator == "a strictement plus de (>)" || operator == ">") {
-			if (aliveNbCount > requiredNeighborsToChange) {
-				setNextState(nextCellState);
-			}
-		} else {
-			System.out.println("Operator error");
-		}
-	}
-
-	public boolean isAlive() {
-		if (getState() > 0){
-			return true;
-		}else {
-			return false;
-		}
-	}
-
 	/**
-	 * Display next state of cell
+	 * Display next current state of cell
 	 */
 	public void display(int state) {
 		switch (state) {
@@ -175,31 +147,31 @@ public class Cell extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (getState() == 0) {
-			setState(1);
-		}else if (getState() == 1) {
-			setState(2);
-		}else if (getState() == 2) {
-			setState(3);
-		}else if (getState() == 3) {
-			setState(4);
-		}else if (getState() == 4) {
-			setState(5);
-		}else if (getState() == 5) {
-			setState(6);
-		}else if (getState() == 6) {
-			setState(7);
-		}else if (getState() == 7) {
-			setState(0);
+		if (getCurrentState() == 0) {
+			setCurrentState(1);
+		}else if (getCurrentState() == 1) {
+			setCurrentState(2);
+		}else if (getCurrentState() == 2) {
+			setCurrentState(3);
+		}else if (getCurrentState() == 3) {
+			setCurrentState(4);
+		}else if (getCurrentState() == 4) {
+			setCurrentState(5);
+		}else if (getCurrentState() == 5) {
+			setCurrentState(6);
+		}else if (getCurrentState() == 6) {
+			setCurrentState(7);
+		}else if (getCurrentState() == 7) {
+			setCurrentState(0);
 		}
-		display(getState());
+		display(getCurrentState());
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e)) {
-			this.setState(1);
-			display(getState());
+			this.setCurrentState(1);
+			display(getCurrentState());
 		}
 	}
 

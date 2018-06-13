@@ -77,42 +77,42 @@ public class PatternFactory {
             "................OOO................."
     };
 
-    private static final String FloorIsLavaLetters  = "LAVE";
-    private static final String FeuDeForetLetters  = "F-";
+    private static final String FloorIsLavaLetters = "LAVE";
+    private static final String FeuDeForetLetters = "F-";
 
     /**
      * TheFloorIsLava pattern
      */
     private String[] TheFloorIsLava = new String[MainGUI.rows];
+
     int generateFloorIsLavaPattern() {
-        for(int i = 0; i < MainGUI.rows; i++)
-        {
-            char[] patternLine = generatePatternLine(MainGUI.rows, MainGUI.rows, MainGUI.rows,FloorIsLavaLetters);
+        for (int i = 0; i < MainGUI.rows; i++) {
+            char[] patternLine = generatePatternLine(MainGUI.rows, MainGUI.rows, MainGUI.rows, FloorIsLavaLetters);
             TheFloorIsLava[i] = new String(patternLine);
         }
         return 0;
     }
 
     /**
-     * FeuDeForet pattern
+     * Generate forest fire pattern
      */
     private String[] FeuDeForet = new String[MainGUI.rows];
+
     int generateFeuDeForetPattern() {
-        for(int i = 0; i < MainGUI.rows; i++)
-        {
-            char[] patternLine = generatePatternLine(MainGUI.rows, MainGUI.rows, MainGUI.rows,FeuDeForetLetters);
+        for (int i = 0; i < MainGUI.rows; i++) {
+            char[] patternLine = generatePatternLine(MainGUI.rows, MainGUI.rows, MainGUI.rows, FeuDeForetLetters);
             FeuDeForet[i] = new String(patternLine);
         }
         return 0;
     }
 
     /**
-     * All the patterns
+     * All patterns
      */
     public final String[][] patterns = new String[][]{empty, smallExploder, spaceShip, tenCellRow, gosperGliderGun, glider, TheFloorIsLava, FeuDeForet};
 
     /**
-     * Generates a cell-matrix from a pattern
+     * Generate cell matrix from a pattern
      *
      * @param pattern the pattern to copy
      * @param offsetX the horizontal margin from left
@@ -123,33 +123,39 @@ public class PatternFactory {
         for (int i = 0; i < pattern.length; i++) {
             for (int j = 0; j < pattern[i].length(); j++) {
                 if (i + offsetX >= cells.length || j + offsetY >= cells[i].length) {
-                    throw new IllegalArgumentException("Pattern can't be loaded, too big. Increase grid size !");
+                    throw new IllegalArgumentException("Le pattern ne peut pas être implémenté car la grille est trop petite");
                 }
                 if (pattern[i].charAt(j) == 'O') {
-                    cells[i + offsetX][j + offsetY].setState(1);
+                    cells[i + offsetX][j + offsetY].setCurrentState(1);
                 } else if (pattern[i].charAt(j) == 'L') {
-                    cells[i + offsetX][j + offsetY].setState(2);
+                    cells[i + offsetX][j + offsetY].setCurrentState(2);
                 } else if (pattern[i].charAt(j) == 'A') {
-                    cells[i + offsetX][j + offsetY].setState(3);
+                    cells[i + offsetX][j + offsetY].setCurrentState(3);
                 } else if (pattern[i].charAt(j) == 'V') {
-                    cells[i + offsetX][j + offsetY].setState(4);
+                    cells[i + offsetX][j + offsetY].setCurrentState(4);
                 } else if (pattern[i].charAt(j) == 'E') {
-                    cells[i + offsetX][j + offsetY].setState(5);
+                    cells[i + offsetX][j + offsetY].setCurrentState(5);
                 } else if (pattern[i].charAt(j) == 'F') {
-                    cells[i + offsetX][j + offsetY].setState(6);
+                    cells[i + offsetX][j + offsetY].setCurrentState(6);
                 } else if (pattern[i].charAt(j) == 'R') {
-                    cells[i + offsetX][j + offsetY].setState(7);
+                    cells[i + offsetX][j + offsetY].setCurrentState(7);
+                } else {
+                    cells[i + offsetX][j + offsetY].setCurrentState(0);
                 }
-                else {
-                    cells[i + offsetX][j + offsetY].setState(0);
-                }
-                cells[i + offsetX][j + offsetY].display(cells[i + offsetX][j + offsetY].getState());
+                cells[i + offsetX][j + offsetY].display(cells[i + offsetX][j + offsetY].getCurrentState());
             }
         }
         return cells;
     }
 
-    //génère une ligne de 50 caractères pour le pattern
+    /**
+     * Generate an adaptive line for the pattern
+     * @param longueurMin
+     * @param longueurMax
+     * @param nbDeLettres
+     * @param tableauDeLettres
+     * @return
+     */
     public static char[] generatePatternLine(int longueurMin, int longueurMax, int nbDeLettres, String tableauDeLettres) {
         Random random = new Random();
         int longueur = random.nextInt(longueurMax - longueurMin + 1) + longueurMin;
@@ -162,10 +168,10 @@ public class PatternFactory {
         return patternLine;
     }
 
-    //récupère de manière aléatoire la lettre suivante dans le tabeau.
+    //récupère de manière aléatoire la lettre suivante dans le tableau.
     private static int getNextIndex(Random random, int longueur, char[] patternLine) {
         int index = random.nextInt(longueur);
-        while(patternLine[index = random.nextInt(longueur)] != 0);
+        while (patternLine[index = random.nextInt(longueur)] != 0) ;
         return index;
     }
 
